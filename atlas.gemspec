@@ -28,7 +28,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock'
   spec.add_development_dependency 'timecop'
   spec.add_dependency 'activesupport'
+  spec.add_dependency 'aws-sdk', '~> 2'
   spec.add_dependency 'dry-validation'
   spec.add_dependency 'ice_nine'
   spec.add_dependency 'rack'
+  spec.add_dependency 'hanami-controller'
+  spec.add_dependency 'mongoid', '~> 6.1.0'
 end
