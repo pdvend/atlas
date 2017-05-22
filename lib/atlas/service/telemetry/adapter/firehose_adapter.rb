@@ -1,8 +1,9 @@
-module Platform
+module Atlas
   module Service
     module Telemetry
       module Adapter
         class FirehoseAdapter
+          # TODO: Receive this constants by parameter
           REGION_NAME = ENV['AWS_FIREHOSE_REGION_NAME']
           TELEMETRY_STREAM_PREFIX = ENV['AWS_FIREHOSE_TELEMETRY_STREAM_PREFIX']
 

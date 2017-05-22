@@ -1,4 +1,4 @@
-module Platform
+module Atlas
   module Service
     module Mechanism
       class ServiceResponseFormatter
@@ -15,7 +15,7 @@ module Platform
           result_data = results.data
           query_result = Pagination::QueryResult.new(result_data.count, filter_params[:pagination], result_data)
           data = IceNine.deep_freeze(query_result)
-          Platform::Repository::RepositoryResponse.new(data: data, success: true)
+          Atlas::Repository::RepositoryResponse.new(data: data, success: true)
         end
 
         def pagination_params(params)

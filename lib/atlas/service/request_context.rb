@@ -1,6 +1,6 @@
-module Platform
+module Atlas
   module Service
-    class RequestContext < Platform::Entity::BaseEntity
+    class RequestContext < Atlas::Entity::BaseEntity
       parameters :time, :component, :caller, :transaction_id, :account_id, :authentication_type
 
       AUTHENTICATION_TYPES = %i[user application none system].freeze
@@ -8,15 +8,15 @@ module Platform
         required(:time).filled(:date_time?)
         required(:component).filled(:str?)
         required(:caller).filled(:str?)
-        required(:transaction_id) { filled? & str? & format?(Platform::Enum::Formats::UUID4) }
-        required(:account_id) { filled? > (str? &  format?(Platform::Enum::Formats::UUID4)) }
+        required(:transaction_id) { filled? & str? & format?(Atlas::Enum::Formats::UUID4) }
+        required(:account_id) { filled? > (str? &  format?(Atlas::Enum::Formats::UUID4)) }
         required(:authentication_type).filled(type?: Symbol, included_in?: AUTHENTICATION_TYPES)
       end
 
       def to_event
         base_event = to_h
         base_event.delete(:time)
-        base_event.merge(start_time: time.iso8601, elapsed_time: Time.now.utc - time)
+        base_event.merge(start_time: time.iso8601, elapsed_time: Time.now.utc - time.utc)
       end
 
       def user?

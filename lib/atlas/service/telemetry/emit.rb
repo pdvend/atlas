@@ -1,10 +1,10 @@
-module Platform
+module Atlas
   module Service
     module Telemetry
       class Emit
         def initialize
           # TODO: Receive adapter by configuration
-          @adapter = if Platform::Util::Environment.development?
+          @adapter = if Atlas::Util::Environment.development?
                        Adapter::StdoutAdapter.new
                      else
                        Adapter::FirehoseAdapter.new

@@ -1,4 +1,4 @@
-module Platform
+module Atlas
   module Service
     module Mechanism
       module Pagination

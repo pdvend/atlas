@@ -1,6 +1,6 @@
-module Platform
+module Atlas
   module Service
-    class ServiceResponse < Platform::Entity::BaseEntity
+    class ServiceResponse < Atlas::Entity::BaseEntity
       parameters :data, :code
 
       schema do

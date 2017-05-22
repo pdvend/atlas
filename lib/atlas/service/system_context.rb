@@ -1,4 +1,4 @@
-module Platform
+module Atlas
   module Service
     SystemContext = RequestContext.new(
       time: DateTime.now,

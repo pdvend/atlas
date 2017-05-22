@@ -1,6 +1,6 @@
-module Platform
+module Atlas
   module Repository
-    class RepositoryResponse < Platform::Entity::BaseEntity
+    class RepositoryResponse < Atlas::Entity::BaseEntity
       parameters :data, :success
 
       schema do
