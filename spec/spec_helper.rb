@@ -2,7 +2,6 @@ require 'factory_girl'
 require 'coveralls'
 require 'webmock/rspec'
 require 'timecop'
-require 'rspec/core/shared_context'
 Coveralls.wear!
 
 # Simplecov setup
@@ -36,7 +35,6 @@ end
 require 'support/factory_girl'
 
 RSpec.configure do |config|
-  puts Atlas::Spec::SharedExamples::ServiceExamples
   config.include Atlas::Spec::SharedExamples::ControllerExamples
   config.include Atlas::Spec::SharedExamples::ServiceExamples
 end

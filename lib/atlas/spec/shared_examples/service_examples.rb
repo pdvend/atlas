@@ -1,3 +1,5 @@
+require 'rspec/core/shared_context'
+
 module Atlas
   module Spec
     module SharedExamples
