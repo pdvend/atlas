@@ -1,4 +1,5 @@
 RSpec.configure do |config|
+  require 'atlas/spec/factory_girl'
   config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do

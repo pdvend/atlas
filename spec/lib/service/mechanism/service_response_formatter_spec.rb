@@ -1,6 +1,6 @@
 RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
   describe '.format' do
-    let(:entity) { Mock::Entity[:name] }
+    let(:entity) { Atlas::Spec::Mock::Entity[:name] }
     let(:partner_params) { { page: 1, count: 3 } }
     let(:page_limit) { 25 }
     let(:data) { [1, 2] }

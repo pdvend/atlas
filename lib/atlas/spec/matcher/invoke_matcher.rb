@@ -1,3 +1,7 @@
+#-------------------------------+
+# TODO: This can be another gem |
+#-------------------------------+
+#
 # Adapted from: https://github.com/rspec/rspec-expectations/issues/934
 #
 # expect{ foo }.to invoke(Class, :method).and_call_original

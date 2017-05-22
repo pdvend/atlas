@@ -1,6 +1,6 @@
 RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middleware do
   describe '#initialize' do
-    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Mock::RackApp[], params) }
+    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[], params) }
 
     context 'when params are empty' do
       let(:params) { {} }
@@ -16,7 +16,7 @@ RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middl
   end
 
   describe '#call' do
-    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Mock::RackApp[body], params).call(env) }
+    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[body], params).call(env) }
 
     context 'when params are empty' do
       let(:params) { {} }

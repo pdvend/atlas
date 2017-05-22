@@ -1,8 +1,8 @@
 require 'factory_girl'
-require 'support/factory_girl'
 require 'coveralls'
 require 'webmock/rspec'
 require 'timecop'
+require 'rspec/core/shared_context'
 Coveralls.wear!
 
 # Simplecov setup
@@ -20,24 +20,23 @@ SimpleCov.start do
 end
 
 # Set env to test
-ENV['APPLICATION_ENV'] = 'test'
+ENV['APPLICATION_ENV'] ||= 'test'
 
 # Loads gem
 require 'atlas'
-
-# Shared Examples
-Dir['spec/support/shared_examples/**/*.rb'].each do |file|
-  relative_file = file.sub('spec/', '')
-  require_relative(relative_file)
-end
-
-Dir['spec/**/*_shared_examples.rb'].each do |file|
-  relative_file = file.sub('spec/', '')
-  require_relative(relative_file)
-end
 
 # Spec helpers
 Dir['spec/support/helpers/**/*.rb'].each do |file|
   relative_file = file.sub('spec/', '')
   require_relative(relative_file)
+end
+
+# Configuration
+
+require 'support/factory_girl'
+
+RSpec.configure do |config|
+  puts Atlas::Spec::SharedExamples::ServiceExamples
+  config.include Atlas::Spec::SharedExamples::ControllerExamples
+  config.include Atlas::Spec::SharedExamples::ServiceExamples
 end

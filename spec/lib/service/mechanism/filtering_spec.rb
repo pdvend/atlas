@@ -1,7 +1,7 @@
 RSpec.describe Atlas::Service::Mechanism::Filtering do
   describe '.sorting_params' do
     subject { Atlas::Service::Mechanism::Filtering.filter_params(params, entity) }
-    let(:entity) { Mock::Entity[:name] }
+    let(:entity) { Atlas::Spec::Mock::Entity[:name] }
 
     context 'with valid query but attrbiute does not exist' do
       let(:params) { 'names:gte:tests' }

@@ -1,5 +1,5 @@
 RSpec.describe Atlas::API::Middleware::ContextAcquirerMiddleware, type: :middleware do
-  let(:rack_app) { Mock::RackApp[] }
+  let(:rack_app) { Atlas::Spec::Mock::RackApp[] }
 
   describe '#initialize' do
     subject { Atlas::API::Middleware::ContextAcquirerMiddleware.new(rack_app, **params) }

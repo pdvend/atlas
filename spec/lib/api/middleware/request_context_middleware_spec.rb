@@ -1,6 +1,6 @@
 RSpec.describe Atlas::API::Middleware::RequestContextMiddleware, type: :middleware do
   describe '#initialize' do
-    subject { Atlas::API::Middleware::RequestContextMiddleware.new(Mock::RackApp[]) }
+    subject { Atlas::API::Middleware::RequestContextMiddleware.new(Atlas::Spec::Mock::RackApp[]) }
 
     context 'when params are nil' do
       let(:params) { nil }
@@ -16,7 +16,7 @@ RSpec.describe Atlas::API::Middleware::RequestContextMiddleware, type: :middlewa
   end
 
   describe '#call' do
-    subject { Atlas::API::Middleware::RequestContextMiddleware.new(Mock::RackApp[]).call(env) }
+    subject { Atlas::API::Middleware::RequestContextMiddleware.new(Atlas::Spec::Mock::RackApp[]).call(env) }
 
     let(:env) { {} }
 
