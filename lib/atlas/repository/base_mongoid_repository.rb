@@ -77,7 +77,8 @@ module Atlas
       end
 
       def parse_value(field, value)
-        return value if model.fields[field.to_s].try(:options).try(:[], :type) != DateTime
+        p [field, value, field_type(field)]
+        return value if field_type(field) != DateTime
 
         begin
           DateTime.parse(value)
@@ -101,6 +102,13 @@ module Atlas
         return parsed_statement unless current
         key = statement.first == :and ? :$and : :$or
         { key => [current, parsed_statement] }
+      end
+
+      def field_type(field)
+        model
+          .fields[field.to_s]
+          .try(:options)
+          .try(:[], :type)
       end
     end
   end
