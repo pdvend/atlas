@@ -70,9 +70,20 @@ module Atlas
       end
 
       def parse_statement(statement)
-        _, field, operator, value = statement
+        _, field, operator, raw_value = statement
+        value = parse_value(field, value)
         matcher = STATEMENT_PARSERS[operator].try(:[], value) || DEFAULT_STATEMENT_PARSER[operator, value]
         { field => matcher }
+      end
+
+      def parse_value(field, value)
+        return value if model.fields[field.to_s].try(:options).try(:[], :type) != DateTime
+
+        begin
+          DateTime.parse(value)
+        rescue
+          value
+        end
       end
 
       def order_params(order_statements)
