@@ -16,21 +16,25 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: entities, success: true)
       end
 
-      def create(params)
-        params[:_id] = get_identifier(params)
+      def create(entity)
+        return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
+        params = entity.to_h
+        params[:_id] = get_identifier(entity)
         model.create(**params)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
-      rescue Mongoid::Errors::MongoidError => error
-        Atlas::Repository::RepositoryResponse.new(data: { base: error }, success: false)
+      rescue Mongoid::Errors::MongoidError => err
+        error(err)
       end
 
-      def upsert(params)
-        params[:_id] = get_identifier(params)
+      def upsert(entity)
+        return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
+        params = entity.to_h
+        params[:_id] = get_identifier(entity)
         instance = model.new(**params)
         instance.upsert
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
-      rescue Mongoid::Errors::MongoidError => error
-        Atlas::Repository::RepositoryResponse.new(data: { base: error }, success: false)
+      rescue Mongoid::Errors::MongoidError => err
+        error(err)
       end
 
       protected
@@ -50,6 +54,10 @@ module Atlas
       # :nocov:
 
       private
+
+      def error(message)
+        Atlas::Repository::RepositoryResponse.new(data: { base: message }, success: false)
+      end
 
       def apply_statements(statements)
         params = get_params(statements)
