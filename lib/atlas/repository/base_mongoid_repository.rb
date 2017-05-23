@@ -22,6 +22,8 @@ module Atlas
         params[:_id] = get_identifier(entity)
         model.create(**params)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+      rescue Mongo::Error::OperationFailure => err
+        error(err)
       rescue Mongoid::Errors::MongoidError => err
         error(err)
       end
@@ -33,6 +35,8 @@ module Atlas
         instance = model.new(**params)
         instance.upsert
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+      rescue Mongo::Error::OperationFailure => err
+        error(err)
       rescue Mongoid::Errors::MongoidError => err
         error(err)
       end
