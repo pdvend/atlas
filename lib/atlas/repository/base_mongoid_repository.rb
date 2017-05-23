@@ -17,6 +17,7 @@ module Atlas
       end
 
       def create(params)
+        params[:_id] = get_identifier(params)
         model.create(**params)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
       rescue Mongoid::Errors::MongoidError => error
@@ -24,6 +25,7 @@ module Atlas
       end
 
       def upsert(params)
+        params[:_id] = get_identifier(params)
         instance = model.new(**params)
         instance.upsert
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
@@ -40,6 +42,10 @@ module Atlas
 
       def entity
         raise 'Implement the method #model in order to use BaseMongoidRepository.'
+      end
+
+      def get_identifier(params)
+        raise 'Implement the method #get_identifier in order to use BaseMongoidRepository.'
       end
       # :nocov:
 
