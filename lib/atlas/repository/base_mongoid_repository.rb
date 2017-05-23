@@ -71,13 +71,12 @@ module Atlas
 
       def parse_statement(statement)
         _, field, operator, raw_value = statement
-        value = parse_value(field, value)
+        value = parse_value(field, raw_value)
         matcher = STATEMENT_PARSERS[operator].try(:[], value) || DEFAULT_STATEMENT_PARSER[operator, value]
         { field => matcher }
       end
 
       def parse_value(field, value)
-        p [field, value, field_type(field)]
         return value if field_type(field) != DateTime
 
         begin
