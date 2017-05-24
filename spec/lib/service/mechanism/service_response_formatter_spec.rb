@@ -13,7 +13,7 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
       it { is_expected.to be_a(Atlas::Repository::RepositoryResponse) }
       it { expect(subject.data).to be_a(Atlas::Service::Mechanism::Pagination::QueryResult) }
       it { expect(subject.data.total).to eq(2) }
-      it { expect(subject.data.per_page).to eq(limit: 3, offset: 0) }
+      it { expect(subject.data.per_page).to eq(3) }
       it { expect(subject.data.results).to be_a(Array) }
     end
 
