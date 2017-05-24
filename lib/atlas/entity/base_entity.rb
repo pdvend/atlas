@@ -1,8 +1,18 @@
 module Atlas
   module Entity
     class BaseEntity
+      extend Dry::Configurable
+      setting :messages_file
+
       def self.schema(&block)
-        schema = Dry::Validation.Schema(&block)
+        schema = Dry::Validation.Schema do
+          configure do
+            config.messages_file = BaseEntity.config.messages_file
+          end
+
+          instance_eval(&block)
+        end
+
         define_method(:model_schema, ->() { schema })
         private :model_schema
       end
