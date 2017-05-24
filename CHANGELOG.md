@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### Unreleased
+- Added Atualização de entidades no mongoid repository
+
 ### 0.1.0 [2017-05-22]
 - Versão inicial
 
