@@ -69,7 +69,7 @@ module Atlas
       def initialize(**parameters)
         @errors = IceNine.deep_freeze({})
         @parameters = parameters
-        @dirty = []
+        @dirty = parameters.keys
         @valid = true
         refresh_validation
       end
