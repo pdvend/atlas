@@ -23,6 +23,22 @@ module Atlas
         headers.merge!(response_headers(data))
       end
 
+      def render_pdf(service_response)
+        data = service_response.data
+        code = service_response.code
+        self.body = data
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/pdf'
+      end
+
+      def render_xml(service_response)
+        data = service_response.data
+        code = service_response.code
+        self.body = data
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/xml'
+      end
+
       private
 
       def response_body(service_response)
