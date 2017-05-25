@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-configurable'
   spec.add_dependency 'dry-validation'
   spec.add_dependency 'ice_nine'
+  spec.add_dependency 'json-serializer'
   spec.add_dependency 'rack'
   spec.add_dependency 'hanami-controller'
   spec.add_dependency 'mongoid', '~> 6.1.0'

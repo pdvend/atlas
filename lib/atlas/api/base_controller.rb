@@ -1,6 +1,7 @@
 module Atlas
   module API
     module BaseController
+      extend Dry::Configurable
       def self.included(base)
         base.class_eval do
           include Hanami::Action
@@ -8,6 +9,7 @@ module Atlas
           use Rack::Deflater
         end
       end
+      setting :serializers_namespace
 
       ERROR_CODE_TO_HTTP_STATUS = {
         Atlas::Enum::ErrorCodes::NONE => 200,
@@ -44,13 +46,15 @@ module Atlas
       def response_body(service_response)
         data = service_response.data
         code = service_response.code
+        entity = data.class.name.split('::').last
+        serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
 
         if data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
-          data.results
+          serializer.new(data.results)
         elsif !service_response.success?
           { code: code, errors: data }
         else
-          data
+          serializer.new(data)
         end
       end
 
