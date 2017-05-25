@@ -61,7 +61,7 @@ module Atlas
       end
 
       def entity
-        raise 'Implement the method #model in order to use BaseMongoidRepository.'
+        raise 'Implement the method #entity in order to use BaseMongoidRepository.'
       end
 
       def get_identifier(params)

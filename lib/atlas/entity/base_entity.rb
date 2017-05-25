@@ -57,6 +57,7 @@ module Atlas
       def self.define_writer_method(name)
         define_method("#{name}=") do |value|
           @parameters[name] = value
+          @dirty << name unless @dirty.include?(name)
           refresh_validation
           value
         end
@@ -68,6 +69,7 @@ module Atlas
       def initialize(**parameters)
         @errors = IceNine.deep_freeze({})
         @parameters = parameters
+        @dirty = []
         @valid = true
         refresh_validation
       end
@@ -76,8 +78,8 @@ module Atlas
         @valid
       end
 
-      def to_hash
-        keys = internal_parameters
+      def to_hash(dirty = false)
+        keys = internal_parameters & (dirty ? @dirty : internal_parameters)
         values = @parameters.values_at(*keys)
         keys.zip(values).to_h
       end
@@ -85,6 +87,10 @@ module Atlas
 
       def to_json(*args)
         to_hash.to_json(*args)
+      end
+
+      def clean!
+        @dirty = []
       end
 
       private
