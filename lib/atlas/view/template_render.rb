@@ -1,8 +1,8 @@
 module Atlas
-  module Util
-    class TemplateRender < OpenStruct
+  module View
+    class TemplateRenderer < OpenStruct
       def self.from_hash(template, params)
-        Atlas::Util::TemplateRender.new(params).render(template)
+        Atlas::View::TemplateRenderer.new(params).render(template)
       end
 
       def render(template)
