@@ -5,6 +5,7 @@
 ### Unreleased
 - Added Atualização de entidades no mongoid repository
 - Added Arquivos de renderização de pdf
+- Added Atributos sujos para a base entity
 
 ### 0.1.0 [2017-05-22]
 - Versão inicial

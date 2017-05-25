@@ -30,7 +30,7 @@ module Atlas
 
       def upsert(entity)
         return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
-        params = entity.to_h
+        params = entity.to_h(true)
         params[:_id] = get_identifier(entity)
         instance = model.new(**params)
         instance.upsert
@@ -61,7 +61,7 @@ module Atlas
       end
 
       def entity
-        raise 'Implement the method #model in order to use BaseMongoidRepository.'
+        raise 'Implement the method #entity in order to use BaseMongoidRepository.'
       end
 
       def get_identifier(params)
