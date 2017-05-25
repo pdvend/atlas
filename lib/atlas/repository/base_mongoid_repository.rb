@@ -30,10 +30,9 @@ module Atlas
 
       def upsert(entity)
         return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
-        params = entity.to_h(true)
-        params[:_id] = get_identifier(entity)
-        instance = model.new(**params)
-        instance.upsert
+        identifier = get_identifier(entity)
+        return create(entity) unless model.where(_id: identifier).exists?
+        model.find(identifier).update_attributes(entity.to_h(true))
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
       rescue Mongo::Error::OperationFailure => err
         error(err)
