@@ -25,30 +25,52 @@ module Atlas
         headers.merge!(response_headers(data))
       end
 
+      def render_pdf(service_response)
+        data = service_response.data
+        code = service_response.code
+        self.body = data
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/pdf'
+      end
+
+      def render_xml(service_response)
+        data = service_response.data
+        code = service_response.code
+        self.body = data
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/xml'
+      end
+
       private
 
       def response_body(service_response)
-        data = service_response.data
         code = service_response.code
-        entity = entity_by_response(data)
-        serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
+        entity = entity_by_response(service_response.data)
 
-        if data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
-          serializer.new(data.results)
+        if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
+          data = service_response.data.results
         elsif !service_response.success?
-          { code: code, errors: data }
+          data = { code: code, errors: service_response.data }
         else
-          serializer.new(data)
+          data = service_response.data
         end
+        serialize_data(entity, data)
       end
 
       def entity_by_response(response_data)
         if response_data.respond_to?(:results)
-          return Hash if response_data.results.empty?
+          return [] if response_data.results.empty?
           response_data.results.first.class.name.split('::').last
         else
           response_data.class.name.split('::').last
         end
+      end
+
+      def serialize_data(entity, data)
+        serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
+        serializer.new(data)
+      rescue NameError
+        data
       end
 
       def response_headers(data)

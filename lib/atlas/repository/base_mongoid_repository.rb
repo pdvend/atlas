@@ -28,18 +28,6 @@ module Atlas
         error(err)
       end
 
-      def upsert(entity)
-        return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
-        identifier = get_identifier(entity)
-        return create(entity) unless model.where(_id: identifier).exists?
-        model.find(identifier).update_attributes(entity.to_h(true))
-        Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
-      rescue Mongo::Error::OperationFailure => err
-        error(err)
-      rescue Mongoid::Errors::MongoidError => err
-        error(err)
-      end
-
       def update(params)
         partial_entity = entity.new(**params)
         identifier = get_identifier(partial_entity)
