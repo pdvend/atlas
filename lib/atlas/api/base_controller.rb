@@ -45,8 +45,6 @@ module Atlas
 
       def response_body(service_response)
         code = service_response.code
-        entity = entity_by_response(service_response.data)
-
         if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           data = service_response.data.results
         elsif !service_response.success?
@@ -54,23 +52,16 @@ module Atlas
         else
           data = service_response.data
         end
-        serialize_data(entity, data)
+        serialize_data(data)
       end
 
-      def entity_by_response(response_data)
-        if response_data.respond_to?(:results)
-          return [] if response_data.results.empty?
-          response_data.results.first.class.name.split('::').last
-        else
-          response_data.class.name.split('::').last
-        end
-      end
-
-      def serialize_data(entity, data)
+      def serialize_data(data)
+        return API::Serializer::DummySerializer.new(data) if data.empty? || data.is_a?(Hash)
+        entity = data.is_a?(Array) ? data.first.class.name.split('::').last : data.class.name.split('::').last
         serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
         serializer.new(data)
       rescue NameError
-        data
+        API::Serializer::DummySerializer.new(data)
       end
 
       def response_headers(data)
