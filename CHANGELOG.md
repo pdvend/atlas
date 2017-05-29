@@ -7,6 +7,7 @@
 - Added Arquivos de renderização de pdf
 - Added Atributos sujos para a base entity
 - Added Suporte a serializer
+- Added Suporte a I18N
 
 ### 0.1.0 [2017-05-22]
 - Versão inicial
