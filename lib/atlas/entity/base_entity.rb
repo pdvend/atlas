@@ -1,13 +1,10 @@
 module Atlas
   module Entity
     class BaseEntity
-      extend Dry::Configurable
-      setting :messages_file
-
       def self.schema(&block)
         schema = Dry::Validation.Schema do
           configure do
-            config.messages_file = BaseEntity.config.messages_file
+            config.messages = :i18n
           end
 
           instance_eval(&block)
