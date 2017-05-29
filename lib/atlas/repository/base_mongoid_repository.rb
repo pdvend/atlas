@@ -40,6 +40,18 @@ module Atlas
         error(err)
       end
 
+      def destroy(params)
+        partial_entity = entity.new(**params)
+        identifier = get_identifier(partial_entity)
+        instance = model.find(identifier)
+        instance.destroy
+        Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+      rescue Mongo::Error::OperationFailure => err
+        error(err)
+      rescue Mongoid::Errors::MongoidError => err
+        error(err)
+      end
+
       protected
 
       # :nocov:
