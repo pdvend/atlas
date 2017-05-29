@@ -21,6 +21,8 @@ module Atlas
           it_behaves_like 'a service'
           it { is_expected.to_not be_success }
           it { expect(subject.data).to be_a(Hash) }
+          it { expect(subject.message).to  be_a(String) }
+          it { expect(subject.message).to_not be_empty }
           it { expect(subject.code).to_not eq(Atlas::Enum::ErrorCodes::NONE) }
         end
 

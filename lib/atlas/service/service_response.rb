@@ -1,11 +1,12 @@
 module Atlas
   module Service
     class ServiceResponse < Atlas::Entity::BaseEntity
-      parameters :data, :code
+      parameters :data, :code, :message
 
       schema do
         required(:data)
         required(:code).filled(:int?)
+        optional(:message)
       end
 
       def success?

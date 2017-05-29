@@ -16,8 +16,8 @@ module Atlas
           data = event.try(:[], :data)
 
           unless valid_params(context, type, data)
-            errors = { base: ['Invalid parameters received'] }
-            return ServiceResponse.new(data: errors, code: Enum::ErrorCodes::PARAMETER_ERROR)
+            message = 'Invalid parameters received'
+            return ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::PARAMETER_ERROR)
           end
 
           @adapter.log(type, data.merge(context.to_event))

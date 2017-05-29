@@ -29,16 +29,19 @@ FactoryGirl.define do
     trait :success do
       data { Object.new }
       code Atlas::Enum::ErrorCodes::NONE
+      message nil
     end
 
     trait :failure do
-      data(base: ['fake error'])
+      data({})
       code Atlas::Enum::ErrorCodes::INTERNAL
+      message 'Fake Error'
     end
 
     trait :unauthorized do
-      data(base: ['unauthorized'])
+      data({})
       code Atlas::Enum::ErrorCodes::PERMISSION_ERROR
+      message 'Unauthorized'
     end
   end
 end

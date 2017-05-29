@@ -11,6 +11,8 @@ module Atlas
       end
       setting :serializers_namespace
 
+      MODULE_SEPARATOR = '::'.freeze
+
       ERROR_CODE_TO_HTTP_STATUS = {
         Atlas::Enum::ErrorCodes::NONE => 200,
         Atlas::Enum::ErrorCodes::AUTHENTICATION_ERROR => 401,
@@ -48,7 +50,7 @@ module Atlas
         if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           data = service_response.data.results
         elsif !service_response.success?
-          data = { code: code, errors: service_response.data }
+          data = { code: code, message: service_response.message, errors: service_response.data }
         else
           data = service_response.data
         end
@@ -59,7 +61,7 @@ module Atlas
       def serialize_data(data)
         return API::Serializer::DummySerializer if data.empty? || data.is_a?(Hash)
         return serialize_data(data.first) if data.is_a?(Array)
-        entity = data.class.name.split('::').last
+        entity = data.class.name.split(MODULE_SEPARATOR).last
         serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
         serializer
       rescue NameError
