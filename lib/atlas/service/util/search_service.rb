@@ -2,11 +2,7 @@ module Atlas
   module Service
     module Util
       module SearchService
-        def self.included(base)
-          base.class_eval do
-            include Atlas::Util::I18nScope
-          end
-        end
+        I18N_SCOPE = [:atlas, :service, :util, :search_service].freeze
 
         protected
 
@@ -20,7 +16,7 @@ module Atlas
         end
 
         def result_from_failure(_response)
-          message = I18n.t(:repository_failure, scope: i18n_scope)
+          message = I18n.t(:repository_failure, scope: I18N_SCOPE)
           Atlas::Service::ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::INTERNAL)
         end
       end
