@@ -2,6 +2,8 @@ module Atlas
   module Service
     module Util
       module SearchService
+        I18N_SCOPE = [:atlas, :service, :util, :search_service].freeze
+
         protected
 
         def format(params, &block)
@@ -14,11 +16,8 @@ module Atlas
         end
 
         def result_from_failure(_response)
-          Atlas::Service::ServiceResponse.new(
-            message: 'Internal Error',
-            data: {},
-            code: Enum::ErrorCodes::INTERNAL
-          )
+          message = I18n.t(:repository_failure, scope: I18N_SCOPE)
+          Atlas::Service::ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::INTERNAL)
         end
       end
     end

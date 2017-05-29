@@ -3,6 +3,8 @@ module Atlas
     module Telemetry
       module Adapter
         class FirehoseAdapter
+          include Atlas::Util::I18nScope
+
           # TODO: Receive this constants by parameter
           REGION_NAME = ENV['AWS_FIREHOSE_REGION_NAME']
           TELEMETRY_STREAM_PREFIX = ENV['AWS_FIREHOSE_TELEMETRY_STREAM_PREFIX']
@@ -19,7 +21,8 @@ module Atlas
 
             ServiceResponse.new(data: nil, code: Enum::ErrorCodes::NONE)
           rescue Aws::Firehose::Errors::ResourceNotFoundException
-            ServiceResponse.new(message: 'Service Unabailable', data: {}, code: Enum::ErrorCodes::INTERNAL)
+            message = I18n.t(:service_unavailable, scope: i18n_scope)
+            ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::INTERNAL)
           end
         end
       end

@@ -1,0 +1,12 @@
+pt_BR:
+  atlas:
+    service:
+      telemetry:
+        emit:
+          invalid_parameters: "Parâmetros inválidos recebidos para emitir um evento de telemetria"
+        adapter:
+          firehose_adapter:
+            service_unavailable: "AWS Firehose não está disponível, não foi possível emitir o evento"
+      util:
+        search_service:
+          repository_failure: "Não foi possível acessar os dados"

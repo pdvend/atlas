@@ -2,6 +2,8 @@ module Atlas
   module Service
     module Telemetry
       class Emit
+        include Atlas::Util::I18nScope
+
         def initialize
           # TODO: Receive adapter by configuration
           @adapter = if Atlas::Util::Environment.development?
@@ -16,7 +18,7 @@ module Atlas
           data = event.try(:[], :data)
 
           unless valid_params(context, type, data)
-            message = 'Invalid parameters received'
+            message = I18n.t(:invalid_parameters, scope: i18n_scope)
             return ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::PARAMETER_ERROR)
           end
 
