@@ -52,16 +52,18 @@ module Atlas
         else
           data = service_response.data
         end
-        serialize_data(data)
+        serializer = serialize_data(data)
+        serializer.new(data)
       end
 
       def serialize_data(data)
-        return API::Serializer::DummySerializer.new(data) if data.empty? || data.is_a?(Hash)
-        entity = data.is_a?(Array) ? data.first.class.name.split('::').last : data.class.name.split('::').last
+        return API::Serializer::DummySerializer if data.empty? || data.is_a?(Hash)
+        return serialize_data(data.first) if data.is_a?(Array)
+        entity = data.class.name.split('::').last
         serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
-        serializer.new(data)
+        serializer
       rescue NameError
-        API::Serializer::DummySerializer.new(data)
+        API::Serializer::DummySerializer
       end
 
       def response_headers(data)
