@@ -11,4 +11,7 @@ require 'rack'
 module Atlas
   ActiveSupport::Dependencies.autoload_paths ||= []
   ActiveSupport::Dependencies.autoload_paths.push(File.dirname(__FILE__))
+
+  I18n.load_path ||= []
+  I18n.load_path += Dir[File.join(File.dirname(__FILE__), '../locale/*.yml')]
 end

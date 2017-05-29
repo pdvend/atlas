@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'aws-sdk', '~> 2'
   spec.add_dependency 'dry-configurable'
   spec.add_dependency 'dry-validation'
+  spec.add_dependency 'i18n'
   spec.add_dependency 'ice_nine'
   spec.add_dependency 'json-serializer'
   spec.add_dependency 'rack'
