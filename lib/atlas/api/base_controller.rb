@@ -52,7 +52,7 @@ module Atlas
         if data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           serializer.new(data.results)
         elsif !service_response.success?
-          { code: code, message: data[:base], errors: data.except(:base) }
+          { code: code, message: service_response.message, errors: data }
         else
           serializer.new(data)
         end
