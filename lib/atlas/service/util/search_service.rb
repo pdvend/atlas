@@ -15,7 +15,8 @@ module Atlas
 
         def result_from_failure(_response)
           Atlas::Service::ServiceResponse.new(
-            data: { base: 'Internal Error' },
+            message: 'Internal Error',
+            data: {},
             code: Enum::ErrorCodes::INTERNAL
           )
         end

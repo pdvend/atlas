@@ -19,8 +19,7 @@ module Atlas
 
             ServiceResponse.new(data: nil, code: Enum::ErrorCodes::NONE)
           rescue Aws::Firehose::Errors::ResourceNotFoundException
-            data = { base: ['Service Unavailable'] }
-            ServiceResponse.new(data: data, code: Enum::ErrorCodes::INTERNAL)
+            ServiceResponse.new(message: 'Service Unabailable', data: {}, code: Enum::ErrorCodes::INTERNAL)
           end
         end
       end
