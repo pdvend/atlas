@@ -3,7 +3,8 @@ module Atlas
     class BaseMongoidRepository
       STATEMENT_PARSERS = {
         eq: ->(value) { value },
-        like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') }
+        like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') },
+        not: ->(value) { { '$ne'.to_sym => value } }
       }.freeze
       private_constant :STATEMENT_PARSERS
 
