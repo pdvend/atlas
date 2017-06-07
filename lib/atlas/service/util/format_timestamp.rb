@@ -5,7 +5,7 @@ module Atlas
         protected
 
         def timestamp_param(timestamp, default = Time.now.utc)
-          timestamp.try(:to_time) || default
+          timestamp.try(:to_time).try(:utc) || default
         end
       end
     end
