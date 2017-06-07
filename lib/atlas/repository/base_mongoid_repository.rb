@@ -17,6 +17,13 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: entities, success: true)
       end
 
+      def find_paginated(statements)
+        result = apply_statements(statements)
+        entities = result.to_a.map(&method(:model_to_entity))
+        data = { response: entities, total: result.count }
+        response  = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+      end
+
       def create(entity)
         return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
         params = entity.to_h
