@@ -3,7 +3,7 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
     let(:entity) { Atlas::Spec::Mock::Entity[:name] }
     let(:partner_params) { { page: 1, count: 3 } }
     let(:page_limit) { 25 }
-    let(:data) { [1, 2] }
+    let(:data) { {total: 2, response:  [1, 2] } }
     subject { Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(format_params) { params } }
 
     context 'when params is a repository_response' do

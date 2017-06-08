@@ -13,7 +13,7 @@ module Atlas
 
         def parse_success_result(results, filter_params)
           result_data = results.data
-          query_result = Pagination::QueryResult.new(result_data.count, filter_params[:pagination][:limit], result_data)
+          query_result = Pagination::QueryResult.new(result_data[:total], filter_params[:pagination][:limit], result_data[:response])
           data = IceNine.deep_freeze(query_result)
           Atlas::Repository::RepositoryResponse.new(data: data, success: true)
         end
