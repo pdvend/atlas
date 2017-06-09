@@ -6,10 +6,10 @@ module Atlas
           @responses = responses || {}
         end
 
-        def method_missing(name, *)
+        def method_missing(name, *args, &block)
           return super unless @responses.key?(name)
           res = @responses[name]
-          res.is_a?(Proc) ? res.call : res
+          res.is_a?(Proc) ? res.call(*args, &block) : res
         end
 
         def respond_to_missing?(name)
