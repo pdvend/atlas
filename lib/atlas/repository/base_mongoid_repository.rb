@@ -4,7 +4,8 @@ module Atlas
       STATEMENT_PARSERS = {
         eq: ->(value) { value },
         like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') },
-        not: ->(value) { { '$ne'.to_sym => value } }
+        not: ->(value) { { '$ne'.to_sym => value } },
+        include: ->(value) { value }
       }.freeze
       private_constant :STATEMENT_PARSERS
 
@@ -22,6 +23,18 @@ module Atlas
         entities = result.to_a.map(&method(:model_to_entity))
         data = { response: entities, total: result.count }
         response  = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+      end
+
+      def find_in_batches(batch_size, statements)
+        query = apply_statements(statements)
+        offset, limit = 0, batch_size
+
+        loop do
+          models = query.offset(offset).limit(batch_size).to_a
+          break if models.empty?
+          yield models.map(&method(:model_to_entity))
+          offset += batch_size
+        end
       end
 
       def create(entity)
