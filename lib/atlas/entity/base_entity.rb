@@ -84,6 +84,8 @@ module Atlas
         to_hash.to_json(*args)
       end
 
+      alias :identifier :hash
+
       private
 
       def refresh_validation

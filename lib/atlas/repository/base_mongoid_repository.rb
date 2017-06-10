@@ -40,7 +40,7 @@ module Atlas
       def create(entity)
         return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
         params = entity.to_h
-        params[:_id] = get_identifier(entity)
+        params[:_id] = entity.identifier
         model.create(**params)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
       rescue Mongo::Error::OperationFailure => err
@@ -51,7 +51,7 @@ module Atlas
 
       def update(params)
         partial_entity = entity.new(**params)
-        identifier = get_identifier(partial_entity)
+        identifier = partial_entity.identifier
         instance = model.find(identifier)
         instance.update_attributes(**params)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
@@ -63,7 +63,7 @@ module Atlas
 
       def destroy(params)
         partial_entity = entity.new(**params)
-        identifier = get_identifier(partial_entity)
+        identifier = partial_entity.identifier
         instance = model.find(identifier)
         instance.destroy
         Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
@@ -82,10 +82,6 @@ module Atlas
 
       def entity
         raise 'Implement the method #entity in order to use BaseMongoidRepository.'
-      end
-
-      def get_identifier(params)
-        raise 'Implement the method #get_identifier in order to use BaseMongoidRepository.'
       end
       # :nocov:
 
