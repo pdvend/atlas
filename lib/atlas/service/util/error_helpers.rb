@@ -10,7 +10,7 @@ module Atlas
 
         protected
 
-        def invalid_entity_response(entity, message = nil)
+        def invalid_entity_response(entity)
           failure_response(
             key: :invalid_entity,
             code: Enum::ErrorCodes::VALIDATION,
