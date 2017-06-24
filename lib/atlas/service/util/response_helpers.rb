@@ -1,7 +1,7 @@
 module Atlas
   module Service
     module Util
-      module ErrorHelpers
+      module ResponseHelpers
         def self.included(base)
           base.class_eval do
             include Atlas::Util::I18nScope
@@ -9,6 +9,10 @@ module Atlas
         end
 
         protected
+
+        def successful_response(data)
+          Atlas::Service::ServiceResponse.new(data: data, code: Enum::ErrorCodes::NONE)
+        end
 
         def invalid_entity_response(entity)
           failure_response(
