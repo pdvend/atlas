@@ -21,7 +21,7 @@ module Atlas
         def failure_response(key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {})
           Atlas::Service::ServiceResponse.new(
             message: I18n.t(key, scope: i18n_scope),
-            data: entity.errors,
+            data: errors,
             code: Enum::ErrorCodes::VALIDATION
           )
         end
