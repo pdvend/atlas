@@ -13,9 +13,10 @@ module Atlas
 
 
       def execute(context, params, options = {}, &block)
-        evaluation_method = EVALUATION_METHODS[evaluation]
+        opts = DEFAULT_OPTIONS.merge(options)
+        evaluation_method = EVALUATION_METHODS[opts[:evaluation]]
         return VALID_PARAMS unless evaluation_method
-        method(evaluation_method).call(context, params, DEFAULT_OPTIONS.merge(options), &block)
+        method(evaluation_method).call(context, params, opts, &block)
       end
 
       private
