@@ -18,8 +18,8 @@ module Atlas
         yield(context, params) ? VALID_PARAMS : invalid_params({})
       end
 
-      def schema_evaluate(context, params, &block)
-        result = schema_for(block).call(@parameters)
+      def schema_evaluate(_context, params, &block)
+        result = schema_for(block).call(params)
         result.success? ? VALID_PARAMS : invalid_params(result.errors)
       end
 
