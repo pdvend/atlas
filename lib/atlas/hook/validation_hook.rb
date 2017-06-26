@@ -1,14 +1,14 @@
 module Atlas
   module Hook
     class ValidationHook
-      include Atlas::Util::I18nScope
+      extend Atlas::Util::I18nScope
 
       VALID_PARAMS = Atlas::Service::ServiceResponse.new(data: {}, code: Enum::ErrorCodes::NONE).freeze
       EVALUATION_METHODS = { raw: :raw_evaluate, schema: :schema_evaluate }.freeze
       DEFAULT_OPTIONS = {
-        evaluation: :raw,
+        evaluation: :schema,
         code: Enum::ErrorCodes::VALIDATION,
-        message_key: :invalid_params
+        message: I18n.t(:invalid_params, scope: i18n_scope)
       }
 
 
@@ -39,11 +39,7 @@ module Atlas
       end
 
       def invalid_params(errors, options)
-        Atlas::Service::ServiceResponse.new(
-          message: I18n.t(options[:message_key], scope: i18n_scope),
-          data: errors,
-          code: options[:code],
-        )
+        Atlas::Service::ServiceResponse.new(message: options[:message], data: errors, code: options[:code])
       end
     end
   end
