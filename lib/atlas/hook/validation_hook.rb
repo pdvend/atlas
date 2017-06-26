@@ -26,7 +26,7 @@ module Atlas
       end
 
       def schema_evaluate(_context, params, options, &block)
-        return invalid_params({}) unless params.is_a?(Hash)
+        return invalid_params({}, options) unless params.is_a?(Hash)
         result = schema_for(block).call(params)
         result.success? ? VALID_PARAMS : invalid_params(result.errors, options)
       end
