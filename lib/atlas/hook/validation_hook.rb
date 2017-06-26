@@ -5,23 +5,29 @@ module Atlas
 
       VALID_PARAMS = Atlas::Service::ServiceResponse.new(data: {}, code: Enum::ErrorCodes::NONE).freeze
       EVALUATION_METHODS = { raw: :raw_evaluate, schema: :schema_evaluate }.freeze
+      DEFAULT_OPTIONS = {
+        evaluation: :raw,
+        code: Enum::ErrorCodes::VALIDATION,
+        message_key: :invalid_params
+      }
 
-      def execute(context, params, evaluation_type = :raw, &block)
-        evaluation_method = EVALUATION_METHODS[evaluation_type]
+
+      def execute(context, params, options = {}, &block)
+        evaluation_method = EVALUATION_METHODS[evaluation]
         return VALID_PARAMS unless evaluation_method
-        method(evaluation_method).call(context, params, &block)
+        method(evaluation_method).call(context, params, DEFAULT_OPTIONS.merge(options), &block)
       end
 
       private
 
-      def raw_evaluate(context, params)
-        yield(context, params) ? VALID_PARAMS : invalid_params({})
+      def raw_evaluate(context, params, options)
+        yield(context, params) ? VALID_PARAMS : invalid_params({}, options)
       end
 
-      def schema_evaluate(_context, params, &block)
+      def schema_evaluate(_context, params, options, &block)
         return invalid_params({}) unless params.is_a?(Hash)
         result = schema_for(block).call(params)
-        result.success? ? VALID_PARAMS : invalid_params(result.errors)
+        result.success? ? VALID_PARAMS : invalid_params(result.errors, options)
       end
 
       def schema_for(block)
@@ -31,11 +37,11 @@ module Atlas
         end
       end
 
-      def invalid_params(errors)
+      def invalid_params(errors, options)
         Atlas::Service::ServiceResponse.new(
-          message: I18n.t(:invalid_params, scope: i18n_scope),
+          message: I18n.t(options[:message_key], scope: i18n_scope),
           data: errors,
-          code: Enum::ErrorCodes::VALIDATION,
+          code: options[:code],
         )
       end
     end
