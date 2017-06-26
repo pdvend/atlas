@@ -26,7 +26,7 @@ module Atlas
           Atlas::Service::ServiceResponse.new(
             message: I18n.t(key, scope: i18n_scope),
             data: errors,
-            code: Enum::ErrorCodes::VALIDATION
+            code: code
           )
         end
       end
