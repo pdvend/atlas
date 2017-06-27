@@ -74,7 +74,7 @@ module Atlas
       end
 
       def to_hash
-        keys = internal_parameters
+        keys = defined?(@@dynamic_attributes) ? @parameters.keys : internal_parameters
         values = @parameters.values_at(*keys)
         keys.zip(values).to_h
       end
@@ -85,6 +85,12 @@ module Atlas
       end
 
       alias :identifier :hash
+
+      protected
+
+      def self.dynamic_attributes
+        @@dynamic_attributes = true
+      end
 
       private
 
