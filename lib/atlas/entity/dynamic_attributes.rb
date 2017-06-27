@@ -1,6 +1,6 @@
 module Atlas
   module Entity
-    class DynamicAttributes
+    module DynamicAttributes
       def dynamic_attributes?
         true
       end
