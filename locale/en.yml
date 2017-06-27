@@ -1,5 +1,8 @@
 en:
   atlas:
+    hook:
+      validation_hook:
+        invalid_params: "Invalid parameters received to execute this action"
     service:
       telemetry:
         emit:
