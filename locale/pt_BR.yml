@@ -1,5 +1,8 @@
 pt_BR:
   atlas:
+    hook:
+      validation_hook:
+        invalid_params: "Parâmetros inválidos recebidos para executar esta ação"
     service:
       telemetry:
         emit:
