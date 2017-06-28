@@ -19,7 +19,7 @@ SimpleCov.start do
 end
 
 # Set env to test
-ENV['account_ENV'] ||= 'test'
+ENV['APPLICATION_ENV'] ||= 'test'
 
 # Loads gem
 require 'atlas'
