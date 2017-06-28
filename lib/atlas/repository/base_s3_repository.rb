@@ -38,7 +38,7 @@ module Atlas
       end
 
       def valid_object_identifier?(uuid)
-        uuid.is_a?(String) && !uuid.empty?
+        uuid.is_a?(String) && uuid.present?
       end
 
       def file_content(uuid)
