@@ -3,10 +3,7 @@ module Atlas
     class BaseEntity
       def self.schema(&block)
         schema = Dry::Validation.Schema do
-          configure do
-            config.messages = :i18n
-          end
-
+          configure { config.messages = :i18n }
           instance_eval(&block)
         end
 
@@ -29,48 +26,27 @@ module Atlas
       private_class_method :define_internal_methods
 
       def self.undef_internal_methods
-        if method_defined?(:internal_parameters)
-          undef_method(:internal_parameters)
-        end
-
+        undef_method(:internal_parameters) if method_defined?(:internal_parameters)
         return unless singleton_class.send(:method_defined?, :instance_parameters)
         singleton_class.send(:undef_method, :instance_parameters)
       end
       private_class_method :undef_internal_methods
 
       def self.define_accessor_methods(name)
-        define_reader_method(name)
-        define_writer_method(name)
+        define_method(name) { self[name] }
+        define_method("#{name}=") { |value| self[name] = value }
       end
       private_class_method :define_accessor_methods
 
-      def self.define_reader_method(name)
-        define_method(name) do
-          @parameters[name]
-        end
-      end
-      private_class_method :define_reader_method
-
-      def self.define_writer_method(name)
-        define_method("#{name}=") do |value|
-          @parameters[name] = value
-          refresh_validation
-          value
-        end
-      end
-      private_class_method :define_writer_method
-
-      attr_reader :errors
+      attr_reader :errors, :valid
+      alias :identifier :hash
+      alias :valid? :valid
 
       def initialize(**parameters)
         @errors = IceNine.deep_freeze({})
         @parameters = parameters
         @valid = true
         refresh_validation
-      end
-
-      def valid?
-        @valid
       end
 
       def to_hash
@@ -84,7 +60,15 @@ module Atlas
         to_hash.to_json(*args)
       end
 
-      alias :identifier :hash
+      def [](key)
+        @parameters[key]
+      end
+
+      def []=(key, value)
+        @parameters[key] = value
+        refresh_validation
+        value
+      end
 
       protected
 
