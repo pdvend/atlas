@@ -3,9 +3,13 @@ require 'active_support/core_ext/object/try'
 require 'active_support/time_with_zone'
 require 'aws-sdk'
 require 'dry-validation'
+require 'dry-configurable'
 require 'hanami-controller'
 require 'ice_nine'
+require 'i18n'
+require 'json_serializer'
 require 'mongoid'
+require 'pdfkit'
 require 'rack'
 
 module Atlas

@@ -59,7 +59,7 @@ module Atlas
       end
 
       def serialize_data(data)
-        return API::Serializer::DummySerializer if data.empty? || data.is_a?(Hash)
+        return API::Serializer::DummySerializer if data.blank? || data.is_a?(Hash)
         return serialize_data(data.first) if data.is_a?(Array)
         entity = data.class.name.split(MODULE_SEPARATOR).last
         serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
