@@ -11,7 +11,7 @@ require 'json_serializer'
 require 'mongoid'
 require 'pdfkit'
 require 'rack'
-require 'wkhtmltopdf-binary'
+require 'wkhtmltopdf-binary-edge'
 
 module Atlas
   ActiveSupport::Dependencies.autoload_paths ||= []
