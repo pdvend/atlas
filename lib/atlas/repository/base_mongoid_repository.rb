@@ -25,6 +25,8 @@ module Atlas
         response  = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
+      # DEPRECATED
+      # Prefer find_in_batches_enum
       def find_in_batches(batch_size, statements)
         query = apply_statements(statements)
         offset, limit = 0, batch_size
@@ -34,6 +36,18 @@ module Atlas
           break if models.empty?
           yield models.map(&method(:model_to_entity))
           offset += batch_size
+        end
+      end
+
+      def find_in_batches_enum(batch_size, statements)
+        query = apply_statements(**statements, pagination: { offset: 0, limit: 1 })
+
+        Enumerator.new do |yielder|
+          query
+            .each
+            .map(&method(:model_to_entity))
+            .each(&yielder.method(:<<))
+          # TODO: Catch errors
         end
       end
 
@@ -106,8 +120,8 @@ module Atlas
         {
           offset: pagination[:offset],
           limit: pagination[:limit],
-          order: order_params(statements[:sorting]),
-          where: filter_params(statements[:filtering])
+          order: order_params(statements[:sorting] || []),
+          where: filter_params(statements[:filtering] || [])
         }
       end
 
