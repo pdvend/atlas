@@ -7,7 +7,7 @@ module Atlas
 
       def write(data)
         return if data.empty?
-        yielder << data
+        @yielder << data
       end
 
       def set_encoding(*)

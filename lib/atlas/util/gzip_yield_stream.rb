@@ -8,6 +8,7 @@ module Atlas
       def write(data)
         return if data.empty?
         @gzip.write(data)
+        @gzip.flush
       end
 
       def set_encoding(*)
