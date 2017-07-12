@@ -8,7 +8,6 @@ module Atlas
         base.class_eval do
           include Hanami::Action
           extend Atlas::API::Context::DSL
-          use Rack::Deflater
         end
       end
 
@@ -26,6 +25,13 @@ module Atlas
         self.body = response_body(service_response).to_json
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         headers.merge!(response_headers(data))
+      end
+
+      def render_stream(service_response)
+        data = service_response.data
+        code = service_response.code
+        self.body = response_stream_body(service_response)
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
       end
 
       def render_pdf(service_response)
@@ -46,8 +52,18 @@ module Atlas
 
       private
 
+      def response_stream_body(service_response)
+        data = service_response.data
+        return data if data.is_a?(Enumerator)
+        headers.merge!(response_headers(data))
+        Enumerator.new do |yielder|
+          yielder << response_body(service_response).to_json
+        end
+      end
+
       def response_body(service_response)
         code = service_response.code
+
         if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           data = service_response.data.results
         elsif !service_response.success?
