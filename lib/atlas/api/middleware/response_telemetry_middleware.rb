@@ -24,6 +24,8 @@ module Atlas
             body.length
           when Rack::Deflater::GzipStream
             gzip_stream_length(body)
+          when Rack::Chunked::Body
+            -1 # Unknown
           else
             body.lazy.map(&:bytesize).reduce(&:+)
           end
