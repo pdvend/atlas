@@ -2,6 +2,8 @@ module Atlas
   module API
     module BaseController
       extend Dry::Configurable
+      setting :serializers_namespace
+
       def self.included(base)
         base.class_eval do
           include Hanami::Action
@@ -9,7 +11,6 @@ module Atlas
           use Rack::Deflater
         end
       end
-      setting :serializers_namespace
 
       MODULE_SEPARATOR = '::'.freeze
 
@@ -54,16 +55,19 @@ module Atlas
         else
           data = service_response.data
         end
-        serializer = serialize_data(data)
-        serializer.new(data)
+
+        serializer_instance_to(data)
       end
 
-      def serialize_data(data)
+      def serializer_instance_to(data)
+        serializer_class_to(data).new(data)
+      end
+
+      def serializer_class_to(data)
         return API::Serializer::DummySerializer if data.blank? || data.is_a?(Hash)
-        return serialize_data(data.first) if data.is_a?(Array)
+        return serializer_class_to(data.first) if data.is_a?(Array)
         entity = data.class.name.split(MODULE_SEPARATOR).last
-        serializer = BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
-        serializer
+        BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
       rescue NameError
         API::Serializer::DummySerializer
       end
