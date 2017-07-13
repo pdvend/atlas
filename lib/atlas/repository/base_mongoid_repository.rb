@@ -39,7 +39,7 @@ module Atlas
         end
       end
 
-      def find_in_batches_enum(batch_size, statements)
+      def find_in_batches_enum(statements)
         query = apply_statements(**statements, pagination: { offset: 0, limit: 1 })
 
         Enumerator.new do |yielder|
