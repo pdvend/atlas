@@ -6,11 +6,19 @@ module Atlas
       module_function
 
       def production?
-        @env == :production
+        is?(:production)
+      end
+
+      def test?
+        is?(:test)
       end
 
       def development?
-        !production?
+        is?(:dev) || is?(:development)
+      end
+
+      def is?(env)
+        @env == env
       end
     end
   end
