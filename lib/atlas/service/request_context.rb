@@ -3,7 +3,7 @@ module Atlas
     class RequestContext < Atlas::Entity::BaseEntity
       parameters :time, :component, :caller, :transaction_id, :account_id, :authentication_type
 
-      AUTHENTICATION_TYPES = %i[user account none system].freeze
+      AUTHENTICATION_TYPES = %i[user none system].freeze
       schema do
         required(:time).filled(:date_time?)
         required(:component).filled(:str?)
@@ -23,16 +23,12 @@ module Atlas
         authentication_type == :user
       end
 
-      def account?
-        authentication_type == :account
-      end
-
       def system?
         authentication_type == :system
       end
 
       def authenticated?
-        user? || account? || system?
+        user? || system?
       end
 
       def unauthenticated?
