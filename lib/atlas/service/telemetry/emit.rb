@@ -6,10 +6,10 @@ module Atlas
 
         def initialize
           # TODO: Receive adapter by configuration
-          @adapter = if Atlas::Util::Environment.development?
-                       Adapter::StdoutAdapter.new
-                     else
+          @adapter = if Atlas::Util::Environment.production?
                        Adapter::FirehoseAdapter.new
+                     else
+                       Adapter::StdoutAdapter.new
                      end
         end
 

@@ -134,11 +134,6 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
       it { is_expected.to be_truthy }
     end
 
-    context 'when authentication_type is :account' do
-      let(:authentication_type) { :account }
-      it { is_expected.to be_truthy }
-    end
-
     context 'when authentication_type is :system' do
       let(:authentication_type) { :system }
       it { is_expected.to be_truthy }
@@ -160,11 +155,6 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
 
     context 'when authentication_type is :user' do
       let(:authentication_type) { :user }
-      it { is_expected.to be_falsey }
-    end
-
-    context 'when authentication_type is :account' do
-      let(:authentication_type) { :account }
       it { is_expected.to be_falsey }
     end
 
