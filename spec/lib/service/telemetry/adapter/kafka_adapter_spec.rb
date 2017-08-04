@@ -19,17 +19,18 @@ RSpec.describe Atlas::Service::Telemetry::Adapter::KafkaAdapter, type: :adapter 
     subject { described_class.new.log(type, data) }
     let(:type) { 'type' }
     let(:data) { { fake: 'data' } }
-    let(:prefix) { 'some-prefix-' }
-    let(:topic) { 'some_topic' }
-
-    before do
-      stub_const("#{described_class}::TELEMETRY_KAFKA_TOPIC", topic)
-      allow(producer).to receive(:produce)
-      allow(producer).to receive(:deliver_messages)
-    end
-    let(:message) { { type: type, data: data } }
 
     context 'with valid params' do
+      let(:prefix) { 'some-prefix-' }
+      let(:topic) { 'some_topic' }
+      let(:message) { { type: type, data: data } }
+
+      before do
+        stub_const("#{described_class}::TELEMETRY_KAFKA_TOPIC", topic)
+        allow(producer).to receive(:produce)
+        allow(producer).to receive(:deliver_messages)
+      end
+
       context 'send message to Kafka' do
         it 'produce' do
           expect(producer).to receive(:produce).with(message.to_json, topic: topic)
@@ -41,6 +42,14 @@ RSpec.describe Atlas::Service::Telemetry::Adapter::KafkaAdapter, type: :adapter 
           subject
         end
       end
+    end
+
+    context 'with nil params' do
+      before do
+        allow(kafka).to receive(:producer).and_return(StandardError)
+      end
+
+      it_behaves_like 'a service with failure response'
     end
   end
 end
