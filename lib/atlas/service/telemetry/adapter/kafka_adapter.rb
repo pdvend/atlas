@@ -6,7 +6,6 @@ module Atlas
           include Atlas::Util::I18nScope
 
           KAFKA = 'vendor.kafka'.freeze
-          TELEMETRY_STREAM_PREFIX = ENV['TELEMETRY_STREAM_PREFIX']
           TELEMETRY_KAFKA_TOPIC = ENV['TELEMETRY_KAFKA_TOPIC']
 
           def initialize
@@ -16,8 +15,8 @@ module Atlas
 
           def log(type, data)
             message = {
-              delivery_stream_name: "#{TELEMETRY_STREAM_PREFIX}#{type}",
-              record: { data: data }
+              type: type,
+              data: data
             }
 
             @producer.produce(message.to_json, topic: TELEMETRY_KAFKA_TOPIC)

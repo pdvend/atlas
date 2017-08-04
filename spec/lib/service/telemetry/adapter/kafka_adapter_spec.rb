@@ -23,17 +23,11 @@ RSpec.describe Atlas::Service::Telemetry::Adapter::KafkaAdapter, type: :adapter 
     let(:topic) { 'some_topic' }
 
     before do
-      stub_const("#{described_class}::TELEMETRY_STREAM_PREFIX", prefix)
       stub_const("#{described_class}::TELEMETRY_KAFKA_TOPIC", topic)
       allow(producer).to receive(:produce)
       allow(producer).to receive(:deliver_messages)
     end
-    let(:message) do
-      {
-        delivery_stream_name: "#{prefix}#{type}",
-        record: { data: data }
-      }
-    end
+    let(:message) { { type: type, data: data } }
 
     context 'with valid params' do
       context 'send message to Kafka' do
