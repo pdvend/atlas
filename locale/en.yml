@@ -10,6 +10,8 @@ en:
         adapter:
           firehose_adapter:
             service_unavailable: "AWS Firehose is unavailable, cannot emit event"
+          kafka_adapter:
+            service_unavailable: "Kafka is unavailable, cannot emit event"
       util:
         search_service:
           repository_failure: "Could not retrieve data"

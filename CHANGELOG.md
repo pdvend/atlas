@@ -3,6 +3,7 @@
 ## CHANGELOG
 
 ### Unreleased
+- Added Adapter para envidar dados de telemetria para o Kafka
 - Added Atualização de entidades no mongoid repository
 - Added Arquivos de renderização de pdf
 - Added Atributos sujos para a base entity

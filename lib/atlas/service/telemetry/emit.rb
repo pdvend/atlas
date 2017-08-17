@@ -7,7 +7,7 @@ module Atlas
         def initialize
           # TODO: Receive adapter by configuration
           @adapter = if Atlas::Util::Environment.production?
-                       Adapter::FirehoseAdapter.new
+                       Adapter::KafkaAdapter.new
                      else
                        Adapter::StdoutAdapter.new
                      end
