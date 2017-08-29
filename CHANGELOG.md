@@ -9,6 +9,7 @@
 - Added Suporte a serializer
 - Added Suporte a I18N
 - Added Dependência da biblioteca de geração de pdf
+- Added Suporte a UTF-8 para a biblioteca de geração de pdf
 
 ### 0.1.0 [2017-05-22]
 - Versão inicial
