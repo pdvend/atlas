@@ -28,16 +28,22 @@ module Atlas
           }
         end
 
+        def add_transform_params(filter_params, format_params)
+          transform_params_result = Transformation.transformation_params(format_params[:transform], format_params[:entity])
+          filter_params[:transform] = transform_params_result.data if transform_params_result.success?
+          filter_params
+        end
+
         def filter_params(format_params, pagination_params)
           entity = format_params[:entity]
           query_params = format_params[:query_params]
           constraints = format_params[:constraints] || []
-
-          {
+          filter_params = {
             pagination: Pagination.paginate_params(pagination_params),
             sorting: Sorting.sorting_params(query_params[:order], entity),
             filtering: Filtering.filter_params(query_params[:filter], entity) + constraints
           }
+          add_transform_params(filter_params, format_params)
         end
       end
     end
