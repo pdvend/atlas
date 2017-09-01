@@ -8,6 +8,7 @@ module Atlas
         OPERANTION_PARTS_SEPARATOR = /(#{OPERATORS.join('|')}):(.*)/
 
         def self.transformation_params(params, entity)
+          return response_error(:invalid_params) unless params && params.is_a?(String)
           raw_statments_parts = params.match(OPERANTION_PARTS_SEPARATOR).to_a
           parts = { operator: raw_statments_parts[1], field: raw_statments_parts[2] }
           response(entity, parts)
