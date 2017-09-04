@@ -58,27 +58,28 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
       let(:repository_method) { :transform }
       let(:transformation_params) { 'sum:value' }
       let(:data) { 2 }
-
+      let(:operation) { 'sum' }
+      let(:field) { 'value' }
+      let(:partner_params) { { transform: transformation_params, page: 1, count: 3 } }
       let(:format_params) do
         {
           query_params: partner_params,
           constraints: constraints,
           page_limit: page_limit,
-          transform: transformation_params,
           entity: entity
         }
       end
 
       it { expect(subject.data).to be_a(Atlas::Service::Mechanism::Transformation::TransformResult) }
-      it { expect(subject.data[:operation]).to eq('sum') }
-      it { expect(subject.data[:field]).to eq('value') }
+      it { expect(subject.data[:operation]).to eq(operation) }
+      it { expect(subject.data[:field]).to eq(field) }
       it { expect(subject.data[:result]).to eq(data) }
 
       it 'receive correct params' do
         expect(repository).to receive(repository_method).with(
           sorting: [],
           filtering: constraints,
-          transform: { operator: 'sum', field: 'value' }
+          transform: { operation: operation, field: field }
         )
 
         subject

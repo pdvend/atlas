@@ -17,14 +17,14 @@ RSpec.describe Atlas::Service::Mechanism::Transformation do
       it { expect(subject.message).to eq('Invalid parameters received to execute this action') }
     end
 
-    context 'with valid field but operator does not exist' do
-      let(:params) { 'invalid_operator:value' }
+    context 'with valid field but operation does not exist' do
+      let(:params) { 'invalid_operation:value' }
       it { is_expected.not_to be_success }
       it { expect(subject.code).to eq(Atlas::Enum::ErrorCodes::PARAMETER_ERROR) }
-      it { expect(subject.message).to eq('Invalid operator') }
+      it { expect(subject.message).to eq('Invalid operation') }
     end
 
-    context 'with valid operator but field does not exist' do
+    context 'with valid operation but field does not exist' do
       let(:params) { 'sum:invalid_field' }
       it { is_expected.not_to be_success }
       it { expect(subject.code).to eq(Atlas::Enum::ErrorCodes::PARAMETER_ERROR) }
@@ -35,7 +35,7 @@ RSpec.describe Atlas::Service::Mechanism::Transformation do
       let(:params) { 'sum:value' }
       it { is_expected.to be_success }
       it { expect(subject.code).to eq(Atlas::Enum::ErrorCodes::NONE) }
-      it { expect(subject.data).to eq(operator: 'sum', field: 'value') }
+      it { expect(subject.data).to eq(operation: 'sum', field: 'value') }
     end
   end
 end

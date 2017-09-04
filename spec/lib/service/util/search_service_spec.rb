@@ -36,7 +36,7 @@ RSpec.describe Atlas::Service::Util::SearchService, type: :service do
 
     context 'when include transform params' do
       let(:repository_method) { :transform }
-      let(:params) { { transform: 'operator:field' } }
+      let(:params) { { query_params: { transform: 'operator:field' } } }
 
       it 'call #transform' do
         expect_any_instance_of(Atlas::Service::Mechanism::ServiceResponseFormatter)

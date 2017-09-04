@@ -2,7 +2,6 @@ module Atlas
   module Service
     module Mechanism
       class ServiceResponseFormatter
-
         def format(repository, repository_method, format_params)
           filter_params = filter_params(format_params)
           results = repository.send(repository_method, filter_params)
@@ -21,7 +20,7 @@ module Atlas
         end
 
         def parse_success_result_transform(results, filter_params)
-          result = Transformation::TransformResult.new(filter_params[:transform][:operator], filter_params[:transform][:field], results.data)
+          result = Transformation::TransformResult.new(filter_params[:transform][:operation], filter_params[:transform][:field], results.data)
           Atlas::Repository::RepositoryResponse.new(data: result, success: true)
         end
 
@@ -36,7 +35,8 @@ module Atlas
         end
 
         def add_transform_params(filter_params, format_params)
-          transform_params_result = Transformation.transformation_params(format_params[:transform], format_params[:entity])
+          query_params = format_params[:query_params]
+          transform_params_result = Transformation.transformation_params(query_params[:transform], format_params[:entity])
           filter_params[:transform] = transform_params_result.data if transform_params_result.success?
           filter_params
         end
@@ -55,7 +55,7 @@ module Atlas
             filtering: Filtering.filter_params(query_params[:filter], entity) + constraints
           }
 
-          return add_transform_params(filter_params, format_params) if format_params[:transform]
+          return add_transform_params(filter_params, format_params) if query_params[:transform]
           add_pagination_params(filter_params, pagination_params(format_params))
         end
       end
