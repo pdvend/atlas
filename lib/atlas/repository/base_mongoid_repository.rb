@@ -22,14 +22,15 @@ module Atlas
         result = apply_statements(statements)
         entities = result.to_a.map(&method(:model_to_entity))
         data = { response: entities, total: result.count }
-        response  = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        response = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
       # DEPRECATED
       # Prefer find_in_batches_enum
       def find_in_batches(batch_size, statements)
         query = apply_statements(statements)
-        offset, limit = 0, batch_size
+        offset = 0
+        limit = batch_size
 
         loop do
           models = query.offset(offset).limit(batch_size).to_a
@@ -49,6 +50,12 @@ module Atlas
             .each(&yielder.method(:<<))
           # TODO: Catch errors
         end
+      end
+
+      def transform(statements)
+        collection = model.where(filter_params(statements[:filtering] || []))
+        result = collection.send(statements[:transform][:operation], statements[:transform][:field])
+        Atlas::Repository::RepositoryResponse.new(data: result, success: true)
       end
 
       def create(entity)
@@ -116,7 +123,6 @@ module Atlas
 
       def get_params(statements)
         pagination = statements[:pagination]
-
         {
           offset: pagination[:offset],
           limit: pagination[:limit],
