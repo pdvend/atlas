@@ -6,9 +6,15 @@ module Atlas
 
         protected
 
-        def format(params, &block)
-          response = Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(params, &block)
+        def format(repository, params)
+          repository_method = repository_method_by_params(params)
+          response = Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(repository, repository_method, params)
           response.success ? result_from_success(response) : result_from_failure(response)
+        end
+
+        def repository_method_by_params(query_params)
+          return :transform if query_params.try(:[], :transform).present?
+          :find_paginated
         end
 
         def result_from_success(response)
