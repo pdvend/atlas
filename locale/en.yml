@@ -13,7 +13,7 @@ en:
       mechanism:
         transformation:
           invalid_params: "Invalid parameters received to execute this action"
-          invalid_operator: "Invalid operator"
+          invalid_operation: "Invalid operation"
           invalid_field: "Invalid field"
       util:
         search_service:

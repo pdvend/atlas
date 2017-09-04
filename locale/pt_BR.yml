@@ -13,7 +13,7 @@ pt_BR:
         mechanism:
           transformation:
             invalid_params: "Parâmetros inválidos recebidos para executar esta ação"
-            invalid_operator: 'Operador inválido'
+            invalid_operation: 'Operador inválido'
             invalid_field: 'Campo inválido'
       util:
         search_service:
