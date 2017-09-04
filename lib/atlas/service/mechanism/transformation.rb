@@ -3,6 +3,7 @@ module Atlas
     module Mechanism
       class Transformation
         extend Atlas::Util::I18nScope
+        TransformResult = Struct.new(:operation, :field, :result)
 
         OPERATORS = %i[sum].freeze
         OPERANTION_PARTS_SEPARATOR = /(#{OPERATORS.join('|')}):(.*)/

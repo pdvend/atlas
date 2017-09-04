@@ -2,20 +2,27 @@ module Atlas
   module Service
     module Mechanism
       class ServiceResponseFormatter
-        def format(format_params)
-          pagination_params = pagination_params(format_params)
-          filter_params = filter_params(format_params, pagination_params)
-          results = yield(filter_params)
-          results.success ? parse_success_result(results, filter_params) : results
+
+        def format(repository, repository_method, format_params)
+          filter_params = filter_params(format_params)
+          results = repository.send(repository_method, filter_params)
+          return results unless results.success
+          return parse_success_result_transform(results, filter_params) if repository_method == :transform
+          parse_success_result_paginated(results, filter_params)
         end
 
         private
 
-        def parse_success_result(results, filter_params)
+        def parse_success_result_paginated(results, filter_params)
           result_data = results.data
           query_result = Pagination::QueryResult.new(result_data[:total], filter_params[:pagination][:limit], result_data[:response])
           data = IceNine.deep_freeze(query_result)
           Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        end
+
+        def parse_success_result_transform(results, filter_params)
+          result = Transformation::TransformResult.new(filter_params[:transform][:operator], filter_params[:transform][:field], results.data)
+          Atlas::Repository::RepositoryResponse.new(data: result, success: true)
         end
 
         def pagination_params(params)
@@ -34,16 +41,22 @@ module Atlas
           filter_params
         end
 
-        def filter_params(format_params, pagination_params)
+        def add_pagination_params(filter_params, pagination_params)
+          filter_params[:pagination] = Pagination.paginate_params(pagination_params)
+          filter_params
+        end
+
+        def filter_params(format_params)
           entity = format_params[:entity]
           query_params = format_params[:query_params]
           constraints = format_params[:constraints] || []
           filter_params = {
-            pagination: Pagination.paginate_params(pagination_params),
             sorting: Sorting.sorting_params(query_params[:order], entity),
             filtering: Filtering.filter_params(query_params[:filter], entity) + constraints
           }
-          add_transform_params(filter_params, format_params)
+
+          return add_transform_params(filter_params, format_params) if format_params[:transform]
+          add_pagination_params(filter_params, pagination_params(format_params))
         end
       end
     end
