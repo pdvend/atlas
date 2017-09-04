@@ -11,10 +11,10 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
     let(:statements) do 
       {
         filtering: constraints,
-        transform: { operator: operator, field: field }
+        transform: { operation: operation, field: field }
       }
     end
-    let(:operator) { 'sum' }
+    let(:operation) { 'sum' }
     let(:field) { 'value' }
     let(:constraints) { [[:and, :name, :eq, 'some_name']] }
 
