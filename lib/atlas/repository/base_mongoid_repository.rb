@@ -54,7 +54,14 @@ module Atlas
 
       def transform(statements)
         collection = model.where(filter_params(statements[:filtering] || []))
-        result = collection.send(statements[:transform][:operation], statements[:transform][:field])
+        operation = statements[:transform][:operation].to_sym
+        case operation
+        when :sum
+          field = statements[:transform][:field].to_sym
+          result = collection.sum(field)
+        when :count
+          result = collection.count
+        end
         Atlas::Repository::RepositoryResponse.new(data: result, success: true)
       end
 
