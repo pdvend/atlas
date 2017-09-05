@@ -12,6 +12,12 @@ module Atlas
       DEFAULT_STATEMENT_PARSER = ->(operator, value) { { "$#{operator}".to_sym => value } }
       private_constant :DEFAULT_STATEMENT_PARSER
 
+      TRANSFORM_OPERATIONS = {
+        sum: ->(collection, field) { collection.sum(field) },
+        count: ->(collection, _field) { collection.count }
+      }
+      private_constant :TRANSFORM_OPERATIONS
+
       def find(statements)
         result = apply_statements(statements)
         entities = result.to_a.map(&method(:model_to_entity))
@@ -55,13 +61,8 @@ module Atlas
       def transform(statements)
         collection = model.where(filter_params(statements[:filtering] || []))
         operation = statements[:transform][:operation].to_sym
-        case operation
-        when :sum
-          field = statements[:transform][:field].to_sym
-          result = collection.sum(field)
-        when :count
-          result = collection.count
-        end
+        field = statements[:transform][:field].try(:to_sym)
+        result = TRANSFORM_OPERATIONS[operation][collection, field]
         Atlas::Repository::RepositoryResponse.new(data: result, success: true)
       end
 

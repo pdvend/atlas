@@ -30,7 +30,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
     end
 
     context 'when operation is count' do
-      let(:operation) { 'count' }
+      let(:operation) { :count }
 
       it do
         expect(collection).to receive(:count)
