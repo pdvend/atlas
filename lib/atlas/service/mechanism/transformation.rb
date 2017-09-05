@@ -30,7 +30,7 @@ module Atlas
           parts.tap do |params|
             params[:field] = field
           end
-          return successful_response(parts)
+          successful_response(parts)
         end
         private_class_method :add_field_part
 
