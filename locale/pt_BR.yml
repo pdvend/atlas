@@ -10,6 +10,14 @@ pt_BR:
         adapter:
           firehose_adapter:
             service_unavailable: "AWS Firehose não está disponível, não foi possível emitir o evento"
+        mechanism:
+          transformation:
+            invalid_params: "Parâmetros inválidos recebidos para executar esta ação"
+            invalid_operation: 'Operador inválido'
+            invalid_field: 'Campo inválido'
       util:
         search_service:
           repository_failure: "Não foi possível acessar os dados"
+    repository:
+      base_mongoid_repository:
+        transform_required: "Parâmetro transform requerido"

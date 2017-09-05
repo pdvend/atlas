@@ -1,6 +1,7 @@
 module Atlas
   module Repository
     class BaseMongoidRepository
+      I18N_SCOPE = %i[atlas repository base_mongoid_repository].freeze
       STATEMENT_PARSERS = {
         eq: ->(value) { value },
         like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') },
@@ -12,6 +13,12 @@ module Atlas
       DEFAULT_STATEMENT_PARSER = ->(operator, value) { { "$#{operator}".to_sym => value } }
       private_constant :DEFAULT_STATEMENT_PARSER
 
+      TRANSFORM_OPERATIONS = {
+        sum: ->(collection, field) { collection.sum(field) },
+        count: ->(collection, _field) { collection.count }
+      }
+      private_constant :TRANSFORM_OPERATIONS
+
       def find(statements)
         result = apply_statements(statements)
         entities = result.to_a.map(&method(:model_to_entity))
@@ -22,14 +29,15 @@ module Atlas
         result = apply_statements(statements)
         entities = result.to_a.map(&method(:model_to_entity))
         data = { response: entities, total: result.count }
-        response  = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        response = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
       # DEPRECATED
       # Prefer find_in_batches_enum
       def find_in_batches(batch_size, statements)
         query = apply_statements(statements)
-        offset, limit = 0, batch_size
+        offset = 0
+        limit = batch_size
 
         loop do
           models = query.offset(offset).limit(batch_size).to_a
@@ -49,6 +57,16 @@ module Atlas
             .each(&yielder.method(:<<))
           # TODO: Catch errors
         end
+      end
+
+      def transform(statements)
+        collection = model.where(filter_params(statements[:filtering] || []))
+        transform_statement = statements[:transform]
+        return error(I18n.t(:transform_required, scope: I18N_SCOPE)) unless transform_statement
+        operation = transform_statement[:operation].to_sym
+        field = transform_statement[:field].try(:to_sym)
+        result = TRANSFORM_OPERATIONS[operation][collection, field]
+        Atlas::Repository::RepositoryResponse.new(data: result, success: true)
       end
 
       def create(entity)
@@ -116,7 +134,6 @@ module Atlas
 
       def get_params(statements)
         pagination = statements[:pagination]
-
         {
           offset: pagination[:offset],
           limit: pagination[:limit],
