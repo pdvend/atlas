@@ -1,6 +1,7 @@
 module Atlas
   module Repository
     class BaseMongoidRepository
+      I18N_SCOPE = %i[atlas repository base_mongoid_repository].freeze
       STATEMENT_PARSERS = {
         eq: ->(value) { value },
         like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') },
@@ -60,8 +61,10 @@ module Atlas
 
       def transform(statements)
         collection = model.where(filter_params(statements[:filtering] || []))
-        operation = statements[:transform][:operation].to_sym
-        field = statements[:transform][:field].try(:to_sym)
+        transform_statement = statements[:transform]
+        return error(I18n.t(:transform_required, scope: I18N_SCOPE)) unless transform_statement
+        operation = transform_statement[:operation].to_sym
+        field = transform_statement[:field].try(:to_sym)
         result = TRANSFORM_OPERATIONS[operation][collection, field]
         Atlas::Repository::RepositoryResponse.new(data: result, success: true)
       end
