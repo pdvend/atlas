@@ -2,7 +2,8 @@
 
 ## CHANGELOG
 
-### Unreleased
+### 0.2.0
+- Added Suporte a transformação
 - Added Atualização de entidades no mongoid repository
 - Added Arquivos de renderização de pdf
 - Added Atributos sujos para a base entity
