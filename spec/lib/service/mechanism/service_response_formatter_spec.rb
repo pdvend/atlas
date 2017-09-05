@@ -56,10 +56,10 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
 
     context 'when method is transform' do
       let(:repository_method) { :transform }
-      let(:transformation_params) { 'sum:value' }
+      let(:transformation_params) { "#{operation}:#{field}" }
       let(:data) { 2 }
-      let(:operation) { 'sum' }
-      let(:field) { 'value' }
+      let(:operation) { :sum }
+      let(:field) { :value }
       let(:partner_params) { { transform: transformation_params, page: 1, count: 3 } }
       let(:format_params) do
         {
