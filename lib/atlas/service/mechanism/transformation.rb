@@ -27,9 +27,7 @@ module Atlas
 
         def self.add_field_part(entity, parts, field)
           return failure_response(key: :invalid_field, code: PARAMETER_ERROR_CODE) unless valid_field?(entity, field)
-          parts.tap do |params|
-            params[:field] = field
-          end
+          parts[:field] = field
           successful_response(parts)
         end
         private_class_method :add_field_part
