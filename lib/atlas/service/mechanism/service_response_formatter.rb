@@ -37,8 +37,9 @@ module Atlas
         def add_transform_params(filter_params, format_params)
           query_params = format_params[:query_params]
           transform_params_result = Transformation.transformation_params(query_params[:transform], format_params[:entity])
-          filter_params[:transform] = transform_params_result.data if transform_params_result.success?
-          filter_params
+          filter_params.tap do |params|
+            params[:transform] = transform_params_result.data if transform_params_result.success?
+          end
         end
 
         def add_pagination_params(filter_params, pagination_params)
