@@ -43,8 +43,9 @@ module Atlas
         end
 
         def add_pagination_params(filter_params, pagination_params)
-          filter_params[:pagination] = Pagination.paginate_params(pagination_params)
-          filter_params
+          filter_params.tap do |params|
+            params[:pagination] = Pagination.paginate_params(pagination_params)
+          end
         end
 
         def filter_params(format_params)

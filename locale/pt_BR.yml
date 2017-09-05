@@ -18,3 +18,6 @@ pt_BR:
       util:
         search_service:
           repository_failure: "Não foi possível acessar os dados"
+    repository:
+      base_mongoid_repository:
+        transform_required: "Parâmetro transform requerido"
