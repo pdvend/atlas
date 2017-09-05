@@ -40,13 +40,6 @@ RSpec.describe Atlas::Service::Mechanism::Transformation do
       end
 
       context 'when count' do
-        context 'when field is present' do
-          let(:params) { 'count:value' }
-          it { is_expected.to be_success }
-          it { expect(subject.code).to eq(Atlas::Enum::ErrorCodes::NONE) }
-          it { expect(subject.data).to eq(operation: :count) }
-        end
-
         context 'when field not is present' do
           let(:params) { 'count' }
           it { is_expected.to be_success }

@@ -3,38 +3,50 @@ module Atlas
     module Mechanism
       class Transformation
         extend Atlas::Util::I18nScope
+        extend Atlas::Service::Util::ResponseHelpers
         TransformResult = Struct.new(:operation, :field, :result)
 
-        OPERATIONS = %i[sum count].freeze
-        OPERANTION_PARTS_SEPARATOR = /(#{OPERATIONS.join('|')}):(.*)/
+        PARAMETERIZED_OPERATIONS = %i[sum].freeze
+        NON_PARAMETERIZED_OPERATIONS = %i[count].freeze
+        OPERATION_PARTS_SEPARATOR = /^(?:(?:(?<operation>#{PARAMETERIZED_OPERATIONS.join('|')}):(?<field>.*))|(?<operation>#{NON_PARAMETERIZED_OPERATIONS.join('|')}))$/i
+        PARAMETER_ERROR_CODE = Atlas::Enum::ErrorCodes::PARAMETER_ERROR
 
         def self.transformation_params(params, entity)
-          return response_error(:invalid_params) unless params.is_a?(Symbol) || params.is_a?(String)
-          parts = params.to_sym == :count ? { operation: params.to_sym } : raw_statments_parts(params)
-          response(entity, parts)
+          return failure_response(key: :invalid_params, code: PARAMETER_ERROR_CODE) unless params.is_a?(Symbol) || params.is_a?(String)
+          raw_statments_parts(OPERATION_PARTS_SEPARATOR.match(params), entity)
         end
 
-        def self.raw_statments_parts(params)
-          raw_parts = params.match(OPERANTION_PARTS_SEPARATOR).to_a
-          operation = raw_parts[1].try(:to_sym)
+        def self.raw_statments_parts(raw_parts, entity)
+          operation = raw_parts.try(:[], :operation).try(:to_sym)
+          return failure_response(key: :invalid_operation, code: PARAMETER_ERROR_CODE) unless valid_operation?(operation)
           parts = { operation: operation }
-          parts[:field] = raw_parts[2].try(:to_sym) unless operation == :count
-          parts
+          return successful_response(parts) if non_parameterized_operation?(operation)
+          add_field_part(entity, parts, raw_parts[:field].try(:to_sym))
         end
+        private_class_method :raw_statments_parts
 
-        def self.response(entity, parts)
-          operation = parts[:operation]
-          return response_error(:invalid_operation) unless OPERATIONS.include?(operation.try(:to_sym))
-          return response_error(:invalid_field) unless operation == :count || entity.instance_parameters.include?(parts[:field].try(:to_sym))
-          ServiceResponse.new(data: parts, code: Enum::ErrorCodes::NONE)
+        def self.add_field_part(entity, parts, field)
+          return failure_response(key: :invalid_field, code: PARAMETER_ERROR_CODE) unless valid_field?(entity, field)
+          parts.tap do |params|
+            params[:field] = field
+          end
+          return successful_response(parts)
         end
-        private_class_method :response
+        private_class_method :add_field_part
 
-        def self.response_error(message_key)
-          message = I18n.t(message_key, scope: i18n_scope)
-          ServiceResponse.new(message: message, data: {}, code: Enum::ErrorCodes::PARAMETER_ERROR)
+        def self.valid_operation?(operation)
+          PARAMETERIZED_OPERATIONS.include?(operation.try(:to_sym)) || non_parameterized_operation?(operation)
         end
-        private_class_method :response_error
+        private_class_method :valid_operation?
+
+        def self.non_parameterized_operation?(operation)
+          NON_PARAMETERIZED_OPERATIONS.include?(operation.try(:to_sym))
+        end
+        private_class_method :non_parameterized_operation?
+
+        def self.valid_field?(entity, field)
+          entity.instance_parameters.include?(field.try(:to_sym))
+        end
       end
     end
   end
