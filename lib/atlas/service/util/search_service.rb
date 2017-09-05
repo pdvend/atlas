@@ -13,8 +13,7 @@ module Atlas
         end
 
         def repository_method_by_params(query_params)
-          return :transform if query_params.try(:[], :transform).present?
-          :find_paginated
+          query_params.try(:[], :transform).present? ? :transform : :find_paginated
         end
 
         def result_from_success(response)
