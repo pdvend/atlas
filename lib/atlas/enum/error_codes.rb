@@ -9,6 +9,7 @@ module Atlas
       AUTHENTICATION_ERROR = 1004
       NOT_IMPLEMENTED = 1005
       PERMISSION_ERROR = 1006
+      ROUTE_NOT_FOUND = 1007
     end
   end
 end

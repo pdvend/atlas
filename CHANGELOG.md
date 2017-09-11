@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.2.1
+- Added Retorno de mensagens de erro em json
+
 ### 0.2.0
 - Added Suporte a transformação
 - Added Atualização de entidades no mongoid repository
