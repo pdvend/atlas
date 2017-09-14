@@ -48,7 +48,7 @@ module Atlas
       end
 
       def find_in_batches_enum(statements)
-        query = apply_statements(**statements, pagination: { offset: 0, limit: 1 })
+        query = apply_search_params(model, **statements)
 
         Enumerator.new do |yielder|
           query
@@ -124,19 +124,18 @@ module Atlas
       end
 
       def apply_statements(statements)
-        params = get_params(statements)
-
-        model.offset(params[:offset])
-             .limit(params[:limit])
-             .order(params[:order])
-             .where(params[:where])
+        pagination = statements[:pagination]
+        paginated_model = model.offset(pagination[:offset]).limit(pagination[:limit])
+        apply_search_params(paginated_model)
       end
 
-      def get_params(statements)
-        pagination = statements[:pagination]
+      def apply_search_params(model, statements)
+        params = get_search_params(statements)
+        model.order(params[:order]).where(params[:where])
+      end
+
+      def get_search_params(statements)
         {
-          offset: pagination[:offset],
-          limit: pagination[:limit],
           order: order_params(statements[:sorting] || []),
           where: filter_params(statements[:filtering] || [])
         }
