@@ -37,4 +37,5 @@ require 'support/factory_girl'
 RSpec.configure do |config|
   config.include Atlas::Spec::SharedExamples::ControllerExamples
   config.include Atlas::Spec::SharedExamples::ServiceExamples
+  config.include Atlas::Spec::SharedExamples::RouterExamples
 end
