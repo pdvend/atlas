@@ -126,7 +126,7 @@ module Atlas
       def apply_statements(statements)
         pagination = statements[:pagination]
         paginated_model = model.offset(pagination[:offset]).limit(pagination[:limit])
-        apply_search_params(paginated_model)
+        apply_search_params(paginated_model, statements)
       end
 
       def apply_search_params(model, statements)
