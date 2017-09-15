@@ -16,7 +16,7 @@ module Atlas
           it { expect(subject.params).to eq(params) }
         end
 
-        shared_examples_for("a don't routable endpoint") do |method_type, path, params = {}|
+        shared_examples_for('a not routable endpoint') do |method_type, path, params = {}|
           subject { described_class.recognize(env) }
           let(:env) { Rack::MockRequest.env_for(path, method: method_type) }
 
