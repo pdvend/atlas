@@ -12,6 +12,7 @@ module Atlas
       end
 
       MODULE_SEPARATOR = '::'.freeze
+      DEFAULT_ENCODING = 'utf-8'.freeze
 
       ERROR_CODE_TO_HTTP_STATUS = {
         Atlas::Enum::ErrorCodes::NONE => 200,
@@ -35,7 +36,8 @@ module Atlas
       end
 
       def render_pdf(service_response)
-        data = service_response.data
+        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
+        data = service_response.data.force_encoding(DEFAULT_ENCODING)
         code = service_response.code
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
@@ -43,6 +45,7 @@ module Atlas
       end
 
       def render_xml(service_response)
+        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
         data = service_response.data
         code = service_response.code
         self.body = data
