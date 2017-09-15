@@ -2,13 +2,18 @@ module Atlas
   module Service
     module Util
       module SearchService
-        I18N_SCOPE = [:atlas, :service, :util, :search_service].freeze
+        I18N_SCOPE = %i[atlas service util search_service].freeze
 
         protected
 
-        def format(params, &block)
-          response = Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(params, &block)
+        def format(repository, params)
+          repository_method = repository_method_by_params(params[:query_params])
+          response = Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(repository, repository_method, params)
           response.success ? result_from_success(response) : result_from_failure(response)
+        end
+
+        def repository_method_by_params(query_params)
+          query_params.try(:[], :transform).present? ? :transform : :find_paginated
         end
 
         def result_from_success(response)
