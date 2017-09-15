@@ -1,5 +1,8 @@
 pt_BR:
   atlas:
+    api:
+      base_controller:
+        not_found: Registro não existe
     hook:
       validation_hook:
         invalid_params: "Parâmetros inválidos recebidos para executar esta ação"
