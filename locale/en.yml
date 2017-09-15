@@ -10,6 +10,8 @@ en:
         adapter:
           firehose_adapter:
             service_unavailable: "AWS Firehose is unavailable, cannot emit event"
+          kafka_adapter:
+            service_unavailable: "Kafka is unavailable, cannot emit event"
       mechanism:
         transformation:
           invalid_params: "Invalid parameters received to execute this action"

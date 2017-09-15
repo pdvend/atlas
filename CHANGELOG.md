@@ -2,11 +2,15 @@
 
 ## CHANGELOG
 
-### 0.2.1
+### 0.2.2
+- Added Adapter para envidar dados de telemetria para o Kafka
 - Added Retorno de mensagens de erro em json
+- Correção do Método `find_in_batches_enum`
+
+### 0.2.1
+- Added Suporte a transformação
 
 ### 0.2.0
-- Added Suporte a transformação
 - Added Atualização de entidades no mongoid repository
 - Added Arquivos de renderização de pdf
 - Added Atributos sujos para a base entity

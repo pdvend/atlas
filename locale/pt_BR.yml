@@ -10,6 +10,8 @@ pt_BR:
         adapter:
           firehose_adapter:
             service_unavailable: "AWS Firehose não está disponível, não foi possível emitir o evento"
+          kafka_adapte:
+            service_unavailable: "Kafka falhou, não foi possível emitir o evento"
         mechanism:
           transformation:
             invalid_params: "Parâmetros inválidos recebidos para executar esta ação"
