@@ -23,7 +23,6 @@ module Atlas
       }.freeze
 
       def render(service_response)
-        return render_not_found if service_response.try(:data).try(:total) == 0
         data = service_response.data
         code = service_response.code
         self.body = response_body(service_response).to_json
