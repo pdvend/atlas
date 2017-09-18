@@ -10,6 +10,7 @@ module Atlas
       NOT_IMPLEMENTED = 1005
       PERMISSION_ERROR = 1006
       ROUTE_NOT_FOUND = 1007
+      RESOURCE_NOT_FOUND = 1008
     end
   end
 end

@@ -1,6 +1,7 @@
 # Atlas
 
-## CHANGELOG
+## 0.3.0
+- Added método para retornar erro quando não encontrar registro
 
 ### 0.2.2
 - Added Adapter para envidar dados de telemetria para o Kafka
