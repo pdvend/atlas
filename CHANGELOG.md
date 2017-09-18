@@ -1,5 +1,8 @@
 # Atlas
 
+## 0.3.1
+- Correção na mensagem de erro quando não encontra o registro
+
 ## 0.3.0
 - Added método para retornar erro quando não encontrar registro
 
