@@ -22,9 +22,9 @@ module Atlas
           )
         end
 
-        def failure_response(key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {})
+        def failure_response(key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {}, message: nil)
           Atlas::Service::ServiceResponse.new(
-            message: I18n.t(key, scope: i18n_scope),
+            message: message || I18n.t(key, scope: i18n_scope),
             data: errors,
             code: code
           )

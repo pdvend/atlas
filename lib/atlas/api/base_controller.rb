@@ -57,7 +57,7 @@ module Atlas
       end
 
       def render_not_found
-        message = I18n.t(:not_found, scope: i18n_scope)
+        message = I18n.t(:not_found, scope: 'atlas.api.base_controller')
         response_params = { key: :not_found, code: Enum::ErrorCodes::RESOURCE_NOT_FOUND, message: message }
         service_response = failure_response(response_params)
         self.body = service_response
