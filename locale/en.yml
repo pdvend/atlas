@@ -2,7 +2,7 @@ en:
   atlas:
     api:
       base_controller:
-        not_found: Resource Not Found
+        not_found: Resource not found
     hook:
       validation_hook:
         invalid_params: "Invalid parameters received to execute this action"
