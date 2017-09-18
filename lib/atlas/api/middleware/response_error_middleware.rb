@@ -18,7 +18,7 @@ module Atlas
 
         def error_as_json(status, body)
           code = status == 404 ? Enum::ErrorCodes::ROUTE_NOT_FOUND : Enum::ErrorCodes::INTERNAL
-          message = body.is_a?(Array) ? body.first.message : body.message
+          message = body.is_a?(Array) ? body.first.message : body.body
           { code: code, message: message , errors: { } }.to_json
         end
       end
