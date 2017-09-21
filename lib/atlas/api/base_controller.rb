@@ -66,11 +66,12 @@ module Atlas
 
       def render_zip(service_response)
         return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
-        data = service_response.data
+        response_data = service_response.data
         code = service_response.code
-        self.body = data
+        self.body = response_data[:data]
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         self.headers['Content-Type'] = 'application/zip'
+        self.headers['Content-Disposition'] = 'attachment; file_name="' + response_data[:file_name].to_s + '"'
       end
 
       private
