@@ -64,6 +64,15 @@ module Atlas
         self.status = ERROR_CODE_TO_HTTP_STATUS[service_response.code] || 400
       end
 
+      def render_zip(service_response)
+        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
+        data = service_response.data
+        code = service_response.code
+        self.body = data
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/zip'
+      end
+
       private
 
       def response_stream_body(service_response)
