@@ -2,6 +2,8 @@ module Atlas
   module API
     module BaseController
       extend Dry::Configurable
+      include Atlas::Util::I18nScope
+      include Atlas::Service::Util::ResponseHelpers
       setting :serializers_namespace
 
       def self.included(base)
@@ -17,7 +19,8 @@ module Atlas
       ERROR_CODE_TO_HTTP_STATUS = {
         Atlas::Enum::ErrorCodes::NONE => 200,
         Atlas::Enum::ErrorCodes::AUTHENTICATION_ERROR => 401,
-        Atlas::Enum::ErrorCodes::PERMISSION_ERROR => 403
+        Atlas::Enum::ErrorCodes::PERMISSION_ERROR => 403,
+        Enum::ErrorCodes::RESOURCE_NOT_FOUND => 404
       }.freeze
 
       def render(service_response)
@@ -51,6 +54,24 @@ module Atlas
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         self.headers['Content-Type'] = 'application/xml'
+      end
+
+      def render_not_found
+        message = I18n.t(:not_found, scope: 'atlas.api.base_controller')
+        response_params = { key: :not_found, code: Enum::ErrorCodes::RESOURCE_NOT_FOUND, message: message }
+        service_response = failure_response(response_params)
+        self.body = service_response
+        self.status = ERROR_CODE_TO_HTTP_STATUS[service_response.code] || 400
+      end
+
+      def render_zip(service_response)
+        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
+        response_data = service_response.data
+        code = service_response.code
+        self.body = response_data[:data]
+        self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
+        self.headers['Content-Type'] = 'application/zip'
+        self.headers['Content-Disposition'] = 'attachment; file_name="' + response_data[:file_name].to_s + '"'
       end
 
       private

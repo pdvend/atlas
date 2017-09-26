@@ -3,6 +3,12 @@
 ## CHANGELOG
 - Added sub parameters filter
 
+## 0.3.1
+- Correção na mensagem de erro quando não encontra o registro
+
+## 0.3.0
+- Added método para retornar erro quando não encontrar registro
+
 ### 0.2.2
 - Added Adapter para envidar dados de telemetria para o Kafka
 - Added Retorno de mensagens de erro em json
