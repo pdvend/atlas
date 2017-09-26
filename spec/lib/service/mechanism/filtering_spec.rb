@@ -34,7 +34,7 @@ RSpec.describe Atlas::Service::Mechanism::Filtering do
         it { is_expected.to include([:and, :'metadata.number', :gt, 1]) }
       end
 
-      context 'when is integer' do
+      context 'when is string' do
         let(:filterable_subparameter) { { 'metadata.name': :to_s } }
         let(:params) { 'metadata.name:gt:teste' }
         it { is_expected.to include([:and, :'metadata.name', :gt, 'teste']) }

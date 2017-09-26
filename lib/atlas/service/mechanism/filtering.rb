@@ -6,7 +6,7 @@ module Atlas
         CONJUNCTIONS = %i[and or].freeze
         DEFAULT_CONJUNCTION = :and
         FILTERS_SEPARATOR = ','.freeze
-        FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_-_.]+):(#{OPERATORS.join('|')}):(.*)/
+        FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_.-]+):(#{OPERATORS.join('|')}):(.*)/
 
         def self.filter_params(params, entity)
           return [] unless params.is_a?(String)
