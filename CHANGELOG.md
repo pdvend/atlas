@@ -1,6 +1,8 @@
 # Atlas
 
 ## CHANGELOG
+
+## 0.4.0
 - Added sub parameters filter
 
 ## 0.3.1
