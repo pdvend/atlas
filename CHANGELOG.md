@@ -1,5 +1,8 @@
 # Atlas
 
+## CHANGELOG
+- Added sub parameters filter
+
 ## 0.3.1
 - Correção na mensagem de erro quando não encontra o registro
 
