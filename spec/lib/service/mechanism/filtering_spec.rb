@@ -27,7 +27,7 @@ RSpec.describe Atlas::Service::Mechanism::Filtering do
     end
 
     context 'when have a subparameter' do
-      before { entity.sub_parameter_filterable(filterable_subparameter) }
+      before { entity.filterable_subparameters(filterable_subparameter) }
       context 'when is integer' do
         let(:filterable_subparameter) { { 'metadata.number': :to_i } }
         let(:params) { 'metadata.number:gt:1' }

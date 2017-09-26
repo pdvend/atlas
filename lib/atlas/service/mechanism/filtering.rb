@@ -23,8 +23,8 @@ module Atlas
         private_class_method :normalize_filter
 
         def self.normalize_value(entity, field, value)
-          return value unless entity.filterable_subparameters.keys.include?(field)
-          value.send(entity.filterable_subparameters[field])
+          return value unless entity.instance_filterable_subparameters.keys.include?(field)
+          value.send(entity.instance_filterable_subparameters[field])
         end
         private_class_method :normalize_value
 
@@ -33,7 +33,7 @@ module Atlas
           return false unless CONJUNCTIONS.include?(conjunction)
           return false unless OPERATORS.include?(operator)
           return true if entity.instance_parameters.include?(field)
-          entity.filterable_subparameters.keys.include?(field)
+          entity.instance_filterable_subparameters.keys.include?(field)
         end
         private_class_method :validate_filter_parts
 

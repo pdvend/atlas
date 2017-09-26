@@ -11,8 +11,8 @@ module Atlas
         private :model_schema
       end
 
-      def self.sub_parameter_filterable(filterable_subparameters)
-        define_singleton_method(:filterable_subparameters) { filterable_subparameters }
+      def self.filterable_subparameters(instance_filterable_subparameters)
+        define_singleton_method(:instance_filterable_subparameters) { instance_filterable_subparameters }
       end
 
       def self.parameters(*names)
@@ -30,7 +30,7 @@ module Atlas
       private_class_method :define_internal_methods
 
       def self.undef_internal_methods
-        define_singleton_method(:filterable_subparameters) { {} } unless method_defined?(:filterable_subparameters)
+        define_singleton_method(:instance_filterable_subparameters) { {} } unless method_defined?(:instance_filterable_subparameters)
         undef_method(:internal_parameters) if method_defined?(:internal_parameters)
         return unless singleton_class.send(:method_defined?, :instance_parameters)
         singleton_class.send(:undef_method, :instance_parameters)
