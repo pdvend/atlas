@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+- Added sub parameters filter
 
 ### 0.2.2
 - Added Adapter para envidar dados de telemetria para o Kafka
