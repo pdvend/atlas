@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.4.1
+- Added notificate to slack
+
 ## 0.4.0
 - Added sub parameters filter
 
