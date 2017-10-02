@@ -4,10 +4,10 @@ RSpec.describe Atlas::Service::Util::Slack, type: :service do
 
     context 'notificate slack with a msg using http post' do
       let(:slack_hook_url) { 'http://someurl.com.br' }
-      let(:message) { 'Hello darkness my old friend' }
+      let(:message) { { text: 'Hello darkness my old friend' } }
 
       before do
-        stub_request(:post, slack_hook_url).with(body: "{\"text\":\"#{message}\"}")
+        stub_request(:post, slack_hook_url).with(body: message.to_json)
       end
 
       it { subject }
