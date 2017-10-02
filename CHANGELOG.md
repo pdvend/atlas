@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.4.2
+- Added changes on notificate slack
+
 ## 0.4.1
 - Added notificate to slack
 

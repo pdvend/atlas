@@ -8,8 +8,8 @@ module Atlas
           @webhook_url = webhook_url
         end
 
-        def send(msg)
-          HTTParty.post(@webhook_url, body: { text: msg }.to_json)
+        def send(body)
+          HTTParty.post(@webhook_url, body: body.to_json)
         end
       end
     end
