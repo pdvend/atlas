@@ -4,8 +4,6 @@ module Atlas
   module Service
     module Util
       class Slack
-        attr_writer :webhook_url
-
         def initialize(webhook_url)
           @webhook_url = webhook_url
         end
