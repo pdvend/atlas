@@ -39,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mongoid', '~> 6.1.0'
   spec.add_dependency 'pdfkit'
   spec.add_dependency 'wkhtmltopdf-binary-edge', '~> 0.12.4.0'
+  spec.add_dependency 'httparty'
 end
