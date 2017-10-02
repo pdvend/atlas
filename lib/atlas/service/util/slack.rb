@@ -4,10 +4,14 @@ module Atlas
   module Service
     module Util
       class Slack
-        WEBHOOK_URL = ENV['SLACK_WEBHOOK_URL']
+        attr_writer :webhook_url
 
-        def notificate_slack(msg)
-          HTTParty.post(WEBHOOK_URL, body: { text: msg }.to_json)
+        def initialize(webhook_url)
+          @webhook_url = webhook_url
+        end
+
+        def send(msg)
+          HTTParty.post(@webhook_url, body: { text: msg }.to_json)
         end
       end
     end
