@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.4.3
+- Fixed nil operator in filter params
+
 ## 0.4.2
 - Added changes on notificate slack
 

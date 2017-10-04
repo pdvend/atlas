@@ -17,8 +17,8 @@ module Atlas
         def self.normalize_filter(entity, filter_parts)
           _, conjunction, field, operator, value = filter_parts
           conjunction ||= DEFAULT_CONJUNCTION
-          value = normalize_value(entity, field.to_sym, value)
-          [conjunction.to_sym, field.to_sym, operator.to_sym, value]
+          value = normalize_value(entity, field.try(:to_sym), value)
+          [conjunction.to_sym, field.try(:to_sym), operator.try(:to_sym), value]
         end
         private_class_method :normalize_filter
 
