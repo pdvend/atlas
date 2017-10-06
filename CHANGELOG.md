@@ -3,6 +3,9 @@
 ## CHANGELOG
 
 ### 0.2.2
+- Correção do render de PDF
+
+### 0.2.2
 - Added Adapter para envidar dados de telemetria para o Kafka
 - Added Retorno de mensagens de erro em json
 - Correção do Método `find_in_batches_enum`
