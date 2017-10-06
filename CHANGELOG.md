@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.4.4
+- Fixed PDF render
+
 ## 0.4.3
 - Fixed nil operator in filter params
 
