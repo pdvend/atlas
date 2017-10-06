@@ -3,7 +3,7 @@
 ## CHANGELOG
 
 ### 0.4.4
-- Correção do render de PDF
+- Fixed PDF render
 
 ## 0.4.3
 - Fixed nil operator in filter params
