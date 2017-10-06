@@ -1,3 +1,3 @@
 module Atlas
-  VERSION = "0.2.3"
+  VERSION = "0.4.4"
 end

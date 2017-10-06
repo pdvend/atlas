@@ -2,8 +2,26 @@
 
 ## CHANGELOG
 
-### 0.2.2
+### 0.4.4
 - Correção do render de PDF
+
+## 0.4.3
+- Fixed nil operator in filter params
+
+## 0.4.2
+- Added changes on notificate slack
+
+## 0.4.1
+- Added notificate to slack
+
+## 0.4.0
+- Added sub parameters filter
+
+## 0.3.1
+- Correção na mensagem de erro quando não encontra o registro
+
+## 0.3.0
+- Added método para retornar erro quando não encontrar registro
 
 ### 0.2.2
 - Added Adapter para envidar dados de telemetria para o Kafka

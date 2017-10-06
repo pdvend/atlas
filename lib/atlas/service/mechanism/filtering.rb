@@ -6,7 +6,7 @@ module Atlas
         CONJUNCTIONS = %i[and or].freeze
         DEFAULT_CONJUNCTION = :and
         FILTERS_SEPARATOR = ','.freeze
-        FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_-_.]+):(#{OPERATORS.join('|')}):(.*)/
+        FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_\.-]+):(#{OPERATORS.join('|')}):(.*)/
 
         def self.filter_params(params, entity)
           return [] unless params.is_a?(String)
@@ -17,14 +17,14 @@ module Atlas
         def self.normalize_filter(entity, filter_parts)
           _, conjunction, field, operator, value = filter_parts
           conjunction ||= DEFAULT_CONJUNCTION
-          value = normalize_value(entity, field.to_sym, value)
-          [conjunction.to_sym, field.to_sym, operator.to_sym, value]
+          value = normalize_value(entity, field.try(:to_sym), value)
+          [conjunction.to_sym, field.try(:to_sym), operator.try(:to_sym), value]
         end
         private_class_method :normalize_filter
 
         def self.normalize_value(entity, field, value)
-          return value unless entity.filterable_subparameters.keys.include?(field)
-          value.send(entity.filterable_subparameters[field])
+          return value unless entity.instance_filterable_subparameters.keys.include?(field)
+          value.send(entity.instance_filterable_subparameters[field])
         end
         private_class_method :normalize_value
 
@@ -33,7 +33,7 @@ module Atlas
           return false unless CONJUNCTIONS.include?(conjunction)
           return false unless OPERATORS.include?(operator)
           return true if entity.instance_parameters.include?(field)
-          entity.filterable_subparameters.keys.include?(field)
+          entity.instance_filterable_subparameters.keys.include?(field)
         end
         private_class_method :validate_filter_parts
 
