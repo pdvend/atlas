@@ -13,13 +13,14 @@ module Atlas
         end
 
         def self.valid_sorting_field?(field_name, entity)
-          entity.instance_parameters.include?(field_name.to_sym)
+          entity.instance_parameters.include?(field_name) ||
+          entity.instance_subparameters.keys.include?(field_name)
         end
         private_class_method :valid_sorting_field?
 
         def self.generate_sorting_statement(field, entity)
           field_name = field.sub(DESC_FLAG, '')
-          return unless valid_sorting_field?(field_name, entity)
+          return unless valid_sorting_field?(field_name.to_sym, entity)
           direction = field[0] == DESC_FLAG ? :desc : :asc
           { field: field_name, direction: direction }
         end
