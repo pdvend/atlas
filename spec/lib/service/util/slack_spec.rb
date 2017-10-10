@@ -34,8 +34,6 @@ RSpec.describe Atlas::Service::Util::Slack, type: :service do
       Timecop.freeze(Time.utc(2017, 10, 10, 07, 20, 03))
     end
 
-    require 'byebug'
-
     it 'calls slack' do
       subject
       expect(a_request(:post, slack_hook_url).with(body: message.to_json)).to have_been_made
