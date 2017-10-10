@@ -27,15 +27,15 @@ RSpec.describe Atlas::Service::Mechanism::Filtering do
     end
 
     context 'when have a subparameter' do
-      before { entity.filterable_subparameters(filterable_subparameter) }
+      before { entity.subparameters(subparameters) }
       context 'when is integer' do
-        let(:filterable_subparameter) { { 'metadata.number': :to_i } }
+        let(:subparameters) { { 'metadata.number': :to_i } }
         let(:params) { 'metadata.number:gt:1' }
         it { is_expected.to include([:and, :'metadata.number', :gt, 1]) }
       end
 
       context 'when is string' do
-        let(:filterable_subparameter) { { 'metadata.name': :to_s } }
+        let(:subparameters) { { 'metadata.name': :to_s } }
         let(:params) { 'metadata.name:gt:teste' }
         it { is_expected.to include([:and, :'metadata.name', :gt, 'teste']) }
       end
