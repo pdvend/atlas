@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.4.5
+- Added Alerta de erro no slack
+
 ### 0.4.4
 - Fixed PDF render
 
