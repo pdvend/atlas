@@ -2,8 +2,6 @@ module Atlas
   module Api
     module Renderer
       class PdfRenderer < BaseRenderer
-        module_function
-
         def headers
           super.merge('Content-Type' => 'application/xml')
         end

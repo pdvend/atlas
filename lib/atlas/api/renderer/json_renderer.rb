@@ -2,8 +2,6 @@ module Atlas
   module Api
     module Renderer
       class JsonRenderer < BaseRenderer
-        module_function
-
         def headers
           super.merge('Content-Type' => 'application/json')
         end
