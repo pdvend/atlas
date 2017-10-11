@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.5.1
+- Added Informações adicionais no alerta do Slack
+
 ### 0.5.0
 - Added sub parameters ordenables
 
