@@ -9,6 +9,10 @@ module Atlas
           instance_eval(&block)
         end
 
+        define_model_schema(schema)
+      end
+
+      def self.define_model_schema(schema)
         define_method(:model_schema, ->() { schema })
         private :model_schema
       end

@@ -3,6 +3,7 @@
 module Atlas
   module Service
     module Mechanism
+      # :reek:TooManyConstants
       class Transformation
         extend Atlas::Util::I18nScope
         extend Atlas::Service::Util::ResponseHelpers

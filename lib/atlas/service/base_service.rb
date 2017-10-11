@@ -3,13 +3,27 @@
 module Atlas
   module Service
     module BaseService
+      class Hook
+        def initialize(instance, args, block)
+          @instance = instance
+          @args = args
+          @block = block
+        end
+
+        def execute(*args)
+          @instance.execute(*args, *@args) do |*internal_args, &block|
+            instance_exec(*internal_args, block, &@block)
+          end
+        end
+      end
+
       def self.prepended(base)
         base.class_eval do
           @base_service_hooks = []
 
           def self.hook(klass, *args, &block)
             block ||= ->(*) {}
-            @base_service_hooks << { klass: klass.new, args: args, block: block }
+            @base_service_hooks << Hook.new(klass.new, args, block)
             include klass::DSL if klass.constants.include?(:DSL)
           end
         end
@@ -25,14 +39,8 @@ module Atlas
         self.class
             .instance_variable_get(:@base_service_hooks)
             .lazy
-            .map { |hook| execute_hook(hook, context, params) }
+            .map { |hook| hook.execute(context, params) }
             .find { |result| !result.success? }
-      end
-
-      def execute_hook(hook, *args)
-        hook[:klass].execute(*args, *hook[:args]) do |*internal_args, &block|
-          instance_exec(*internal_args, block, &hook[:block])
-        end
       end
     end
   end

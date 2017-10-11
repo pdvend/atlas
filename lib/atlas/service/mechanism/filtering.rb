@@ -17,16 +17,18 @@ module Atlas
         end
 
         def self.normalize_filter(entity, filter_parts)
-          _, conjunction, field, operator, value = filter_parts
+          _, conjunction, raw_field, operator, value = filter_parts
+          field = raw_field.try(:to_sym)
           conjunction ||= DEFAULT_CONJUNCTION
-          value = normalize_value(entity, field.try(:to_sym), value)
-          [conjunction.to_sym, field.try(:to_sym), operator.try(:to_sym), value]
+          value = normalize_value(entity, field, value)
+          [conjunction.to_sym, field, operator.try(:to_sym), value]
         end
         private_class_method :normalize_filter
 
         def self.normalize_value(entity, field, value)
-          return value unless entity.instance_subparameters.keys.include?(field)
-          value.send(entity.instance_subparameters[field])
+          subparameters = entity.instance_subparameters
+          return value unless subparameters.keys.include?(field)
+          value.send(subparameters[field])
         end
         private_class_method :normalize_value
 

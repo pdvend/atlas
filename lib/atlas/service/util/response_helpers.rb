@@ -24,12 +24,9 @@ module Atlas
           )
         end
 
-        def failure_response(key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {}, message: nil)
-          Atlas::Service::ServiceResponse.new(
-            message: message || I18n.t(key, scope: i18n_scope),
-            data: errors,
-            code: code
-          )
+        # :reek:LongParameterList
+        def failure_response(key:, code: Enum::ErrorCodes::INTERNAL, errors: {}, msg: I18n.t(key, scope: i18n_scope))
+          Atlas::Service::ServiceResponse.new(message: msg, data: errors, code: code)
         end
       end
     end

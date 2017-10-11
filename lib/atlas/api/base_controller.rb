@@ -33,6 +33,8 @@ module Atlas
         headers.merge!(response_headers(data))
       end
 
+      # TODO: Kill render_* and use a `format` parameter to `render` + Renderers
+
       def render_stream(service_response)
         code = service_response.code
         self.body = response_stream_body(service_response)
@@ -40,18 +42,18 @@ module Atlas
       end
 
       def render_pdf(service_response)
-        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
-        data = service_response.data.force_encoding(DEFAULT_ENCODING)
         code = service_response.code
+        return render(service_response) if code != Enum::ErrorCodes::NONE
+        data = service_response.data.force_encoding(DEFAULT_ENCODING)
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         headers['Content-Type'] = 'application/pdf'
       end
 
       def render_xml(service_response)
-        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
-        data = service_response.data
         code = service_response.code
+        return render(service_response) if code != Enum::ErrorCodes::NONE
+        data = service_response.data
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         headers['Content-Type'] = 'application/xml'
@@ -66,9 +68,9 @@ module Atlas
       end
 
       def render_zip(service_response)
-        return render(service_response) if service_response.code != Enum::ErrorCodes::NONE
-        response_data = service_response.data
         code = service_response.code
+        return render(service_response) if code != Enum::ErrorCodes::NONE
+        response_data = service_response.data
         self.body = response_data[:data]
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
         headers['Content-Type'] = 'application/zip'
@@ -88,13 +90,14 @@ module Atlas
 
       def response_body(service_response)
         code = service_response.code
+        service_data = service_response.data
 
-        data = if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
-                 service_response.data.results
+        data = if service_data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
+                 service_data.results
                elsif !service_response.success?
-                 { code: code, message: service_response.message, errors: service_response.data }
+                 { code: code, message: service_response.message, errors: service_data }
                else
-                 service_response.data
+                 service_data
                end
 
         serializer_instance_to(data)

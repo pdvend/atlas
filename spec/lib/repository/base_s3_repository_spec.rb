@@ -60,11 +60,10 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
     end
   end
 
-  describe '#get' do
-    subject { described_class.new.get(uuid, content) }
+  describe '#handle' do
+    subject { described_class.new.handle(uuid) }
 
     let(:uuid) { SecureRandom.uuid }
-    let(:content) { false }
 
     context 'when uuid is invalid' do
       let(:uuid) { nil }
@@ -105,16 +104,56 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
         it { expect { subject }.to_not raise_error }
         it { is_expected.to be_success }
         it { expect(subject.data).to_not be_nil }
+        it { expect(subject.data).to be_a(File) }
+      end
+    end
+  end
 
-        context 'when content is true' do
-          let(:content) { true }
-          it { expect(subject.data).to be_a(String) }
+  describe '#content' do
+    subject { described_class.new.content(uuid) }
+
+    let(:uuid) { SecureRandom.uuid }
+
+    context 'when uuid is invalid' do
+      let(:uuid) { nil }
+
+      it { expect { subject }.to_not raise_error }
+      it { is_expected.to_not be_success }
+      it { expect(subject.data).to be_nil }
+    end
+
+    context 'when params are valid' do
+      let(:mock_s3_resource) { double('Aws::S3::Resource') }
+      let(:mock_s3_bucket) { double('Aws::S3::Bucket') }
+      let(:mock_s3_object) { double('Aws::S3::Object') }
+
+      before do
+        expect(mock_s3_bucket).to receive(:object).and_return(mock_s3_object)
+        expect(mock_s3_resource).to receive(:bucket).and_return(mock_s3_bucket)
+        expect(Aws::S3::Resource).to receive(:new).and_return(mock_s3_resource)
+      end
+
+      context 'when download fails' do
+        before do
+          expect(mock_s3_object).to receive(:get).and_raise(Aws::S3::Errors::ServiceError.new('foo', 'bar'))
         end
 
-        context 'when content is false' do
-          let(:content) { false }
-          it { expect(subject.data).to be_a(File) }
+        it { expect { subject }.to_not raise_error }
+        it { is_expected.to_not be_success }
+        it { expect(subject.data).to be_nil }
+      end
+
+      context 'when download succeeds' do
+        before do
+          expect(mock_s3_object).to receive(:get) do |params|
+            File.binwrite(params[:response_target], SecureRandom.base64)
+          end
         end
+
+        it { expect { subject }.to_not raise_error }
+        it { is_expected.to be_success }
+        it { expect(subject.data).to_not be_nil }
+        it { expect(subject.data).to be_a(String) }
       end
     end
   end

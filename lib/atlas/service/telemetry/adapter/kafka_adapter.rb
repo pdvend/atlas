@@ -16,18 +16,16 @@ module Atlas
           end
 
           def log(type, data)
-            message = {
-              type: type,
-              data: data
-            }
-
-            @producer.produce(message.to_json, topic: TELEMETRY_KAFKA_TOPIC)
-            @producer.deliver_messages
-
+            deliver(type: type, data: data)
             ServiceResponse.new(data: nil, code: Enum::ErrorCodes::NONE)
           rescue StandardError
             error_message = I18n.t(:service_unavailable, scope: i18n_scope)
             ServiceResponse.new(message: error_message, data: {}, code: Enum::ErrorCodes::INTERNAL)
+          end
+
+          def deliver(message)
+            @producer.produce(message.to_json, topic: TELEMETRY_KAFKA_TOPIC)
+            @producer.deliver_messages
           end
         end
       end

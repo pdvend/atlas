@@ -26,9 +26,11 @@ module Atlas
         end
 
         def parse_success_result_transform(results, filter_params)
+          transform = filter_params[:transform]
+
           result = Transformation::TransformResult.new(
-            filter_params[:transform][:operation],
-            filter_params[:transform][:field],
+            transform[:operation],
+            transform[:field],
             results.data
           )
           Atlas::Repository::RepositoryResponse.new(data: result, success: true)
