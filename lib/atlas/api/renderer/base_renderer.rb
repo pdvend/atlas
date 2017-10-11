@@ -9,8 +9,8 @@ module Atlas
         end
 
         def headers
-          return {} unless data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           data = service_response.data
+          return {} unless data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
           { 'Total' => data.total.to_s, 'Per-Page' => data.per_page.to_s }
         end
 
