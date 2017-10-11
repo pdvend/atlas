@@ -10,10 +10,10 @@ module Atlas
           @block = block
         end
 
-        def execute(*args)
+        def execute(instance, *args)
           hook_block = @block
           @instance.execute(*args, *@args) do |*internal_args, &block|
-            instance_exec(*internal_args, block, &hook_block)
+            instance.instance_exec(*internal_args, block, &hook_block)
           end
         end
       end
@@ -40,7 +40,7 @@ module Atlas
         self.class
             .instance_variable_get(:@base_service_hooks)
             .lazy
-            .map { |hook| hook.execute(context, params) }
+            .map { |hook| hook.execute(self, context, params) }
             .find { |result| !result.success? }
       end
     end
