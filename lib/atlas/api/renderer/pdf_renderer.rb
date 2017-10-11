@@ -3,7 +3,7 @@ module Atlas
     module Renderer
       class PdfRenderer < BaseRenderer
         def headers
-          super.merge('Content-Type' => 'application/xml')
+          super.merge('Content-Type' => 'application/pdf')
         end
 
         def body
