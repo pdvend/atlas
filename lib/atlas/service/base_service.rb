@@ -12,6 +12,7 @@ module Atlas
 
         def execute(*args)
           @instance.execute(*args, *@args) do |*internal_args, &block|
+            puts @block, block
             instance_exec(*internal_args, block, &@block)
           end
         end
