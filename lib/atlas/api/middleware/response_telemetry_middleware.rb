@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Atlas
   module API
     module Middleware
       class ResponseTelemetryMiddleware
-        TELEMETRY_SERVICE = 'service.telemetry.emit'.freeze
+        TELEMETRY_SERVICE = 'service.telemetry.emit'
 
         def initialize(app, telemetry_service: nil)
           @app = app

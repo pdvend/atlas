@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     class RequestContext < Atlas::Entity::BaseEntity

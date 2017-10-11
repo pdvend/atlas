@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::API::Middleware::RequestContextMiddleware, type: :middleware do
   describe '#initialize' do
     subject { Atlas::API::Middleware::RequestContextMiddleware.new(Atlas::Spec::Mock::RackApp[]) }

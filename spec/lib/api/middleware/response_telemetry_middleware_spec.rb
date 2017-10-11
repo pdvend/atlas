@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middleware do
   describe '#initialize' do
     subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[], params) }
@@ -16,7 +18,9 @@ RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middl
   end
 
   describe '#call' do
-    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[body], params).call(env) }
+    subject do
+      Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[body], params).call(env)
+    end
 
     context 'when params are empty' do
       let(:params) { {} }

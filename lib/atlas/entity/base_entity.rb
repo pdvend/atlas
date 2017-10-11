@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Entity
     class BaseEntity
@@ -44,8 +46,8 @@ module Atlas
       private_class_method :define_accessor_methods
 
       attr_reader :errors, :valid
-      alias :identifier :hash
-      alias :valid? :valid
+      alias identifier hash
+      alias valid? valid
 
       def initialize(**parameters)
         @errors = IceNine.deep_freeze({})
@@ -72,7 +74,6 @@ module Atlas
       def []=(key, value)
         @parameters[key] = value
         refresh_validation
-        value
       end
 
       protected

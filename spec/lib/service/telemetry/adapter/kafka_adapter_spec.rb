@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Telemetry::Adapter::KafkaAdapter, type: :adapter do
   let(:kafka) { class_double('Kafka') }
   let(:producer) { double('Kafka.producer') }

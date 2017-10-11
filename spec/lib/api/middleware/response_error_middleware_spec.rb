@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::API::Middleware::ResponseErrorMiddleware, type: :middleware do
   describe '#call' do
     subject { described_class.new(app).call(env) }
@@ -7,7 +9,7 @@ RSpec.describe Atlas::API::Middleware::ResponseErrorMiddleware, type: :middlewar
     let(:headers) { { foor: 'bar' } }
     let(:body) { double('body', body: 'Some content') }
     let(:formated_error) do
-      { code: code, message: body.body, errors: { } }.to_json
+      { code: code, message: body.body, errors: {} }.to_json
     end
     before { allow(app).to receive(:call).and_return(call_response) }
 

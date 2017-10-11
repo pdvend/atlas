@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Mechanism
@@ -5,7 +7,7 @@ module Atlas
         OPERATORS = %i[eq lt gt lte gte not like].freeze
         CONJUNCTIONS = %i[and or].freeze
         DEFAULT_CONJUNCTION = :and
-        FILTERS_SEPARATOR = ','.freeze
+        FILTERS_SEPARATOR = ','
         FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_\.-]+):(#{OPERATORS.join('|')}):(.*)/
 
         def self.filter_params(params, entity)

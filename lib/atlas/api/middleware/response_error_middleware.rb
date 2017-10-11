@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module API
     module Middleware
@@ -19,7 +21,7 @@ module Atlas
         def error_as_json(status, body)
           code = status == 404 ? Enum::ErrorCodes::ROUTE_NOT_FOUND : Enum::ErrorCodes::INTERNAL
           return body.first.to_json if body.is_a?(Array)
-          { code: code, message: body.body , errors: { } }.to_json
+          { code: code, message: body.body, errors: {} }.to_json
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
   before do
     allow_any_instance_of(described_class).to receive(:bucket_name).and_return('foobar')

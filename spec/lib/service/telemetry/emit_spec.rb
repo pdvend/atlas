@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Telemetry::Emit, type: :service do
   describe '#execute' do
     subject { described_class.new.execute(context, params) }

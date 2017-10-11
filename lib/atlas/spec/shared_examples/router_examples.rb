@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec/core/shared_context'
 
 module Atlas
@@ -16,7 +18,7 @@ module Atlas
           it { expect(subject.params).to eq(params) }
         end
 
-        shared_examples_for('a not routable endpoint') do |method_type, path, params = {}|
+        shared_examples_for('a not routable endpoint') do |method_type, path, _params = {}|
           subject { described_class.recognize(env) }
           let(:env) { Rack::MockRequest.env_for(path, method: method_type) }
 

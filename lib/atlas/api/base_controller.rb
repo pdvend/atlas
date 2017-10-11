@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module API
     module BaseController
@@ -13,8 +15,8 @@ module Atlas
         end
       end
 
-      MODULE_SEPARATOR = '::'.freeze
-      DEFAULT_ENCODING = 'utf-8'.freeze
+      MODULE_SEPARATOR = '::'
+      DEFAULT_ENCODING = 'utf-8'
 
       ERROR_CODE_TO_HTTP_STATUS = {
         Atlas::Enum::ErrorCodes::NONE => 200,
@@ -32,7 +34,6 @@ module Atlas
       end
 
       def render_stream(service_response)
-        data = service_response.data
         code = service_response.code
         self.body = response_stream_body(service_response)
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
@@ -44,7 +45,7 @@ module Atlas
         code = service_response.code
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
-        self.headers['Content-Type'] = 'application/pdf'
+        headers['Content-Type'] = 'application/pdf'
       end
 
       def render_xml(service_response)
@@ -53,7 +54,7 @@ module Atlas
         code = service_response.code
         self.body = data
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
-        self.headers['Content-Type'] = 'application/xml'
+        headers['Content-Type'] = 'application/xml'
       end
 
       def render_not_found
@@ -70,8 +71,8 @@ module Atlas
         code = service_response.code
         self.body = response_data[:data]
         self.status = ERROR_CODE_TO_HTTP_STATUS[code] || 400
-        self.headers['Content-Type'] = 'application/zip'
-        self.headers['Content-Disposition'] = 'attachment; file_name="' + response_data[:file_name].to_s + '"'
+        headers['Content-Type'] = 'application/zip'
+        headers['Content-Disposition'] = 'attachment; file_name="' + response_data[:file_name].to_s + '"'
       end
 
       private
@@ -88,13 +89,13 @@ module Atlas
       def response_body(service_response)
         code = service_response.code
 
-        if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
-          data = service_response.data.results
-        elsif !service_response.success?
-          data = { code: code, message: service_response.message, errors: service_response.data }
-        else
-          data = service_response.data
-        end
+        data = if service_response.data.is_a?(Atlas::Service::Mechanism::Pagination::QueryResult)
+                 service_response.data.results
+               elsif !service_response.success?
+                 { code: code, message: service_response.message, errors: service_response.data }
+               else
+                 service_response.data
+               end
 
         serializer_instance_to(data)
       end

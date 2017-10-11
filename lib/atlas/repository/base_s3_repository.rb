@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Atlas
   module Repository
     class BaseS3Repository
-      EMPTY_STRING = ''.freeze
+      EMPTY_STRING = ''
       private_constant :EMPTY_STRING
 
       def put(uuid, content)

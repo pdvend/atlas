@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Mechanism::Transformation do
   describe '.sorting_params' do
     subject { described_class.transformation_params(params, entity) }

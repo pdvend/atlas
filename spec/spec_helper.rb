@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'factory_girl'
 require 'coveralls'
 require 'webmock/rspec'

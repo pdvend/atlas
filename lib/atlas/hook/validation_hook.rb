@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Hook
     class ValidationHook
@@ -9,8 +11,7 @@ module Atlas
         evaluation: :schema,
         code: Enum::ErrorCodes::VALIDATION,
         message: I18n.t(:invalid_params, scope: i18n_scope)
-      }
-
+      }.freeze
 
       def execute(context, params, options = {}, &block)
         opts = DEFAULT_OPTIONS.merge(options)

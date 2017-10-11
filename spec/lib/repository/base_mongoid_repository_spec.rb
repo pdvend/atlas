@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
   before do
     allow_any_instance_of(described_class).to receive(:model).and_return(model)

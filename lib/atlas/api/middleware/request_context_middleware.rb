@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Atlas
   module API
     module Middleware
       class RequestContextMiddleware
-        CALLER_HEADER_NAME = 'HTTP_X_TELEMETRY_CALLER'.freeze
-        TRANSACTION_HEADER_NAME = 'HTTP_X_TELEMETRY_TRANSACTION_ID'.freeze
-        REMOTE_ADDR_KEY = 'REMOTE_ADDR'.freeze
-        UNKNOWN_COMPONENT = '[Unknown Component]'.freeze
+        CALLER_HEADER_NAME = 'HTTP_X_TELEMETRY_CALLER'
+        TRANSACTION_HEADER_NAME = 'HTTP_X_TELEMETRY_TRANSACTION_ID'
+        REMOTE_ADDR_KEY = 'REMOTE_ADDR'
+        UNKNOWN_COMPONENT = '[Unknown Component]'
 
         def initialize(app)
           @app = app

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Mechanism::Pagination do
   describe '.paginate_params' do
     subject { Atlas::Service::Mechanism::Pagination.paginate_params(params) }

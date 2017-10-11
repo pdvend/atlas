@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module BaseService
@@ -6,7 +8,7 @@ module Atlas
           @base_service_hooks = []
 
           def self.hook(klass, *args, &block)
-            block ||= ->(*) { }
+            block ||= ->(*) {}
             @base_service_hooks << { klass: klass.new, args: args, block: block }
             include klass::DSL if klass.constants.include?(:DSL)
           end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Repository
     class BaseMongoidRepository
@@ -16,7 +18,7 @@ module Atlas
       TRANSFORM_OPERATIONS = {
         sum: ->(collection, field) { collection.sum(field) },
         count: ->(collection, _field) { collection.count }
-      }
+      }.freeze
       private_constant :TRANSFORM_OPERATIONS
 
       def find(statements)
@@ -29,7 +31,7 @@ module Atlas
         result = apply_statements(statements)
         entities = result.to_a.map(&method(:model_to_entity))
         data = { response: entities, total: result.count }
-        response = Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
       # DEPRECATED
@@ -37,7 +39,6 @@ module Atlas
       def find_in_batches(batch_size, statements)
         query = apply_statements(statements)
         offset = 0
-        limit = batch_size
 
         loop do
           models = query.offset(offset).limit(batch_size).to_a
@@ -157,7 +158,7 @@ module Atlas
 
         begin
           DateTime.parse(value)
-        rescue
+        rescue StandardError
           value
         end
       end

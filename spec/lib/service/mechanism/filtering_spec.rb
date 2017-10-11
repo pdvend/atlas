@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Mechanism::Filtering do
   describe '.sorting_params' do
     subject { Atlas::Service::Mechanism::Filtering.filter_params(params, entity) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Telemetry
@@ -5,7 +7,7 @@ module Atlas
         class KafkaAdapter
           include Atlas::Util::I18nScope
 
-          KAFKA = 'vendor.kafka'.freeze
+          KAFKA = 'vendor.kafka'
           TELEMETRY_KAFKA_TOPIC = ENV['TELEMETRY_KAFKA_TOPIC']
 
           def initialize
@@ -23,7 +25,7 @@ module Atlas
             @producer.deliver_messages
 
             ServiceResponse.new(data: nil, code: Enum::ErrorCodes::NONE)
-          rescue
+          rescue StandardError
             error_message = I18n.t(:service_unavailable, scope: i18n_scope)
             ServiceResponse.new(message: error_message, data: {}, code: Enum::ErrorCodes::INTERNAL)
           end

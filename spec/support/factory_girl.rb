@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   require 'atlas/spec/factory_girl'
   config.include FactoryGirl::Syntax::Methods

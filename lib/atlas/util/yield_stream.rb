@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Util
     class YieldStream
@@ -10,6 +12,7 @@ module Atlas
         @yielder << data
       end
 
+      # rubocop:disable Naming/AccessorMethodName
       def set_encoding(*)
         # DO NOTHING
       end
