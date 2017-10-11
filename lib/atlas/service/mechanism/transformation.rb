@@ -22,10 +22,10 @@ module Atlas
             return failure_response(key: :invalid_params, code: PARAMETER_ERROR_CODE)
           end
 
-          raw_statments_parts(OPERATION_PARTS_SEPARATOR.match(params), entity)
+          raw_statements_parts(OPERATION_PARTS_SEPARATOR.match(params), entity)
         end
 
-        def self.raw_statments_parts(raw_parts, entity)
+        def self.raw_statements_parts(raw_parts, entity)
           operation = raw_parts.try(:[], :operation).try(:to_sym)
           unless valid_operation?(operation)
             return failure_response(key: :invalid_operation, code: PARAMETER_ERROR_CODE)
@@ -34,7 +34,7 @@ module Atlas
           return successful_response(parts) if non_parameterized_operation?(operation)
           add_field_part(entity, parts, raw_parts[:field].try(:to_sym))
         end
-        private_class_method :raw_statments_parts
+        private_class_method :raw_statements_parts
 
         def self.add_field_part(entity, parts, field)
           return failure_response(key: :invalid_field, code: PARAMETER_ERROR_CODE) unless valid_field?(entity, field)
