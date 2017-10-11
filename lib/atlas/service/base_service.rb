@@ -12,8 +12,10 @@ module Atlas
 
         def execute(instance, *args)
           hook_block = @block
-          @instance.execute(*args, *@args) do |*internal_args, &block|
-            instance.instance_exec(*internal_args, block, &hook_block)
+          instance.instance_exec do
+            @instance.execute(*args, *@args) do |*internal_args, &block|
+              instance_exec(*internal_args, block, &hook_block)
+            end
           end
         end
       end
