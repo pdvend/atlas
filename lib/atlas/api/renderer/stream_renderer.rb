@@ -1,5 +1,5 @@
 module Atlas
-  module Api
+  module API
     module Renderer
       class StreamRenderer < JsonRenderer
         def headers

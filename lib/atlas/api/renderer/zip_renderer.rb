@@ -1,7 +1,7 @@
 module Atlas
-  module Api
+  module API
     module Renderer
-      class PdfRenderer < BaseRenderer
+      class ZipRenderer < BaseRenderer
         def headers
           filename = service_response.data[:file_name].to_s
 

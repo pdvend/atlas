@@ -1,5 +1,5 @@
 module Atlas
-  module Api
+  module API
     module Renderer
       class PdfRenderer < BaseRenderer
         def headers
