@@ -3,8 +3,7 @@ module Atlas
     module Renderer
       class StreamRenderer < JsonRenderer
         def headers
-          base = super
-          body_data.is_a?(Enumerator) ? base : base.merge('Content-Type' => 'application/json')
+          body_data.is_a?(Enumerator) ? {} : super.merge('Content-Type' => 'application/json')
         end
 
         def body
