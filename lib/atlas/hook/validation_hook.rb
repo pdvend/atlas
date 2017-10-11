@@ -20,11 +20,11 @@ module Atlas
 
       private
 
-      def evaluate(context, params, options, &block)
+      def evaluate(context, params, opts, &block)
         evaluator = EVALUATION_METHODS[opts[:evaluation]]
         return VALID_PARAMS unless evaluator
         response = evaluator.evaluate(context, params, &block)
-        response ? invalid_params(response, options) : VALID_PARAMS
+        response ? invalid_params(response, opts) : VALID_PARAMS
       end
 
       def invalid_params(errors, options)
