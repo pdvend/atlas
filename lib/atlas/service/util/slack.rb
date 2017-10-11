@@ -13,6 +13,8 @@ module Atlas
           "Stacktrace:\n```\n%s\n```"
         ].join("\n").freeze
 
+        FORMAT_TAGS = ->(*tags) { tags.map { |tag| "[` #{tag} `]" }.join }
+
         def initialize(webhook_url)
           @webhook_url = webhook_url
         end
@@ -38,10 +40,6 @@ module Atlas
 
           send_message(text: message)
         end
-
-        private
-
-        FORMAT_TAGS = ->(*tags) { tags.map { |tag| "[` #{tag} `]" }.join }
       end
     end
   end

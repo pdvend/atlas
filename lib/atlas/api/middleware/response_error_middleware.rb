@@ -11,7 +11,7 @@ module Atlas
         def call(env)
           status, headers, body = @app.call(env)
           return [status, headers, body] unless IS_ERROR_STATUS[status]
-          return [status, {}, [error_as_json(status, body)]]
+          [status, {}, [error_as_json(status, body)]]
         end
 
         private

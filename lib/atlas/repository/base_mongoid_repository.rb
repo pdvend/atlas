@@ -43,25 +43,25 @@ module Atlas
       def apply_statements(sorting: [], filtering: [], pagination: {})
         [
           [:apply_pagination, pagination],
-          [:apply_order,      sorting   ],
-          [:apply_filter,     filtering ]
+          [:apply_order,      sorting],
+          [:apply_filter,     filtering]
         ].reduce(model) do |mod, (meth, param)|
-          method(meth).call(m, param)
+          method(meth).call(mod, param)
         end
       end
 
       def apply_pagination(model, offset: nil, limit: nil)
         model
-          .tap { |mod| m.offset(offset) if offset }
-          .tap { |mod| m.limit(limit) if limit }
+          .tap { |mod| mod.offset(offset) if offset }
+          .tap { |mod| mod.limit(limit) if limit }
       end
 
       def apply_order(model, sorting)
-        model.tap { |mod| m.order(OrderParser.order_params(m, sorting)) if sorting }
+        model.tap { |mod| mod.order(OrderParser.order_params(mod, sorting)) if sorting }
       end
 
       def apply_filter(model, filtering)
-        model.tap { |mod| m.where(FilterParser.filter_params(m, filtering)) if filtering }
+        model.tap { |mod| mod.where(FilterParser.filter_params(mod, filtering)) if filtering }
       end
 
       def model_to_entity(element)

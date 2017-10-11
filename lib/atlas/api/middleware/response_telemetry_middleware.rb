@@ -23,7 +23,7 @@ module Atlas
         BODY_LENGTH = {
           Rack::BodyProxy => ->(body) { body.length },
           Rack::Deflater::GzipStream => ->(body) { body.each.map(&:length).reduce(0, &:+) },
-          Rack::Chunked::Body => ->(_body) { -1 },
+          Rack::Chunked::Body => ->(_body) { -1 }
         }.freeze
 
         BODY_LENGTH_STANDARD = ->(body) { body.lazy.map(&:bytesize).reduce(&:+) }
@@ -35,7 +35,7 @@ module Atlas
 
         def data_from_response(status, _headers, body)
           body_length = BODY_LENGTH.fetch(body.class, BODY_LENGTH_STANDARD)[body]
-          data = { status: status, length: body_length }
+          { status: status, length: body_length }
         end
       end
     end

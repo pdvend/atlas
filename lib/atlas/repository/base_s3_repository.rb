@@ -72,8 +72,8 @@ module Atlas
 
       def object(remote_path)
         Aws::S3::Resource.new
-          .bucket(bucket_name)
-          .object("#{base_folder}#{remote_path}")
+                         .bucket(bucket_name)
+                         .object("#{base_folder}#{remote_path}")
       end
 
       def make_tmp(content)
