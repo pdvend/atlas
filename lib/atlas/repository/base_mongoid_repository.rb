@@ -51,17 +51,18 @@ module Atlas
       end
 
       def apply_pagination(model, offset: nil, limit: nil)
-        model
-          .tap { |mod| mod.offset(offset) if offset }
-          .tap { |mod| mod.limit(limit) if limit }
+        criteria = model
+        criteria = criteria.offset(offset) if offset
+        criteria = criteria.limit(limit) if limit
+        criteria
       end
 
       def apply_order(model, sorting)
-        model.tap { |mod| mod.order(OrderParser.order_params(mod, sorting)) if sorting }
+        sorting ? model.order(OrderParser.order_params(model, sorting)) : model
       end
 
       def apply_filter(model, filtering)
-        model.tap { |mod| mod.where(FilterParser.filter_params(mod, filtering)) if filtering }
+        filtering ? model.where(FilterParser.filter_params(model, filtering)) : model.all
       end
 
       def model_to_entity(element)
