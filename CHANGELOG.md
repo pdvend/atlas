@@ -2,6 +2,12 @@
 
 ## CHANGELOG
 
+### 0.6.0
+- Added Refatoração reek/rubocop
+
+### 0.5.1
+- Added Informações adicionais no alerta do Slack
+
 ### 0.5.0
 - Added sub parameters ordenables
 

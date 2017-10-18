@@ -19,17 +19,19 @@ RSpec.describe Atlas::Service::Util::Slack, type: :service do
   end
 
   describe '#send_error' do
-    subject { described_class.new(slack_hook_url).send_error(error, context, tags) }
+    subject { described_class.new(slack_hook_url).send_error(error, context, tags, additional_info) }
 
     let(:error) { double(:error, message: 'fake message', backtrace: ['foo'] * 15) }
     let(:context) { build(:request_context) }
     let(:tags) { %i[foo bar] }
+    let(:additional_info) { "foobar"}
     let(:message) { { text: expected_text } }
     let(:expected_text) do
       "[` #{Time.now.iso8601} `][` foo `][` bar `] *Ocorreu um erro!*\n" \
       "Contexto: `#{context.to_json}`\n" \
       "Mensagem: `fake message`\n" \
-      "Stacktrace:\n```\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\n```"
+      "Stacktrace:\n```\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\n```\n" \
+      "Informações adicionais: foobar"
     end
 
     before do
