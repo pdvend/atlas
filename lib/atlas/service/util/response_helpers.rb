@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Util
@@ -22,12 +24,11 @@ module Atlas
           )
         end
 
-        def failure_response(key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {}, message: nil)
-          Atlas::Service::ServiceResponse.new(
-            message: message || I18n.t(key, scope: i18n_scope),
-            data: errors,
-            code: code
-          )
+        # :reek:LongParameterList
+        def failure_response(
+          key: nil, code: Enum::ErrorCodes::INTERNAL, errors: {}, message: I18n.t(key, scope: i18n_scope)
+        )
+          Atlas::Service::ServiceResponse.new(message: message, data: errors, code: code)
         end
       end
     end

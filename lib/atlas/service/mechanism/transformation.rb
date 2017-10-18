@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Mechanism
+      # :reek:TooManyConstants
       class Transformation
         extend Atlas::Util::I18nScope
         extend Atlas::Service::Util::ResponseHelpers
@@ -8,22 +11,30 @@ module Atlas
 
         PARAMETERIZED_OPERATIONS = %i[sum].freeze
         NON_PARAMETERIZED_OPERATIONS = %i[count].freeze
-        OPERATION_PARTS_SEPARATOR = /^(?:(?:(?<operation>#{PARAMETERIZED_OPERATIONS.join('|')}):(?<field>.*))|(?<operation>#{NON_PARAMETERIZED_OPERATIONS.join('|')}))$/i
+        PARAMETERIZED_MATCHER = /(?<operation>#{PARAMETERIZED_OPERATIONS.join('|')}):(?<field>.*)/
+        NON_PARAMETERIZED_MATCHER = /(?<operation>#{NON_PARAMETERIZED_OPERATIONS.join('|')})/
+        OPERATION_PARTS_SEPARATOR = /^(?:(?:#{PARAMETERIZED_MATCHER}|#{NON_PARAMETERIZED_MATCHER}))$/i
+
         PARAMETER_ERROR_CODE = Atlas::Enum::ErrorCodes::PARAMETER_ERROR
 
         def self.transformation_params(params, entity)
-          return failure_response(key: :invalid_params, code: PARAMETER_ERROR_CODE) unless params.is_a?(Symbol) || params.is_a?(String)
-          raw_statments_parts(OPERATION_PARTS_SEPARATOR.match(params), entity)
+          unless params.is_a?(Symbol) || params.is_a?(String)
+            return failure_response(key: :invalid_params, code: PARAMETER_ERROR_CODE)
+          end
+
+          raw_statements_parts(OPERATION_PARTS_SEPARATOR.match(params), entity)
         end
 
-        def self.raw_statments_parts(raw_parts, entity)
+        def self.raw_statements_parts(raw_parts, entity)
           operation = raw_parts.try(:[], :operation).try(:to_sym)
-          return failure_response(key: :invalid_operation, code: PARAMETER_ERROR_CODE) unless valid_operation?(operation)
+          unless valid_operation?(operation)
+            return failure_response(key: :invalid_operation, code: PARAMETER_ERROR_CODE)
+          end
           parts = { operation: operation }
           return successful_response(parts) if non_parameterized_operation?(operation)
           add_field_part(entity, parts, raw_parts[:field].try(:to_sym))
         end
-        private_class_method :raw_statments_parts
+        private_class_method :raw_statements_parts
 
         def self.add_field_part(entity, parts, field)
           return failure_response(key: :invalid_field, code: PARAMETER_ERROR_CODE) unless valid_field?(entity, field)

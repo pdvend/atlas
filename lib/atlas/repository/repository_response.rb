@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Repository
     class RepositoryResponse < Atlas::Entity::BaseEntity

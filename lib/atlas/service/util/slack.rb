@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'httparty'
 
 module Atlas
@@ -10,6 +12,8 @@ module Atlas
           'Mensagem: `%s`',
           "Stacktrace:\n```\n%s\n```"
         ].join("\n").freeze
+
+        FORMAT_TAGS = ->(*tags) { tags.map { |tag| "[` #{tag} `]" }.join }
 
         def initialize(webhook_url)
           @webhook_url = webhook_url
@@ -28,7 +32,7 @@ module Atlas
         def send_error(error, context = {}, tags = [], additional_info = "")
           message = format(
             ERROR_FORMAT,
-            format_tags(Time.now.iso8601, *tags),
+            FORMAT_TAGS[Time.now.iso8601, *tags],
             context.try(:to_json),
             error.message.tr('`', "'"),
             error.backtrace[0, 10].join("\n").gsub('```', "'``"),
@@ -37,12 +41,6 @@ module Atlas
           message << "\nInformações adicionais: #{additional_info}" unless additional_info.blank?
 
           send_message(text: message)
-        end
-
-        private
-
-        def format_tags(*tags)
-          tags.map { |tag| "[` #{tag} `]" }.join
         end
       end
     end

@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module Atlas
   module API
     module Middleware
       class ResponseTelemetryMiddleware
-        TELEMETRY_SERVICE = 'service.telemetry.emit'.freeze
+        TELEMETRY_SERVICE = 'service.telemetry.emit'
 
-        def initialize(app, telemetry_service: nil)
+        def initialize(app, telemetry_service: Atlas::Dependencies[TELEMETRY_SERVICE])
           @app = app
-          @telemetry_service = telemetry_service || Atlas::Dependencies[TELEMETRY_SERVICE]
+          @telemetry_service = telemetry_service
         end
 
         def call(env)
@@ -18,29 +20,22 @@ module Atlas
 
         private
 
-        def body_length(body)
-          case body
-          when Rack::BodyProxy
-            body.length
-          when Rack::Deflater::GzipStream
-            gzip_stream_length(body)
-          when Rack::Chunked::Body
-            -1 # Unknown
-          else
-            body.lazy.map(&:bytesize).reduce(&:+)
-          end
-        end
+        BODY_LENGTH = {
+          Rack::BodyProxy => ->(body) { body.length },
+          Rack::Deflater::GzipStream => ->(body) { body.each.map(&:length).reduce(0, &:+) },
+          Rack::Chunked::Body => ->(_body) { -1 }
+        }.freeze
 
-        def gzip_stream_length(stream)
-          size = 0
-          stream.each { |part| size += part.length }
-          size
-        end
+        BODY_LENGTH_STANDARD = ->(body) { body.lazy.map(&:bytesize).reduce(&:+) }
 
         def emit_event(context, response)
-          body = response.last
-          data = { status: response.first, length: body_length(body) }
+          data = data_from_response(*response)
           @telemetry_service.execute(context, type: :http_response, data: data)
+        end
+
+        def data_from_response(status, _headers, body)
+          body_length = BODY_LENGTH.fetch(body.class, BODY_LENGTH_STANDARD)[body]
+          { status: status, length: body_length }
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::API::Middleware::ContextAcquirerMiddleware, type: :middleware do
   let(:rack_app) { Atlas::Spec::Mock::RackApp[] }
 

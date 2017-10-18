@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Entity
     module DynamicAttributes
@@ -7,4 +9,3 @@ module Atlas
     end
   end
 end
-

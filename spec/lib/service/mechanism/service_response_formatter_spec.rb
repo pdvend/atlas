@@ -1,10 +1,15 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
   describe '.format' do
+    subject do
+      Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(repository, repository_method, format_params)
+    end
+
     let(:entity) { Atlas::Spec::Mock::Entity[:name, :value] }
     let(:partner_params) { { page: 1, count: 3 } }
     let(:page_limit) { 25 }
     let(:data) { { total: 2, response: [1, 2] } }
-    subject { Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(repository, repository_method, format_params) }
     let(:repository) { Atlas::Spec::Mock::Repository }
     let(:repository_method) { :find_paginated }
     let(:repository_response) { Atlas::Repository::RepositoryResponse.new(data: data, success: true) }

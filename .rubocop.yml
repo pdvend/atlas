@@ -1,0 +1,34 @@
+Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Layout/IndentArray:
+  Enabled: false
+
+Layout/IndentHash:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.4
+  DisplayCopNames: true
+  Exclude:
+    - 'spec/factories/*.rb'
+    - 'vendor/**/*'
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'

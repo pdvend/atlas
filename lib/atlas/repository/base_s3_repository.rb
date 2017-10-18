@@ -1,22 +1,28 @@
+# frozen_string_literal: true
+
 module Atlas
   module Repository
     class BaseS3Repository
-      EMPTY_STRING = ''.freeze
+      EMPTY_STRING = ''
       private_constant :EMPTY_STRING
 
       def put(uuid, content)
-        return failure unless valid_put_params?(uuid, content)
-        upload(make_tmp(content), uuid)
-        Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
-      rescue Aws::S3::Errors::ServiceError
-        failure
+        return failure unless valid_object_identifier?(uuid) && content.is_a?(String)
+
+        wrap do
+          upload(content, uuid)
+          Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+        end
       end
 
-      def get(uuid, content = true)
+      def content(uuid)
         return failure unless valid_object_identifier?(uuid)
-        content ? file_content(uuid) : file_handle(uuid)
-      rescue Aws::S3::Errors::ServiceError
-        failure
+        wrap { file_content(uuid) }
+      end
+
+      def handle(uuid)
+        return failure unless valid_object_identifier?(uuid)
+        wrap { file_handle(uuid) }
       end
 
       protected
@@ -33,8 +39,10 @@ module Atlas
 
       private
 
-      def valid_put_params?(uuid, content)
-        valid_object_identifier?(uuid) && content.is_a?(String)
+      def wrap
+        yield
+      rescue Aws::S3::Errors::ServiceError
+        failure
       end
 
       def valid_object_identifier?(uuid)
@@ -42,14 +50,10 @@ module Atlas
       end
 
       def file_content(uuid)
-        handle_result = file_handle(uuid)
-        return handle_result unless handle_result.success
-
-        file = handle_result.data
-        data = file.read
-        file.close
-
-        File.unlink(file.path)
+        path = Dir::Tmpname.make_tmpname("/tmp/#{SecureRandom.uuid}-", nil)
+        object(uuid).get(response_target: path)
+        data = File.binread(path)
+        File.unlink(path)
         Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
@@ -60,28 +64,23 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: data, success: true)
       end
 
-      def upload(src, dest)
+      def upload(content, dest)
+        src = make_tmp(content)
         object(dest).upload_file(src)
         File.unlink(src)
       end
 
       def object(remote_path)
-        bucket.object("#{base_folder}#{remote_path}")
-      end
-
-      def bucket
-        s3.bucket(bucket_name)
-      end
-
-      def s3
         Aws::S3::Resource.new
+                         .bucket(bucket_name)
+                         .object("#{base_folder}#{remote_path}")
       end
 
       def make_tmp(content)
-        tempfile = Tempfile.new
-        tempfile.write(content)
-        tempfile.close
-        tempfile.path
+        Tempfile.new.tap do |tempfile|
+          tempfile.write(content)
+          tempfile.close
+        end.path
       end
 
       def failure

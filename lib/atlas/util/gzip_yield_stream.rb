@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Util
     class GzipYieldStream
@@ -11,6 +13,7 @@ module Atlas
         @gzip.flush
       end
 
+      # rubocop:disable Naming/AccessorMethodName
       def set_encoding(*)
         # DO NOTHING
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Mechanism
@@ -14,13 +16,23 @@ module Atlas
 
         def parse_success_result_paginated(results, filter_params)
           result_data = results.data
-          query_result = Pagination::QueryResult.new(result_data[:total], filter_params[:pagination][:limit], result_data[:response])
+          query_result = Pagination::QueryResult.new(
+            result_data[:total],
+            filter_params[:pagination][:limit],
+            result_data[:response]
+          )
           data = IceNine.deep_freeze(query_result)
           Atlas::Repository::RepositoryResponse.new(data: data, success: true)
         end
 
         def parse_success_result_transform(results, filter_params)
-          result = Transformation::TransformResult.new(filter_params[:transform][:operation], filter_params[:transform][:field], results.data)
+          transform = filter_params[:transform]
+
+          result = Transformation::TransformResult.new(
+            transform[:operation],
+            transform[:field],
+            results.data
+          )
           Atlas::Repository::RepositoryResponse.new(data: result, success: true)
         end
 
@@ -36,9 +48,9 @@ module Atlas
 
         def add_transform_params(filter_params, format_params)
           query_params = format_params[:query_params]
-          transform_params_result = Transformation.transformation_params(query_params[:transform], format_params[:entity])
+          transform_result = Transformation.transformation_params(query_params[:transform], format_params[:entity])
           filter_params.tap do |params|
-            params[:transform] = transform_params_result.data if transform_params_result.success?
+            params[:transform] = transform_result.data if transform_result.success?
           end
         end
 

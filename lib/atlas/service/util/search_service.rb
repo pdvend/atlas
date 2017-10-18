@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   module Service
     module Util
@@ -8,7 +10,8 @@ module Atlas
 
         def format(repository, params)
           repository_method = repository_method_by_params(params[:query_params])
-          response = Atlas::Service::Mechanism::ServiceResponseFormatter.new.format(repository, repository_method, params)
+          formatter = Atlas::Service::Mechanism::ServiceResponseFormatter.new
+          response = formatter.format(repository, repository_method, params)
           response.success ? result_from_success(response) : result_from_failure(response)
         end
 

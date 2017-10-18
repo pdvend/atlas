@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atlas
   Dependencies = Dry::Container.new.tap do |container|
     container.namespace(:service) do

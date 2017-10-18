@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Util::Slack, type: :service do
   before do
     stub_request(:post, slack_hook_url)
@@ -33,7 +35,7 @@ RSpec.describe Atlas::Service::Util::Slack, type: :service do
     end
 
     before do
-      Timecop.freeze(Time.utc(2017, 10, 10, 07, 20, 03))
+      Timecop.freeze(Time.utc(2017, 10, 10, 7, 20, 3))
     end
 
     it 'calls slack' do

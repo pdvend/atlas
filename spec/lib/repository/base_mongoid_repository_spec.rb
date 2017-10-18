@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
   before do
     allow_any_instance_of(described_class).to receive(:model).and_return(model)
+    allow(model).to receive(:order)
+    allow(model).to receive(:where)
   end
   let(:model) { double('model', fields: { field: field }) }
-  let(:collection) { double('collection') }
 
   describe '#transform' do
     subject { described_class.new.transform(statements) }
@@ -16,15 +19,11 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
     let(:field) { :value }
     let(:constraints) { [[:and, :name, :eq, 'some_name']] }
 
-    before do
-      expect(model).to receive(:where).with(name: 'some_name').and_return(collection)
-    end
-
     context 'when operation is sum' do
       let(:operation) { :sum }
 
       it do
-        expect(collection).to receive(:sum).with(field)
+        expect(model).to receive(:sum).with(field)
         subject
       end
     end
@@ -33,7 +32,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
       let(:operation) { :count }
 
       it do
-        expect(collection).to receive(:count)
+        expect(model).to receive(:count)
         subject
       end
     end

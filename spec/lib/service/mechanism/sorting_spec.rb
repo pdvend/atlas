@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::Mechanism::Sorting do
   describe '.sorting_params' do
     subject { Atlas::Service::Mechanism::Sorting.sorting_params(params, entity) }
-    let(:entity) { Atlas::Spec::Mock::Entity[:name,:account_key] }
+    let(:entity) { Atlas::Spec::Mock::Entity[:name, :account_key] }
 
     context 'when have asc attributes' do
       let(:params) { 'name' }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Atlas::Service::RequestContext, type: :entity do
   describe '.new' do
     subject { described_class.new(params) }

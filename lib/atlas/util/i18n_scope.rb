@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Atlas
   module Util
     module I18nScope
-      UNDERSCORE_SEPARATOR = '/'.freeze
-      SCOPE_SEPARATOR = '.'.freeze
+      UNDERSCORE_SEPARATOR = '/'
+      SCOPE_SEPARATOR = '.'
 
       def i18n_scope
         return @_i18n_scope if defined?(@_i18n_scope)
