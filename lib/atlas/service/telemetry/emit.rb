@@ -20,6 +20,7 @@ module Atlas
           end
 
           @adapter.log(type, data.merge(context.to_event))
+          ServiceResponse.new(data: {}, code: Enum::ErrorCodes::NONE)
         end
 
         private
