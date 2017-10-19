@@ -3,8 +3,8 @@
 RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
   before do
     allow_any_instance_of(described_class).to receive(:model).and_return(model)
-    allow(model).to receive(:order)
-    allow(model).to receive(:where)
+    allow(model).to receive(:order).and_return(model)
+    allow(model).to receive(:where).and_return(model)
   end
   let(:model) { double('model', fields: { field: field }) }
 
