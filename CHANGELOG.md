@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.6.2
+- Added Regex para validação de telefone
+
 ### 0.6.1
 - Added Regex para validação de email
 
