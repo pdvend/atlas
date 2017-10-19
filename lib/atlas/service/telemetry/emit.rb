@@ -6,13 +6,8 @@ module Atlas
       class Emit
         include Atlas::Util::I18nScope
 
-        def initialize
-          # TODO: Receive adapter by configuration
-          @adapter = if Atlas::Util::Environment.production?
-                       Adapter::KafkaAdapter.new
-                     else
-                       Adapter::StdoutAdapter.new
-                     end
+        def initialize(adapter)
+          @adapter = adapter
         end
 
         def execute(context, event)
