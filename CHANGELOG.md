@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.6.1
+- Added Regex para validação de email
+
 ### 0.6.0
 - Added Refatoração reek/rubocop
 
