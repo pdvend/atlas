@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+- Changed Exposição da telemetria e adapters
 
 ### 0.6.2
 - Added Regex para validação de telefone
