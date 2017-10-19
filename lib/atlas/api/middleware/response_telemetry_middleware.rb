@@ -12,10 +12,10 @@ module Atlas
         end
 
         def call(env)
-          response = @app.call(env)
-          context = env[:request_context]
-          emit_event(context, response) if @telemetry_service && context
-          response
+          @app.call(env).tap do |response|
+            context = env[:request_context]
+            emit_event(context, response) if @telemetry_service && context
+          end
         end
 
         private
