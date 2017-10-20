@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.7.0
+- Added Adapter Noop de Telemetria
+
 ### 0.6.2
 - Added Regex para validação de telefone
 
