@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+- Changed Exposição da telemetria e adapters
 
 ### 0.7.0
 - Added Adapter Noop de Telemetria

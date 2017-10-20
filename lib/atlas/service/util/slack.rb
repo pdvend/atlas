@@ -29,13 +29,13 @@ module Atlas
           HTTParty.post(@webhook_url, body: body.to_json)
         end
 
-        def send_error(error, context = {}, tags = [], additional_info = "")
+        def send_error(error, context = {}, tags = [], additional_info = '')
           message = format(
             ERROR_FORMAT,
             FORMAT_TAGS[Time.now.iso8601, *tags],
             context.try(:to_json),
             error.message.tr('`', "'"),
-            error.backtrace[0, 10].join("\n").gsub('```', "'``"),
+            error.backtrace[0, 10].join("\n").gsub('```', "'``")
           )
 
           message << "\nInformações adicionais: #{additional_info}" unless additional_info.blank?

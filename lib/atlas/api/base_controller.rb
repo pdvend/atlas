@@ -38,7 +38,6 @@ module Atlas
         headers.merge!(renderer.headers)
       end
 
-
       # TODO: Kill render_* and use a `format` parameter to `render` + Renderers
 
       def render_stream(service_response)
