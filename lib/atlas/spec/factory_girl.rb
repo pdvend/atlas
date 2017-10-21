@@ -47,7 +47,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :job_message, class: Atlas::Service::Job::JobMessage do
+  factory :job_message, class: Atlas::Job::JobMessage do
     topic 'foo'
     payload(foo: :bar)
     retries 0
