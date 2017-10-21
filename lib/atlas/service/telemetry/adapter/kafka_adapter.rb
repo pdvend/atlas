@@ -7,12 +7,9 @@ module Atlas
         class KafkaAdapter
           include Atlas::Util::I18nScope
 
-          KAFKA = 'vendor.kafka'
-          TELEMETRY_KAFKA_TOPIC = ENV['TELEMETRY_KAFKA_TOPIC']
-
-          def initialize
-            @kafka = Atlas::Dependencies[KAFKA]
-            @producer = @kafka.producer
+          def initialize(kafka, topic)
+            @producer = kafka.producer
+            @topic = topic
           end
 
           def log(type, data)
@@ -24,7 +21,7 @@ module Atlas
           end
 
           def deliver(message)
-            @producer.produce(message.to_json, topic: TELEMETRY_KAFKA_TOPIC)
+            @producer.produce(message.to_json, topic: @topic)
             @producer.deliver_messages
           end
         end
