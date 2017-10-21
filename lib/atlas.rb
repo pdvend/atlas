@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 require 'active_support/dependencies'
 require 'active_support/core_ext/object/try'
 require 'active_support/time_with_zone'
@@ -14,6 +16,7 @@ require 'mongoid'
 require 'pdfkit'
 require 'rack'
 require 'wkhtmltopdf_binary'
+require 'httparty'
 
 module Atlas
   ActiveSupport::Dependencies.autoload_paths ||= []

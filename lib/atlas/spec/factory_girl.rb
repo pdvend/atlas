@@ -46,4 +46,12 @@ FactoryGirl.define do
       message 'Unauthorized'
     end
   end
+
+  factory :job_message, class: Atlas::Service::Job::JobMessage do
+    topic 'foo'
+    payload(foo: :bar)
+    retries 0
+    timestamp 0
+    vendor_message(bar: :baz)
+  end
 end
