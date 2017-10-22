@@ -12,7 +12,7 @@ module Atlas
       def initialize(backend:, notifier:, jobs: [])
         @backend = backend
         @notifier = notifier
-        @jobs_instance_mapping = jobs.reduce({}, &method(:register_job_class))
+        @jobs = jobs
       end
 
       def enqueue(job, payload: {})
@@ -20,6 +20,8 @@ module Atlas
       end
 
       def process
+        # Register jobs
+        @jobs_instance_mapping = @jobs.reduce({}, &method(:register_job_class))
         # This will loop indefinitely, yielding each message in turn.
         @backend.consume(&method(:consume_message))
         successful_response({})

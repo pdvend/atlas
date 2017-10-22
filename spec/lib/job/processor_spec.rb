@@ -20,15 +20,20 @@ RSpec.describe Atlas::Job::Processor, type: :service do
     subject { described_class.new(backend: backend, notifier: notifier, jobs: jobs) }
 
     it { expect { subject }.to_not raise_error }
+  end
+
+  describe '#process' do
+    subject { described_class.new(backend: backend, notifier: notifier, jobs: jobs).process }
+
+    before do
+      allow(backend).to receive(:listen)
+      allow(backend).to receive(:consume)
+    end
 
     it 'asks backend to listen to topic' do
       expect(backend).to receive(:listen).with(job_topic)
       subject
     end
-  end
-
-  describe '#process' do
-    subject { described_class.new(backend: backend, notifier: notifier, jobs: jobs).process }
 
     it 'consumes messages from backend' do
       expect(backend).to receive(:consume)
