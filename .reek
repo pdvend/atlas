@@ -3,14 +3,9 @@ IrresponsibleModule:
 
 UtilityFunction:
   public_methods_only: true
-#  exclude:
-#    - #authorize
 
-#FeatureEnvy:
-#  enabled: false
-
-#ControlParameter:
-#  enabled: false
+FeatureEnvy:
+  enabled: false
 
 exclude_paths:
   - vendor/bundle

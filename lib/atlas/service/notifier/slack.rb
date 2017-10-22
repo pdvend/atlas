@@ -22,6 +22,7 @@ module Atlas
           HTTParty.post(@webhook_url, body: body.to_json)
         end
 
+        # :reek:LongParameterList
         def send_error(error, context = {}, tags = [], additional_info = '')
           message = format(
             ERROR_FORMAT,

@@ -35,15 +35,19 @@ module Atlas
 
           def job_message_from_kafka_message(kafka_message)
             parsed_object = JSON.parse(kafka_message.value).try(:deep_symbolize_keys) || {}
-            job_params = relevant_keys_from_kafka_message(parsed_object, kafka_message)
-            job_message = JobMessage.new(**job_params, topic: kafka_message.topic, vendor_message: kafka_message)
+            job_message_from_parsed_kafka_message(parsed_object)
             job_message if job_message.valid?
           rescue StandardError
             nil
           end
 
-          def relevant_keys_from_kafka_message(parsed_object, kafka_message)
-            [:payload, :timestamp, :retries].reduce({}) do |params, key|
+          def job_message_from_parsed_kafka_message(parsed_object)
+            job_params = relevant_keys_from_kafka_message(parsed_object)
+            JobMessage.new(**job_params, topic: kafka_message.topic, vendor_message: kafka_message)
+          end
+
+          def relevant_keys_from_kafka_message(parsed_object)
+            %i[payload timestamp retries].reduce({}) do |params, key|
               { **params, key => parsed_object[key] }
             end
           end

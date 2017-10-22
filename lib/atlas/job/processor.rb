@@ -2,6 +2,7 @@
 
 module Atlas
   module Job
+    # :reek:DataClump
     class Processor
       include Atlas::Service::Util::ResponseHelpers
       include Concurrent::Async if defined?(Concurrent)
@@ -43,7 +44,8 @@ module Atlas
         return if (Time.now.to_i - message.timestamp) <= job.class.timeout_delay
         verify_processing(job, message)
       rescue StandardError => error
-        alert_job_processing_error(error, message, job)
+        resend_job(job, message)
+        @notifier.send_error(error, Atlas::Service::SystemContext, [], "`#{message.to_json}`")
       end
 
       def verify_processing(job, message)
@@ -52,11 +54,6 @@ module Atlas
         return unless perform_success
         resend_job(job, message)
         unprocessed_message(message)
-      end
-
-      def alert_job_processing_error(error, message, job)
-        resend_job(job, message)
-        @notifier.send_error(error, Atlas::Service::SystemContext, [], "`#{message.to_json}`")
       end
 
       def resend_job(job, message)

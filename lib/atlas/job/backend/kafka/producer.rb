@@ -22,13 +22,13 @@ module Atlas
           private
 
           def internal_produce(topic, message)
-            unless message.is_a?(JobMessage)
-              raise ArgumentError.new("Expected JobMessage. Received #{message.class}.")
-            end
-
-            raise ArgumentError.new("Expected valid message. Received: #{message.inspect}") unless message.valid?
-
+            check_message(message)
             @producer.produce(message.to_json, topic: topic)
+          end
+
+          def check_message(message)
+            return if message.is_a?(JobMessage) && message.valid?
+            raise ArgumentError, "Expected valid message. Received: #{message.inspect}"
           end
         end
       end
