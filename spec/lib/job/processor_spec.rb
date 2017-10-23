@@ -131,9 +131,20 @@ RSpec.describe Atlas::Job::Processor, type: :service do
         context 'when message retries is smaller than job retries' do
           let(:retries) { job_retries - 1 }
 
-          it 're-enqueue message' do
-            expect(backend).to receive(:produce)
-            subject
+          context 'when job returns common failure' do
+            it 're-enqueue message' do
+              expect(backend).to receive(:produce)
+              subject
+            end
+          end
+
+          context 'when job returns no retry failure' do
+            let(:job_result) { Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY }
+
+            it "won't re-enqueue message" do
+              expect(backend).to_not receive(:produce)
+              subject
+            end
           end
         end
 

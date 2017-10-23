@@ -6,8 +6,7 @@ module Atlas
     class Processor
       include Atlas::Service::Util::ResponseHelpers
       include Concurrent::Async if defined?(Concurrent)
-
-      PROCESS_MESSAGE_CODE = Enum::JobsResponseCodes::PROCESS_MESSAGE
+      include Enum::JobsResponseCodes
 
       def initialize(backend:, notifier:, jobs: [])
         @backend = backend
@@ -51,10 +50,10 @@ module Atlas
       end
 
       def verify_processing(job, message)
-        perform_success = job.perform(message.payload) != PROCESS_MESSAGE_CODE
+        job_response = job.perform(message.payload)
         @backend.mark_message_as_processed(message)
-        return unless perform_success
-        resend_job(job, message)
+        return unless job_response != PROCESS_MESSAGE
+        resend_job(job, message) unless job_response == FAILED_NO_RETRY
         unprocessed_message(message)
       end
 
