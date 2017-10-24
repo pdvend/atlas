@@ -43,4 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pdfkit'
   spec.add_dependency 'httparty'
   spec.add_dependency 'wkhtmltopdf-binpath'
+  spec.add_dependency 'delayed_job'
+  spec.add_dependency 'delayed_job_mongoid'
 end
