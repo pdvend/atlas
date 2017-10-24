@@ -38,7 +38,7 @@ module Atlas
         end
 
         def failure(_job)
-          notifier.send_message(text: "Unprocessed message: `#{payload.to_json}`")
+          notifier.send_message(text: "Unprocessed message for job #{job_class.name}: `#{payload.to_json}`")
         end
       end
 
