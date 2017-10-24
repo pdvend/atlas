@@ -11,18 +11,22 @@ module Atlas
 
       JobWrapper = Struct.new(:notifier, :job_class, :payload) do
         extend Forwardable
-        include Enum::JobsResponseCodes
+
+        DONT_RAISE_RESULTS = [
+          Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
+          Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
+        ].freeze
 
         def perform
           result = job_class.new.perform(payload)
           # When job succeeds or fails and don't need retry, our job is done
-          return if [PROCESS_MESSAGE, FAILED_NO_RETRY].include?(result)
+          return if DONT_RAISE_RESULTS.include?(result)
           # Else, we should force the exception to not take the job from the queue
           raise JobKeeper
         end
 
-        def_delegator :job_class, :max_attempts, :retries
-        def_delegator :job_class, :queue_name, :topic
+        def_delegator :job_class, :retries, :max_attempts
+        def_delegator :job_class, :topic, :queue_name
 
         def reschedule_at(current_time, _attempts)
           current_time + job_class.timeout_delay
@@ -38,14 +42,13 @@ module Atlas
         end
       end
 
-      def initialize(notifier:, jobs: [], worker_options: {})
+      def initialize(notifier:, worker_options: {})
         @notifier = notifier
-        @jobs = jobs
         @worker_options = worker_options
       end
 
       def enqueue(job, payload: {})
-        dj_job = JobWrapper.new(notifier, job, payload)
+        dj_job = JobWrapper.new(@notifier, job, payload)
         Delayed::Job.enqueue(dj_job)
       end
 
