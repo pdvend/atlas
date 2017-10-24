@@ -7,7 +7,7 @@ module Atlas
       include Atlas::Service::Util::ResponseHelpers
       include Concurrent::Async if defined?(Concurrent)
 
-      JobKeeper = Class.new(StandardError) {}
+      JobKeeper = Class.new(StandardError)
 
       JobWrapper = Struct.new(:notifier, :job_class, :payload) do
         extend Forwardable
