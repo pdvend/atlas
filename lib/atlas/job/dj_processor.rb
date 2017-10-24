@@ -2,7 +2,6 @@
 
 module Atlas
   module Job
-    # :reek:DataClump
     class DjProcessor
       include Atlas::Service::Util::ResponseHelpers
       include Concurrent::Async if defined?(Concurrent)
