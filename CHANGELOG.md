@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+- Added Método `find_one` para o base_mongoid_repository
 
 ### 0.7.0
 - Added Adapter Noop de Telemetria
