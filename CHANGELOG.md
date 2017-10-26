@@ -1,6 +1,8 @@
 # Atlas
 
 ## CHANGELOG
+
+### 0.8.0
 - Changed Exposição da telemetria e adapters
 - Added Estrutura de Jobs
 
