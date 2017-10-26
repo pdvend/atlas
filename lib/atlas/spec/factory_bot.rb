@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :query_result, class: Atlas::Service::Mechanism::Pagination::QueryResult do
     total { results.try(:length) || 0 }
     per_page { results.try(:length) || 0 }
@@ -45,5 +45,13 @@ FactoryGirl.define do
       code Atlas::Enum::ErrorCodes::PERMISSION_ERROR
       message 'Unauthorized'
     end
+  end
+
+  factory :job_message, class: Atlas::Job::JobMessage do
+    topic 'foo'
+    payload(foo: :bar)
+    retries 0
+    timestamp 0
+    vendor_message(bar: :baz)
   end
 end
