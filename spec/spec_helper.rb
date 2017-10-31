@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'factory_girl'
+require 'factory_bot'
 require 'coveralls'
 require 'webmock/rspec'
 require 'timecop'
@@ -34,7 +34,7 @@ end
 
 # Configuration
 
-require 'support/factory_girl'
+require 'support/factory_bot'
 
 RSpec.configure do |config|
   config.include Atlas::Spec::SharedExamples::ControllerExamples

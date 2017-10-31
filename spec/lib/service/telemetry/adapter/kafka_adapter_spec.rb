@@ -3,32 +3,26 @@
 RSpec.describe Atlas::Service::Telemetry::Adapter::KafkaAdapter, type: :adapter do
   let(:kafka) { class_double('Kafka') }
   let(:producer) { double('Kafka.producer') }
+  let(:topic) { 'foobar' }
 
   before do
-    allow(Atlas::Dependencies).to receive(:[]).and_return(kafka)
     allow(kafka).to receive(:producer).and_return(producer)
   end
 
   describe '#initialize' do
-    subject { described_class.new }
-
-    context 'when params are empty' do
-      it { expect { subject }.to_not raise_error }
-    end
+    subject { described_class.new(kafka, topic) }
+    it { expect { subject }.to_not raise_error }
   end
 
   describe '#log' do
-    subject { described_class.new.log(type, data) }
+    subject { described_class.new(kafka, topic).log(type, data) }
     let(:type) { 'type' }
     let(:data) { { fake: 'data' } }
 
     context 'with valid params' do
-      let(:prefix) { 'some-prefix-' }
-      let(:topic) { 'some_topic' }
       let(:message) { { type: type, data: data } }
 
       before do
-        stub_const("#{described_class}::TELEMETRY_KAFKA_TOPIC", topic)
         allow(producer).to receive(:produce)
         allow(producer).to receive(:deliver_messages)
       end

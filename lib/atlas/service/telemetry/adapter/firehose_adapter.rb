@@ -7,17 +7,14 @@ module Atlas
         class FirehoseAdapter
           include Atlas::Util::I18nScope
 
-          # TODO: Receive this constants by parameter
-          REGION_NAME = ENV['AWS_FIREHOSE_REGION_NAME']
-          TELEMETRY_STREAM_PREFIX = ENV['AWS_FIREHOSE_TELEMETRY_STREAM_PREFIX']
-
-          def initialize
-            @firehose = Aws::Firehose::Client.new(region: REGION_NAME)
+          def initialize(stream_prefix = '', **options)
+            @stream_prefix = stream_prefix
+            @firehose = Aws::Firehose::Client.new(**options)
           end
 
           def log(type, data)
             @firehose.put_record(
-              delivery_stream_name: "#{TELEMETRY_STREAM_PREFIX}#{type}",
+              delivery_stream_name: "#{@stream_prefix}#{type}",
               record: { data: data.to_json }
             )
 

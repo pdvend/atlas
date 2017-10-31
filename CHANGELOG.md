@@ -4,6 +4,8 @@
 
 ### 0.8.0
 - Added Método `find_one` para o base_mongoid_repository
+- Changed Exposição da telemetria e adapters
+- Added Estrutura de Jobs
 
 ### 0.7.0
 - Added Adapter Noop de Telemetria
