@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.9.0
+- Added Método `find_one` para o base_mongoid_repository
+
 ### 0.8.0
 - Changed Exposição da telemetria e adapters
 - Added Estrutura de Jobs
