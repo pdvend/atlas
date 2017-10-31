@@ -1,6 +1,8 @@
 # Atlas
 
 ## CHANGELOG
+
+### 0.8.0
 - Added Método `find_one` para o base_mongoid_repository
 
 ### 0.7.0

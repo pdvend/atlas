@@ -10,7 +10,7 @@ module Atlas
             return false unless find_result.success
             data = find_result.data
             return false if data[:total] != 1
-            model_to_entity(data.first)
+            model_to_entity(data[:result].first)
           end
 
           private
