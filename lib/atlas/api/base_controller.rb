@@ -26,7 +26,8 @@ module Atlas
         json:   Renderer::JsonRenderer,
         xml:    Renderer::XmlRenderer,
         zip:    Renderer::ZipRenderer,
-        stream: Renderer::StreamRenderer
+        stream: Renderer::StreamRenderer,
+        pdf:    Renderer::PdfRenderer
       }.freeze
 
       DEFAULT_RENDERER = FORMAT_TO_RENDERER[:json]
