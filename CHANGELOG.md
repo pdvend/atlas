@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+### 0.9.1
+- Added Mais informações no middleware de telemetria
+
 ### 0.9.0
 - Added Método `find_one` para o base_mongoid_repository
 
