@@ -10,31 +10,76 @@ module Atlas
         end
 
         def call(env)
-          @app.call(env).tap do |response|
-            context = env[:request_context]
-            emit_event(context, response) if @telemetry_service && context
+          begin
+            response = @app.call(env)
+          rescue Exception => e
+            exception = e
           end
+
+          emit_event(env, response, exception) if @telemetry_service
+          exception ? raise(exception) : response
         end
 
         private
 
         BODY_LENGTH = {
           Rack::BodyProxy => ->(body) { body.length },
-          # TODO: Do not measure GzipStream body length since it blocks the response
-          Rack::Deflater::GzipStream => ->(body) { body.each.map(&:length).reduce(0, &:+) },
+          Rack::Deflater::GzipStream => ->(_body) { -1 },
           Rack::Chunked::Body => ->(_body) { -1 }
         }.freeze
 
         BODY_LENGTH_STANDARD = ->(body) { body.lazy.map(&:bytesize).reduce(&:+) }
 
-        def emit_event(context, response)
-          data = data_from_response(*response)
-          @telemetry_service.execute(context, type: :http_response, data: data)
+        def emit_event(env, response, exception)
+          context = env[:request_context]
+          return unless context
+
+          @telemetry_service.execute(
+            context,
+            type: :http_response,
+            data: data_from_transaction(env, response, exception)
+          )
         end
 
-        def data_from_response(status, _headers, body)
-          body_length = BODY_LENGTH.fetch(body.class, BODY_LENGTH_STANDARD)[body]
-          { status: status, length: body_length }
+        def data_from_transaction(env, response, exception)
+          {
+            **request_keys(env),
+            **response_keys(response),
+            **exception_keys(exception)
+          }
+        end
+
+        def request_keys(env)
+          url = Rack::Request.new(env).url
+
+          {
+            request: "#{env['REQUEST_METHOD']} #{url}",
+            params: env['router.params'] || {}
+          }
+        end
+
+        def response_keys(response)
+          if response
+            status, _headers, body = response
+            body_length = BODY_LENGTH.fetch(body.class, BODY_LENGTH_STANDARD)[body]
+          end
+
+          {
+            status: status,
+            length: body_length,
+          }
+        end
+
+        def exception_keys(exception)
+          return {} unless exception
+
+          {
+            exception: {
+              class:     exception.class.name,
+              message:   exception.message,
+              backtrace: exception.backtrace
+            }
+          }
         end
       end
     end

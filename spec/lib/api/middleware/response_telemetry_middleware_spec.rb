@@ -2,7 +2,8 @@
 
 RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middleware do
   describe '#initialize' do
-    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(Atlas::Spec::Mock::RackApp[], params) }
+    subject { Atlas::API::Middleware::ResponseTelemetryMiddleware.new(app, params) }
+    let(:app) { Atlas::Spec::Mock::RackApp[] }
 
     context 'when params are empty' do
       let(:params) { {} }
@@ -20,10 +21,10 @@ RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middl
   describe '#call' do
     subject do
       Atlas::API::Middleware::ResponseTelemetryMiddleware
-        .new(Atlas::Spec::Mock::RackApp[body], telemetry_service)
+        .new(app, telemetry_service)
         .call(env)
     end
-
+    let(:app) { Atlas::Spec::Mock::RackApp[body] }
     let(:telemetry_service) { double(:telemetry_service) }
 
     before { allow(telemetry_service).to receive(:execute) }
@@ -43,7 +44,7 @@ RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middl
 
       context 'when the body is a proxy' do
         let(:body) { Rack::BodyProxy.new('Proxy!') }
-        let(:expected_data) { { type: :http_response, data: { status: 200, length: 6 } } }
+        let(:expected_data) { { type: :http_response, data: { status: 200, length: 6, params: {}, request: ' ://::0' } } }
 
         it { expect { subject }.to_not raise_error }
         it do
@@ -54,13 +55,45 @@ RSpec.describe Atlas::API::Middleware::ResponseTelemetryMiddleware, type: :middl
 
       context 'when the body is a enumerable' do
         let(:body) { ['Enumerable'] }
-        let(:expected_data) { { type: :http_response, data: { status: 200, length: 10 } } }
+        let(:expected_data) { { type: :http_response, data: { status: 200, length: 10, params: {}, request: ' ://::0' } } }
 
         it { expect { subject }.to_not raise_error }
 
         it do
           expect(telemetry_service).to receive(:execute).with(env[:request_context], expected_data)
           subject
+        end
+      end
+
+      context 'when app raises error' do
+        before do
+          allow(exception).to receive(:backtrace).and_return(backtrace)
+        end
+
+        let(:app) { ->(*) { raise exception } }
+        let(:exception) { RuntimeError.new('foobar') }
+        let(:backtrace) { ['fake', 'backtrace'] }
+        let(:body) { ['Enumerable'] }
+        let(:expected_data) do
+          {
+            type: :http_response,
+            data: {
+              request: ' ://::0',
+              status: nil,
+              length: nil,
+              params: {},
+              exception: {
+                class: 'RuntimeError',
+                message: 'foobar',
+                backtrace: backtrace
+              }
+            }
+          }
+        end
+
+        it 'calls telemetry and re-raises the error' do
+          expect(telemetry_service).to receive(:execute).with(env[:request_context], expected_data)
+          expect { subject }.to raise_error(RuntimeError)
         end
       end
     end
