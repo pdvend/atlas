@@ -146,6 +146,20 @@ RSpec.describe Atlas::Job::Processor, type: :service do
               subject
             end
           end
+
+          context 'when job_result is REPROCESS_MESSAGE' do
+            let(:job_result) { Atlas::Enum::JobsResponseCodes::REPROCESS_MESSAGE }
+
+            it 're-enqueue message' do
+              expect(backend).to receive(:produce)
+              subject
+            end
+
+            it 'do not send message to slack' do
+              expect(notifier).to_not receive(:send_message)
+              subject
+            end
+          end
         end
 
         context 'when message retries is equal to job retries' do

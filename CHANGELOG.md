@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.9.2
+- Added REPROCESS_MESSAGE nos jobs
+
 ### 0.9.1
 - Added Mais informações no middleware de telemetria
 

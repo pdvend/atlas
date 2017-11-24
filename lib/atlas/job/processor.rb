@@ -54,7 +54,7 @@ module Atlas
         @backend.mark_message_as_processed(message)
         return unless job_response != PROCESS_MESSAGE
         resend_job(job, message) unless job_response == FAILED_NO_RETRY
-        unprocessed_message(message)
+        unprocessed_message(message) unless job_response == REPROCESS_MESSAGE
       end
 
       def resend_job(job, message)
