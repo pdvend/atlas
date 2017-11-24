@@ -46,9 +46,9 @@ module Atlas
         @worker_options = worker_options
       end
 
-      def enqueue(job, payload: {})
+      def enqueue(job, payload: {}, delay: 0)
         dj_job = JobWrapper.new(@notifier, job, payload)
-        Delayed::Job.enqueue(dj_job)
+        Delayed::Job.enqueue(dj_job, run_at: delay.seconds.from_now)
       end
 
       def process
