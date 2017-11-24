@@ -19,7 +19,6 @@ module Atlas
         def perform
           result = job_class.new.perform(payload)
           # When job succeeds or fails and don't need retry, our job is done
-          dar_o_enqueue_de_novo if result = REPROCESS_MESSAGE
           return if DONT_RAISE_RESULTS.include?(result)
           # Else, we should force the exception to not take the job from the queue
           raise JobKeeper
