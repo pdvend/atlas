@@ -19,6 +19,7 @@ module Atlas
         def perform
           result = job_class.new.perform(payload)
           # When job succeeds or fails and don't need retry, our job is done
+          dar_o_enqueue_de_novo if result = REPROCESS_MESSAGE
           return if DONT_RAISE_RESULTS.include?(result)
           # Else, we should force the exception to not take the job from the queue
           raise JobKeeper
@@ -46,9 +47,9 @@ module Atlas
         @worker_options = worker_options
       end
 
-      def enqueue(job, payload: {})
+      def enqueue(job, payload: {}, delay: 0)
         dj_job = JobWrapper.new(@notifier, job, payload)
-        Delayed::Job.enqueue(dj_job)
+        Delayed::Job.enqueue(dj_job, run_at: delay.seconds.from_now)
       end
 
       def process
