@@ -7,6 +7,7 @@ module Atlas
         ERROR_FORMAT = [
           '%s *Ocorreu um erro!*',
           'Contexto: `%s`',
+          'Servidor: `%s`',
           'Mensagem: `%s`',
           "Stacktrace:\n```\n%s\n```"
         ].join("\n").freeze
@@ -28,6 +29,7 @@ module Atlas
             ERROR_FORMAT,
             FORMAT_TAGS[Time.now.iso8601, *tags],
             context.try(:to_json),
+            ENV['SERVER_ENV'],
             error.message.tr('`', "'"),
             error.backtrace[0, 10].join("\n").gsub('```', "'``")
           )
