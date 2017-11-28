@@ -3,7 +3,7 @@
 ## CHANGELOG
 
 ## 0.9.3
-- Added SERVER in slack notifier
+- Added SERVER to slack notifier
 
 ## 0.9.2
 - Added REPROCESS_MESSAGE nos jobs
