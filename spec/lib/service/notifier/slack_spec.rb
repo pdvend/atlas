@@ -13,7 +13,7 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
   describe '#send_message' do
     subject { described_class.new(slack_hook_url).send_message(text: message) }
     let(:message) { 'Hello darkness my old friend.' }
-    let(:body) { { text: "[#{server}] #{message}" } }
+    let(:body) { { text: "[`#{server}`] #{message}" } }
 
     it 'calls slack' do
       subject
@@ -30,7 +30,7 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
     let(:additional_info) { 'foobar' }
     let(:message) { { text: expected_text } }
     let(:expected_text) do
-      "[#{server}] [` #{Time.now.iso8601} `][` foo `][` bar `] *Ocorreu um erro!*\n" \
+      "[`#{server}`] [` #{Time.now.iso8601} `][` foo `][` bar `] *Ocorreu um erro!*\n" \
       "Contexto: `#{context.to_json}`\n" \
       "Mensagem: `fake message`\n" \
       "Stacktrace:\n```\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\n```\n" \
