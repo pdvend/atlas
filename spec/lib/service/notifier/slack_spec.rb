@@ -7,16 +7,17 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
 
   let(:slack_hook_url) { 'http://someurl.com.br' }
 
-  before { allow(ENV).to receive(:[]).with('SERVER_ENV').and_return('SERVER') }
+  before { allow(ENV).to receive(:[]).with('SERVER_ENV').and_return(server) }
+  let(:server) { 'SERVER' }
 
   describe '#send_message' do
-    subject { described_class.new(slack_hook_url).send_message(message) }
-
-    let(:message) { { text: 'Hello darkness my old friend' } }
+    subject { described_class.new(slack_hook_url).send_message(text: message) }
+    let(:message) { 'Hello darkness my old friend.' }
+    let(:body) { { text: "[`#{server}`] #{message}" } }
 
     it 'calls slack' do
       subject
-      expect(a_request(:post, slack_hook_url).with(body: message.to_json)).to have_been_made
+      expect(a_request(:post, slack_hook_url).with(body: body.to_json)).to have_been_made
     end
   end
 
@@ -25,14 +26,12 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
 
     let(:error) { double(:error, message: 'fake message', backtrace: ['foo'] * 15) }
     let(:context) { build(:request_context) }
-    let(:server_env) { 'SERVER' }
     let(:tags) { %i[foo bar] }
     let(:additional_info) { 'foobar' }
     let(:message) { { text: expected_text } }
     let(:expected_text) do
-      "[` #{Time.now.iso8601} `][` foo `][` bar `] *Ocorreu um erro!*\n" \
+      "[`#{server}`] [` #{Time.now.iso8601} `][` foo `][` bar `] *Ocorreu um erro!*\n" \
       "Contexto: `#{context.to_json}`\n" \
-      "Servidor: `#{server_env}`\n" \
       "Mensagem: `fake message`\n" \
       "Stacktrace:\n```\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\nfoo\n```\n" \
       'Informações adicionais: foobar'

@@ -7,7 +7,6 @@ module Atlas
         ERROR_FORMAT = [
           '%s *Ocorreu um erro!*',
           'Contexto: `%s`',
-          'Servidor: `%s`',
           'Mensagem: `%s`',
           "Stacktrace:\n```\n%s\n```"
         ].join("\n").freeze
@@ -18,8 +17,9 @@ module Atlas
           @webhook_url = webhook_url
         end
 
-        def send_message(body)
+        def send_message(params)
           return if @webhook_url.blank?
+          body = { text: "[`#{ENV['SERVER_ENV']}`] #{params[:text]}" }
           HTTParty.post(@webhook_url, body: body.to_json)
         end
 
@@ -29,7 +29,6 @@ module Atlas
             ERROR_FORMAT,
             FORMAT_TAGS[Time.now.iso8601, *tags],
             context.try(:to_json),
-            ENV['SERVER_ENV'],
             error.message.tr('`', "'"),
             error.backtrace[0, 10].join("\n").gsub('```', "'``")
           )
