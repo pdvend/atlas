@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.9.6
+ - Fixed custom channel to slack notifier
+
 ## 0.9.5
  - Added Noop para job
 
