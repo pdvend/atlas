@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.9.5
+ - Added Noop para job
+
 ## 0.9.4
 - Added SERVER to all slack notifier messages
 
