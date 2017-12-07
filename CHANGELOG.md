@@ -2,8 +2,11 @@
 
 ## CHANGELOG
 
+## 0.9.6
+ - Fixed custom channel to slack notifier
+
 ## 0.9.5
-- Fixed custom channel to slack notifier
+ - Added Noop para job
 
 ## 0.9.4
 - Added SERVER to all slack notifier messages
