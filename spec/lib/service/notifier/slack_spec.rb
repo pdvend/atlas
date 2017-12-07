@@ -11,13 +11,26 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
   let(:server) { 'SERVER' }
 
   describe '#send_message' do
-    subject { described_class.new(slack_hook_url).send_message(text: message) }
+    subject { described_class.new(slack_hook_url).send_message(params) }
+    let(:params) { { text: message } }
     let(:message) { 'Hello darkness my old friend.' }
     let(:body) { { text: "[`#{server}`] #{message}" } }
 
     it 'calls slack' do
       subject
       expect(a_request(:post, slack_hook_url).with(body: body.to_json)).to have_been_made
+    end
+
+    context 'when extra params' do
+      let(:params) { { text: message, username: username, channel: channel } }
+      let(:username) { 'username' }
+      let(:channel) { '#channel' }
+      let(:body) { { text: "[`#{server}`] #{message}", username: username, channel: channel } }
+
+      it 'calls slack' do
+        subject
+        expect(a_request(:post, slack_hook_url).with(body: body.to_json)).to have_been_made
+      end
     end
   end
 
