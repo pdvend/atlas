@@ -19,7 +19,7 @@ module Atlas
 
         def send_message(params)
           return if @webhook_url.blank?
-          params[:text] = "[`#{ENV['SERVER_ENV']}`] #{params.try(:[], :text)}"
+          params[:text] = "[`#{ENV['SERVER_ENV']}`] #{params[:text]}"
           HTTParty.post(@webhook_url, body: params.to_json)
         end
 
