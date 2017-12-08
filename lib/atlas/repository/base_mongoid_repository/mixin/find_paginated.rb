@@ -7,7 +7,14 @@ module Atlas
         module FindPaginated
           def find_paginated(statements)
             result = apply_statements(statements)
-            entities = result.to_a.map(&method(:model_to_entity))
+
+            entities = Enumerator.new do |yielder|
+              result
+                .each
+                .map(&method(:model_to_entity))
+                .each(&yielder.method(:<<))
+            end
+
             data = { response: entities, total: result.count }
             Atlas::Repository::RepositoryResponse.new(data: data, success: true)
           end
