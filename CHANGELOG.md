@@ -2,6 +2,10 @@
 
 ## CHANGELOG
 
+## 0.9.7
+ - Changed Retornar enum ao em vez de array no find_paginated
+ - Changed Remover render_* do base controller
+
 ## 0.9.6
  - Fixed custom channel to slack notifier
 
