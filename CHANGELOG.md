@@ -1,6 +1,9 @@
 # Atlas
 
 ## CHANGELOG
+
+## 0.10.0
+ - Removed BaseMongoidRepository::Mixin::FindInBatches
  - Removed BaseMongoidRepository::Mixin::Find
 
 ## 0.9.7
