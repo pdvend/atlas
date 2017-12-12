@@ -6,7 +6,6 @@ module Atlas
       I18N_SCOPE = %i[atlas repository base_mongoid_repository].freeze
 
       include Mixin::Create
-      include Mixin::Find
       include Mixin::FindOne
       include Mixin::FindPaginated
       include Mixin::FindInBatches
