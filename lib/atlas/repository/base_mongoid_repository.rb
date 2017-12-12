@@ -8,7 +8,6 @@ module Atlas
       include Mixin::Create
       include Mixin::FindOne
       include Mixin::FindPaginated
-      include Mixin::FindInBatches
       include Mixin::FindInBatchesEnum
       include Mixin::Transform
       include Mixin::Update
