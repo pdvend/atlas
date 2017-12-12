@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+ - Removed BaseMongoidRepository::Mixin::Find
 
 ## 0.9.6
  - Fixed custom channel to slack notifier
