@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.10.2
+ - Added Adicionando ruby concurrent para processar a emissão de telemetria de forma assíncrona 
+
 ## 0.10.1
  - Fixed phone format number
 
@@ -17,7 +20,7 @@
  - Fixed custom channel to slack notifier
 
 ## 0.9.5
- - Added Noop para job
+ - Added Noop para jobs
 
 ## 0.9.4
 - Added SERVER to all slack notifier messages
