@@ -15,8 +15,9 @@ module Atlas
           data = event.try(:[], :data)
 
           return invalid_parameters unless valid_params(context, type, data)
-
-          @adapter.log(type, data.merge(context.to_event))
+          Concurrent::Future.execute do
+            @adapter.log(type, data.merge(context.to_event))
+          end
           ServiceResponse.new(data: {}, code: Enum::ErrorCodes::NONE)
         end
 
