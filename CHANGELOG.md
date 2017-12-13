@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.10.1
+ - Fixed phone format number
+
 ## 0.10.0
  - Removed BaseMongoidRepository::Mixin::FindInBatches
  - Removed BaseMongoidRepository::Mixin::Find
