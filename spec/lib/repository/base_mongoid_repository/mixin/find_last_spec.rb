@@ -46,7 +46,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindLast, type: 
       end
 
       context 'when hasnst sorting on statements' do
-        let(:statements) { {filtering: 'uuid:eq:x'} }
+        let(:statements) { { filtering: 'uuid:eq:x' } }
 
         it 'transforms model to entity' do
           expect(instance).to_not receive(:model_to_entity)
