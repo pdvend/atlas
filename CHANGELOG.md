@@ -2,8 +2,11 @@
 
 ## CHANGELOG
 
+## 0.10.3
+ - Added find_last
+
 ## 0.10.2
- - Added Adicionando ruby concurrent para processar a emissão de telemetria de forma assíncrona 
+ - Added Adicionando ruby concurrent para processar a emissão de telemetria de forma assíncrona
 
 ## 0.10.1
  - Fixed phone format number
