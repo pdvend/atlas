@@ -8,9 +8,8 @@ module Atlas
           def find_last(statements)
             return false unless statements[:sorting]
             find_result = wrap { internal_find_last(statements) }
-            return false unless find_result.success
             data = find_result.data
-            return false unless data[:total] > 0
+            return false unless find_result.success && data[:total] > 0
             model_to_entity(data[:result].last)
           end
 
