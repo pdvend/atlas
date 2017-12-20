@@ -6,8 +6,9 @@ module Atlas
       module Mixin
         module FindLast
           def find_last(statements)
+            return false unless statements[:sorting]
             find_result = wrap { internal_find_last(statements) }
-            return false unless find_result.success && statements[:sorting]
+            return false unless find_result.success
             data = find_result.data
             return false unless data[:total] > 0
             model_to_entity(data[:result].last)
