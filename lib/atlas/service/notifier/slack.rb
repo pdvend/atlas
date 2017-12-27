@@ -30,7 +30,7 @@ module Atlas
             FORMAT_TAGS[Time.now.iso8601, *tags],
             context.try(:to_json),
             error.message.tr('`', "'"),
-            error.backtrace[0, 10].join("\n").gsub('```', "'``")
+            error.backtrace[0, 15].join("\n").gsub('```', "'``")
           )
 
           message << "\nInformações adicionais: #{additional_info}" unless additional_info.blank?

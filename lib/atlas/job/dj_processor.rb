@@ -33,7 +33,7 @@ module Atlas
 
         def error(_job, error)
           return if error.is_a?(JobKeeper)
-          notifier.send_error(error, Atlas::Service::SystemContext, [], "`#{payload.to_json}`")
+          notifier.send_error(error, Atlas::Service::SystemContext, [], "`#{job_class.name}: #{payload.to_json}`")
         end
 
         def failure(_job)

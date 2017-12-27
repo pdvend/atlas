@@ -2,6 +2,10 @@
 
 ## CHANGELOG
 
+## 0.10.4
+- Changed Tamanho do stacktrace nos alertas do Slack
+- Added Identificação do job nas informações adicionais de falha
+
 ## 0.10.3
  - Added find_last
 
