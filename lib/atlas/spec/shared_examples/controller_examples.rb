@@ -13,7 +13,7 @@ module Atlas
             context 'when service returns success' do
               it_behaves_like 'a controller that invoke service and return success'
             end
-      
+
             it_behaves_like 'a controller returns authorization error'
             it_behaves_like 'a controller returns failure'
           end
@@ -24,7 +24,7 @@ module Atlas
             let(:service_mock) { Atlas::Spec::Mock::Service.new(service_response) }
             let(:service_response) { build(:service_response, :success, data: paginated_response) }
             let(:paginated_response) { build(:query_result, results: []) }
-            
+
             it_behaves_like 'a controller that invoke service and return success'
             it_behaves_like 'a controller returns authorization error'
             it_behaves_like 'a controller returns failure'
@@ -42,21 +42,20 @@ module Atlas
             let(:service_mock) { Atlas::Spec::Mock::Service.new(service_response) }
             let(:service_response) { build(:service_response, :success, data: query_result) }
             let(:query_result) { build(:query_result, results: service_results) }
-            
+
             it_behaves_like 'a controller returns authorization error'
             it_behaves_like 'a controller returns failure'
 
             context 'when service returns success' do
-
               it_behaves_like 'invoke service'
 
               context 'when any result' do
                 it { expect(JSON.parse(subject[2].first)['uuid']).to eq(uuid) }
               end
-      
+
               context 'when empty result' do
                 let(:query_result) { build(:query_result, results: []) }
-      
+
                 it { expect(subject[0]).to eq(404) }
                 it { expect(subject[2].first[:code]).to eq(App::Enum::ErrorCodes::RESOURCE_NOT_FOUND) }
               end
@@ -81,7 +80,6 @@ module Atlas
         shared_examples_for('a controller that is unauthorized code') do
           it { expect(subject[0]).to eq(403) }
         end
-
 
         shared_examples_for('invoke service') do
           it do
