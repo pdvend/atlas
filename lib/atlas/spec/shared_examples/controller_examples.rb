@@ -99,6 +99,7 @@ module Atlas
         shared_context('a controller returns authorization error') do
           let(:service_mock) { Atlas::Spec::Mock::Service.new(service_response) }
           let(:service_response) { build(:service_response, :unauthorized) }
+
           it_behaves_like 'a controller that is unauthorized code'
         end
 
@@ -106,6 +107,7 @@ module Atlas
           let(:params) { { invalid: :param } }
           let(:service_response) { build(:service_response, :failure) }
           let(:service_mock) { Atlas::Spec::Mock::Service.new(service_response) }
+
           it_behaves_like 'a controller that returns failure code'
         end
       end
