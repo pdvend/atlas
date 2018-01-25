@@ -47,13 +47,8 @@ module Atlas
             it_behaves_like 'a controller returns failure'
 
             context 'when service returns success' do
-              context 'invoke service' do
-                it do
-                  expect { subject }
-                    .to invoke(service_mock, :execute)
-                    .with(any_args, expected_invoke_params)
-                end
-              end
+
+              it_behaves_like 'invoke service'
 
               context 'when any result' do
                 it { expect(JSON.parse(subject[2].first)['uuid']).to eq(uuid) }
@@ -88,18 +83,18 @@ module Atlas
         end
 
 
+        shared_examples_for('invoke service') do
+          it do
+            expect { subject }
+              .to invoke(service_mock, :execute).with(any_args, expected_invoke_params)
+          end
+        end
+
         shared_examples_for('a controller that invoke service and return success') do
           let(:service_mock) { Atlas::Spec::Mock::Service.new(service_response) }
           let(:service_response) { build(:service_response, :success) }
 
-          context 'invoke service' do
-            it do
-              expect { subject }
-                .to invoke(service_mock, :execute)
-                .with(any_args, expected_invoke_params)
-            end
-          end
-
+          it_behaves_like 'invoke service'
           it_behaves_like 'a controller that returns success'
         end
 
