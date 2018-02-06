@@ -1,6 +1,7 @@
 # Atlas
 
 ## CHANGELOG
+- Changed Suporte a múltiplos namespaces de serializers
 
 ## 0.10.4
 - Changed Tamanho do stacktrace nos alertas do Slack
