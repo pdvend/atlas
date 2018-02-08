@@ -2,7 +2,10 @@
 
 ## CHANGELOG
 
-## 0.10.4
+## 0.12.0
+- Changed BaseMongoidRepository to receive model and entity in initialize
+
+## 0.11.0
 - Changed Tamanho do stacktrace nos alertas do Slack
 - Added Identificação do job nas informações adicionais de falha
 
