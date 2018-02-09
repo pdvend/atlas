@@ -20,8 +20,13 @@ module Atlas
           return API::Serializer::DummySerializer if data.blank? || data.is_a?(Hash)
           return serializer_class_to(data.first) if data.is_a?(Array)
           entity = data.class.name.split('::').last
-          BaseController.config.serializers_namespace.const_get("#{entity}Serializer".to_sym)
-        rescue NameError
+
+          BaseController.config.serializers_namespaces.each do |namespace|
+            return namespace.const_get("#{entity}Serializer".to_sym)
+          rescue NameError
+            next
+          end
+
           API::Serializer::DummySerializer
         end
       end
