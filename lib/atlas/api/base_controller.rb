@@ -6,7 +6,7 @@ module Atlas
       extend Dry::Configurable
       include Atlas::Util::I18nScope
       include Atlas::Service::Util::ResponseHelpers
-      setting :serializers_namespace
+      setting :serializers_namespaces
 
       def self.included(base)
         base.class_eval do
