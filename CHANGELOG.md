@@ -3,10 +3,10 @@
 ## CHANGELOG
 
 ## 0.12.0
-- Changed Suporte a múltiplos namespaces de serializers
+- Changed BaseMongoidRepository to receive model and entity in initialize
 
 ## 0.11.0
-- ?
+- Changed Suporte a múltiplos namespaces de serializers
 
 ## 0.10.4
 - Changed Tamanho do stacktrace nos alertas do Slack
