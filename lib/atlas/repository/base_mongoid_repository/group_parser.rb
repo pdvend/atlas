@@ -5,7 +5,7 @@ module Atlas
     class BaseMongoidRepository
       module GroupParser
         STATEMENT_PARSERS = {
-          sum: ->(field) { { '$sum' => "$#{field}" } }
+          sum: ->(field) { { '$sum' => "$#{field}" } },
           count: ->(_field) { { '$sum' => 1 } }
         }.freeze
 
