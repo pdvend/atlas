@@ -21,13 +21,13 @@ module Atlas
           field_name, operation = field.split(TRANSFORMATION_SEPARATOR)
           { field: field_name.try(:to_sym), operation: operation.try(:to_sym) }
         end
-        private_class_method :generate_sorting_statement
+        private_class_method :generate_grouping_statement
 
         def self.valid_grouping_statement?(statement, entity)
           VALID_GROUPING_OPERATIONS.include?(statement[:operation]) &&
             entity.can_transform?(statement[:field])
         end
-        private_class_method :valid_sorting_field?
+        private_class_method :valid_grouping_statement?
       end
     end
   end
