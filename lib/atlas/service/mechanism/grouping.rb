@@ -11,7 +11,7 @@ module Atlas
         def self.group_params(params, entity)
           group_field, *raw_transformations = params.try(:split, DIVIDER_FLAG)
 
-          return false if entity.present? && group_field.present? && !entity.can_group_by?(group_field)
+          return false if !group_field.present? || (entity.present? && !entity.can_group_by?(group_field))
 
           transformations = raw_transformations.lazy
               .map { |field| generate_grouping_statement(field) }
