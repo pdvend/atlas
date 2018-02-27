@@ -37,7 +37,7 @@ module Atlas
           conjunction, field, operator = filter_parts[0, 3]
           return false unless CONJUNCTIONS.include?(conjunction)
           return false unless OPERATORS.include?(operator)
-          return true if entity.is_a?(Hash) || entity.instance_parameters.include?(field)
+          return true if !entity || entity.instance_parameters.include?(field)
           entity.instance_subparameters.keys.include?(field)
         end
         private_class_method :validate_filter_parts
