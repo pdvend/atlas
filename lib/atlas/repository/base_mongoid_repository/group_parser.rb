@@ -12,7 +12,7 @@ module Atlas
         module_function
 
         def group_params(_model, group_field:, transformations:)
-          group_statements.reduce({ _id: "$#{group_field}" }, &method(:compose_group_options))
+          transformations.reduce({ _id: "$#{group_field}" }, &method(:compose_group_options))
         end
 
         def compose_group_options(current, field:, operation:)
