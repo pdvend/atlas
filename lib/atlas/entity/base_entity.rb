@@ -60,6 +60,11 @@ module Atlas
         refresh_validation
       end
 
+      # TO OVERRIDE
+      def can_transform?(field)
+        true
+      end
+
       def to_hash
         keys = dynamic_attributes? ? @parameters.keys : internal_parameters
         values = @parameters.values_at(*keys)

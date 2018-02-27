@@ -40,11 +40,12 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: { base: message }, success: false)
       end
 
-      def apply_statements(sorting: [], filtering: [], pagination: {})
+      def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: {})
         [
           [:apply_pagination, pagination],
           [:apply_order,      sorting],
-          [:apply_filter,     filtering]
+          [:apply_filter,     filtering],
+          [:apply_group,      grouping]
         ].reduce(model) do |mod, (meth, param)|
           method(meth).call(mod, param)
         end
@@ -63,6 +64,10 @@ module Atlas
 
       def apply_filter(model, filtering)
         filtering ? model.where(FilterParser.filter_params(model, filtering)) : model.all
+      end
+
+      def apply_group(model, grouping)
+        grouping ? model.aggregate('$group' => GroupParser.group_params(model, grouping)) : model
       end
 
       def model_to_entity(element)

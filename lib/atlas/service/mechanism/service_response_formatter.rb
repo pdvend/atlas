@@ -64,10 +64,13 @@ module Atlas
           entity = format_params[:entity]
           query_params = format_params[:query_params]
           constraints = format_params[:constraints] || []
+
           filter_params = {
             sorting: Sorting.sorting_params(query_params[:order], entity),
-            filtering: Filtering.filter_params(query_params[:filter], entity) + constraints
+            filtering: Filtering.filter_params(query_params[:filter], entity) + constraints,
+            grouping: Grouping.group_params(query_params[:group], entity)
           }
+
           return add_transform_params(filter_params, format_params) if query_params[:transform]
           add_pagination_params(filter_params, pagination_params(format_params))
         end
