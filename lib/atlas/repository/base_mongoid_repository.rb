@@ -64,7 +64,12 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
+        return model unless grouping
+        grouped = model.group(GroupParser.group_params(model, grouping))
+
+        model.collection(grouped.pipeline).each.map do |row|
+          { 'uuid' => row['_id'], **row }.except('_id')
+        end
       end
 
       def model_to_entity(element)

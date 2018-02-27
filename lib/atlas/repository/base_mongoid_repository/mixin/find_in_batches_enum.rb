@@ -5,8 +5,8 @@ module Atlas
     class BaseMongoidRepository
       module Mixin
         module FindInBatchesEnum
-          def find_in_batches_enum(sorting: [], filtering: [])
-            query = apply_statements(sorting: sorting, filtering: filtering)
+          def find_in_batches_enum(statements)
+            query = apply_statements(statements)
 
             Enumerator.new do |yielder|
               query
