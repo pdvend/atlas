@@ -6,7 +6,7 @@ module Atlas
       module Grouping
         DIVIDER_FLAG = ','
         TRANSFORMATION_SEPARATOR = ':'
-        VALID_GROUPING_OPERATIONS = %i[sum count].freeze
+        VALID_GROUPING_OPERATIONS = %i[sum count last max min first avg].freeze
 
         def self.group_params(params, entity)
           group_field, *raw_transformations = params.try(:split, DIVIDER_FLAG)
