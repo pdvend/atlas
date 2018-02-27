@@ -8,7 +8,7 @@ module Atlas
         TRANSFORMATION_SEPARATOR = ':'
         VALID_GROUPING_OPERATIONS = %i[sum count].freeze
 
-        def self.grouping_params(params, entity)
+        def self.group_params(params, entity)
           group_field, *raw_transformations = params.try(:split, DIVIDER_FLAG)
           transformations = raw_transformations.lazy
               .map { |field| generate_grouping_statement(field) }
