@@ -26,6 +26,7 @@ module Atlas
         private_class_method :normalize_filter
 
         def self.normalize_value(entity, field, value)
+          return value if entity.is_a?(Hash)
           subparameters = entity.instance_subparameters
           return value unless subparameters.keys.include?(field)
           value.send(subparameters[field])
