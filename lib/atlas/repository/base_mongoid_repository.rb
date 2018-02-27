@@ -64,7 +64,7 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        grouping ? model.aggregate('$group' => GroupParser.group_params(model, grouping)) : model
+        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
       end
 
       def model_to_entity(element)
