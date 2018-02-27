@@ -70,7 +70,7 @@ module Atlas
         grouped = model.group(GroupParser.group_params(model, grouping))
 
         collection.aggregate(grouped.pipeline).each.map do |row|
-          { 'uuid' => row['_id'], **row }.except('_id')
+          { uuid: row[:_id], **row }.except(:_id)
         end
       end
 
