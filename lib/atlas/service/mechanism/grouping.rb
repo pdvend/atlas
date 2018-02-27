@@ -25,7 +25,7 @@ module Atlas
 
         def self.valid_grouping_statement?(statement, entity)
           VALID_GROUPING_OPERATIONS.include?(statement[:operation]) &&
-            entity.can_transform?(statement[:field])
+            (!entity.is_a?(Hash) || entity.can_transform?(statement[:field]))
         end
         private_class_method :valid_grouping_statement?
       end
