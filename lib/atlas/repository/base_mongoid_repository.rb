@@ -37,7 +37,7 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: { base: message }, success: false)
       end
 
-      def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: {})
+      def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: false)
         [
           [:apply_pagination, pagination],
           [:apply_order,      sorting],
