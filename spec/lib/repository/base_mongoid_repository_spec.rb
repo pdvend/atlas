@@ -2,14 +2,16 @@
 
 RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
   before do
-    allow_any_instance_of(described_class).to receive(:model).and_return(model)
     allow(model).to receive(:order).and_return(model)
     allow(model).to receive(:where).and_return(model)
   end
+
   let(:model) { double('model', fields: { field: field }) }
+  let(:entity) { double('entity') }
 
   describe '#transform' do
-    subject { described_class.new.transform(statements) }
+    subject { described_class.new(model: model, entity: entity).transform(statements) }
+
     let(:statements) do
       {
         filtering: constraints,

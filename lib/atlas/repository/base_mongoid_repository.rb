@@ -14,17 +14,14 @@ module Atlas
       include Mixin::Update
       include Mixin::Destroy
 
+      def initialize(model:, entity:)
+        @model = model
+        @entity = entity
+      end
+
       protected
 
-      # :nocov:
-      def model
-        raise 'Implement the method #model in order to use BaseMongoidRepository.'
-      end
-
-      def entity
-        raise 'Implement the method #entity in order to use BaseMongoidRepository.'
-      end
-      # :nocov:
+      attr_reader :model, :entity
 
       private
 
