@@ -52,6 +52,7 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
         expect(repository).to receive(repository_method).with(
           pagination: { limit: 3, offset: 0 },
           sorting: [],
+          grouping: false,
           filtering: constraints
         )
 
@@ -83,6 +84,7 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
       it 'receive correct params' do
         expect(repository).to receive(repository_method).with(
           sorting: [],
+          grouping: false,
           filtering: constraints,
           transform: { operation: operation, field: field }
         )
