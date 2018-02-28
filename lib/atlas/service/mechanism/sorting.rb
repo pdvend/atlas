@@ -15,6 +15,7 @@ module Atlas
         end
 
         def self.valid_sorting_field?(field_name, entity)
+          return true unless entity
           entity.instance_parameters.include?(field_name) ||
             entity.instance_subparameters.keys.include?(field_name)
         end
