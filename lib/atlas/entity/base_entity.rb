@@ -61,12 +61,12 @@ module Atlas
       end
 
       # TO OVERRIDE
-      def can_transform?(field)
+      def self.can_transform?(field)
         true
       end
 
       # TO OVERRIDE
-      def can_group_by?(field)
+      def self.can_group_by?(field)
         true
       end
 
