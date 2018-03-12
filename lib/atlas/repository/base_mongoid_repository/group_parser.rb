@@ -22,8 +22,8 @@ module Atlas
 
         def compose_group_options(current, field:, operation:)
           parser = STATEMENT_PARSERS[operation]
-          field_name = field.replace('.', '_')
-          parser ? { **current, field_name => parser[field] } : current
+          output_field = field.to_s.replace('.', '_').to_sym
+          parser ? { **current, output_field => parser[field] } : current
         end
       end
     end
