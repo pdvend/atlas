@@ -48,7 +48,7 @@ module Atlas
         end
 
         return result unless grouping
-
+        debugger
         model.collection.aggregate(result.pipeline).each.map do |row|
           row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
         end
