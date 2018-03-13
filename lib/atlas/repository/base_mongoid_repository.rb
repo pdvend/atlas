@@ -60,6 +60,7 @@ module Atlas
       end
 
       def apply_filter(model, filtering)
+        debugger
         filtering ? model.where(FilterParser.filter_params(model, filtering)) : model.all
       end
 
