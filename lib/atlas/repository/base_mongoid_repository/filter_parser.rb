@@ -27,9 +27,9 @@ module Atlas
           key = conjunction == :and ? :$and : :$or
 
           if statement.keys.first === key
-            { key => [current[:statements], *statement[key]] }
+            { key => [current, *statement[key]] }
           else
-            { key => [current[:statements], statement] }
+            { key => [current, statement] }
           end
         end
 
