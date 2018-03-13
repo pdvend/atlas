@@ -31,7 +31,7 @@ module Atlas
           key = conjunction == :and ? :$and : :$or
           {
             projection: current[:projection].merge(projections),
-            { key => [current[:statements], statement] }
+            statements: { key => [current[:statements], statement] }
           }
         end
 
