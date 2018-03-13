@@ -12,7 +12,7 @@ module Atlas
         }.freeze
 
         PROJECTION_PARSERS = {
-          like: ->(field) { { field => { '$substr'.to_sym => ["$#{field}", 0, -1] } } }
+          like: ->(field) { { field.gsub('.', '_') => { '$substr'.to_sym => ["$#{field}", 0, -1] } } }
         }
 
         DEFAULT_STATEMENT_PARSER = ->(operator, value) { { "$#{operator}".to_sym => value } }
@@ -58,7 +58,7 @@ module Atlas
             value = parse_value[field, raw_value]
             matcher = STATEMENT_PARSERS[operator].try(:[], value) || DEFAULT_STATEMENT_PARSER[operator, value]
             projections = PROJECTION_PARSERS[operator].try(:[], field) || DEFAULT_PROJECTION_PARSER[field]
-            [conjunction, projections, { field => matcher }]
+            [conjunction, projections, { field.gsub('.', '_') => matcher }]
           end
         end
       end
