@@ -11,20 +11,28 @@ module Atlas
           include: ->(value) { value }
         }.freeze
 
+        PROJECTION_PARSERS = {
+          like: ->(field) { { field => { '$substr'.to_sym => ["$#{field}", 0, -1] } } }
+        }
+
         DEFAULT_STATEMENT_PARSER = ->(operator, value) { { "$#{operator}".to_sym => value } }
+        DEFAULT_PROJECTION_PARSER = ->(_field) { {} }
 
         module_function
 
         def filter_params(model, filter_statements)
           filter_statements
             .map(&PARSE_FILTER_STATEMENT[model])
-            .reduce(nil, &COMPOSE_FILTER_STATEMENTS)
+            .reduce({ projection: {}, statements: nil }, &COMPOSE_FILTER_STATEMENTS)
         end
 
-        COMPOSE_FILTER_STATEMENTS = lambda do |current, (conjunction, statement)|
-          return statement unless current
+        COMPOSE_FILTER_STATEMENTS = lambda do |current, (conjunction, projections, statement)|
+          return { projection: {}, statements: statement } unless current
           key = conjunction == :and ? :$and : :$or
-          { key => [current, statement] }
+          {
+            projection: current[:projection].merge(projections),
+            { key => [current[:statements], statement] }
+          }
         end
 
         PARSE_FILTER_STATEMENT = lambda do |model|
@@ -49,7 +57,8 @@ module Atlas
             conjunction, field, operator, raw_value = statement
             value = parse_value[field, raw_value]
             matcher = STATEMENT_PARSERS[operator].try(:[], value) || DEFAULT_STATEMENT_PARSER[operator, value]
-            [conjunction, { field => matcher }]
+            projections = PROJECTION_PARSERS[operator].try(:[], field) || DEFAULT_PROJECTION_PARSER[field]
+            [conjunction, projections, { field => matcher }]
           end
         end
       end
