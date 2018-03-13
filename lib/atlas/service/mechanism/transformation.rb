@@ -54,7 +54,7 @@ module Atlas
         private_class_method :non_parameterized_operation?
 
         def self.valid_field?(entity, field)
-          entity.instance_parameters.include?(field.try(:to_sym))
+          !entity || entity.instance_parameters.include?(field.try(:to_sym))
         end
       end
     end
