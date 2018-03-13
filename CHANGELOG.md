@@ -2,7 +2,7 @@
 
 ## CHANGELOG
 
-## 0.13.0
+## 0.12.1
 - Fixed BaseS3Repository
 
 ## 0.12.0
