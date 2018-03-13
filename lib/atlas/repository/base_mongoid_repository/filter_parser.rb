@@ -6,7 +6,7 @@ module Atlas
       module FilterParser
         STATEMENT_PARSERS = {
           eq: ->(value) { value },
-          like: ->(value) { Regexp.new(Regexp.escape(value).sub('%', '.*'), 'i') },
+          like: ->(value) { Regexp.new(Regexp.escape("#{value}").sub('%', '.*'), 'i') },
           not: ->(value) { { '$ne'.to_sym => value } },
           include: ->(value) { value }
         }.freeze
