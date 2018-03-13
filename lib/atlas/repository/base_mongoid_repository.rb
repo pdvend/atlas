@@ -60,9 +60,7 @@ module Atlas
       end
 
       def apply_filter(model, filtering)
-        return model.all unless filtering
-        parsed_params = FilterParser.filter_params(model, filtering)
-        model.where(parsed_params[:statements]).project(parsed_params[:projection])
+        filtering ? model.where(FilterParser.filter_params(model, filtering)) : model.all
       end
 
       def apply_group(model, grouping)
