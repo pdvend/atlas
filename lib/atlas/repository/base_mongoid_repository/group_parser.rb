@@ -11,8 +11,7 @@ module Atlas
           max: ->(field) { { '$max' => "$#{field}" } },
           min: ->(field) { { '$min' => "$#{field}" } },
           first: ->(field) { { '$first' => "$#{field}" } },
-          avg: ->(field) { { '$avg' => "$#{field}" } },
-          avg_count: ->(field) { { '$avg' => { '$sum' => 1 } } }
+          avg: ->(field) { { '$avg' => "$#{field}" } }
         }.freeze
 
         module_function
