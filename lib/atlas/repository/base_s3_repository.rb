@@ -50,7 +50,7 @@ module Atlas
       end
 
       def file_content(uuid)
-        path = Dir::Tmpname.make_tmpname("/tmp/#{SecureRandom.uuid}-", nil)
+        path = Tempfile.new("/#{SecureRandom.uuid}-", nil)
         object(uuid).get(response_target: path)
         data = File.binread(path)
         File.unlink(path)
@@ -58,7 +58,7 @@ module Atlas
       end
 
       def file_handle(uuid)
-        path = Dir::Tmpname.make_tmpname("/tmp/#{SecureRandom.uuid}-", nil)
+        path = Dir::Tempfile.new("/#{SecureRandom.uuid}-", nil)
         object(uuid).get(response_target: path)
         data = File.open(path, File::RDONLY | File::BINARY)
         Atlas::Repository::RepositoryResponse.new(data: data, success: true)
