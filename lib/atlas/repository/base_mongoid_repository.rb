@@ -38,13 +38,19 @@ module Atlas
       end
 
       def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: false)
-        [
-          [:apply_pagination, pagination],
-          [:apply_order,      sorting],
+        result = [
           [:apply_filter,     filtering],
-          [:apply_group,      grouping]
+          [:apply_group,      grouping],
+          [:apply_order,      sorting],
+          [:apply_pagination, pagination]
         ].reduce(model) do |mod, (meth, param)|
           method(meth).call(mod, param)
+        end
+
+        return result unless grouping
+
+        model.collection.aggregate(result.pipeline).each.map do |row|
+          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
         end
       end
 
@@ -64,14 +70,7 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        return model unless grouping
-
-        collection = model.collection
-        grouped = model.group(GroupParser.group_params(model, grouping))
-
-        collection.aggregate(grouped.pipeline).each.map do |row|
-          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
-        end
+        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
       end
 
       def model_to_entity(element)
