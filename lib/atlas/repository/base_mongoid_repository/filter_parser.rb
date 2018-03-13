@@ -38,7 +38,7 @@ module Atlas
         PARSE_FILTER_STATEMENT = lambda do |model|
           field_type = lambda do |field|
             model
-              .fields[field.to_s]
+              .fields[field]
               .try(:options)
               .try(:[], :type)
           end
@@ -54,7 +54,8 @@ module Atlas
           end
 
           return lambda do |statement|
-            conjunction, field, operator, raw_value = statement
+            conjunction, sym_field, operator, raw_value = statement
+            field = sym_field.to_s
             value = parse_value[field, raw_value]
             matcher = STATEMENT_PARSERS[operator].try(:[], value) || DEFAULT_STATEMENT_PARSER[operator, value]
             projections = PROJECTION_PARSERS[operator].try(:[], field) || DEFAULT_PROJECTION_PARSER[field]
