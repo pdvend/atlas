@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.12.1
+- Fixed BaseS3Repository
+
 ## 0.12.0
 - Changed BaseMongoidRepository to receive model and entity in initialize
 
