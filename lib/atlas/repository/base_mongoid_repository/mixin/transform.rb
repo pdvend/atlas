@@ -10,7 +10,7 @@ module Atlas
             count: ->(collection, _field) { collection.count }
           }.freeze
 
-          def transform(transform:, sorting: [], filtering: [])
+          def transform(transform:, sorting: [], filtering: [], **)
             return error(I18n.t(:transform_required, scope: I18N_SCOPE)) unless transform.is_a?(Hash)
             target_collection = apply_filter(apply_order(model, sorting), filtering)
             internal_transform(target_collection, **transform)
