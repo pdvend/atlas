@@ -41,19 +41,22 @@ module Atlas
         result = [
           [:apply_filter,     filtering],
           [:apply_group,      grouping],
-          [:apply_order,      sorting],
-          [:apply_pagination, pagination]
+          [:apply_order,      sorting]
         ].reduce(model) do |mod, (meth, param)|
           method(meth).call(mod, param)
         end
 
-        return { query: result, count: result.count } unless grouping
+        paginated_result = apply_pagination(result, pagination)
 
-        base_query = model.collection.aggregate(result.pipeline)
-        query = base_query.each.map do |row|
+        return { query: paginated_result, count: result.count } unless grouping
+
+        count_query = model.collection.aggregate(result.pipeline)
+
+        query = model.collection.aggregate(paginated_result.pipeline).each.map do |row|
           row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
         end
-        { query: query, count: base_query.count }
+
+        { query: query, count: count_query.count }
       end
 
       def apply_pagination(model, offset: nil, limit: nil)
