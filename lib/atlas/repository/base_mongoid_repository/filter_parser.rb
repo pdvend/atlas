@@ -27,7 +27,7 @@ module Atlas
         end
 
         COMPOSE_FILTER_STATEMENTS = lambda do |current, (conjunction, projections, statement)|
-          return { projection: {}, statements: statement } unless current
+          return { projection: {}, statements: statement } unless current[:statements]
           key = conjunction == :and ? :$and : :$or
           {
             projection: current[:projection].merge(projections),

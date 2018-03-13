@@ -61,7 +61,6 @@ module Atlas
 
       def apply_filter(model, filtering)
         return model.all unless filtering
-        debugger
         parsed_params = FilterParser.filter_params(model, filtering)
         model.where(parsed_params[:statements]).project(parsed_params[:projection])
       end
