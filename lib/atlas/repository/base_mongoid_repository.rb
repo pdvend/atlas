@@ -75,7 +75,9 @@ module Atlas
       end
 
       def model_to_entity(element)
-        element.is_a?(Hash) ? element : entity.new(**element.attributes.symbolize_keys)
+        return elements if element.is_a?(Hash)
+        entity_params = element.attributes.symbolize_keys
+        entity ? entity.new(**entity_params) : entity_params
       end
     end
   end
