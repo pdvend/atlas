@@ -17,7 +17,7 @@ module Atlas
 
           def internal_find_last(statements)
             result = apply_statements(statements)
-            data = { result: result, total: result.count }
+            data = { result: result[:query], total: result[:count] }
             Atlas::Repository::RepositoryResponse.new(data: data, success: true)
           end
         end

@@ -47,11 +47,13 @@ module Atlas
           method(meth).call(mod, param)
         end
 
-        return result unless grouping
-        debugger
-        model.collection.aggregate(result.pipeline).each.map do |row|
+        return { query: result, count: result.count } unless grouping
+
+        base_query = model.collection.aggregate(result.pipeline)
+        query = base_query.each.map do |row|
           row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
         end
+        { query: query, count: base_query.count }
       end
 
       def apply_pagination(model, offset: nil, limit: nil)
