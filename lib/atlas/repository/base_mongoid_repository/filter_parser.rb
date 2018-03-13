@@ -28,11 +28,16 @@ module Atlas
 
         COMPOSE_FILTER_STATEMENTS = lambda do |current, (conjunction, projections, statement)|
           return { projection: {}, statements: statement } unless current[:statements]
+
           key = conjunction == :and ? :$and : :$or
-          {
-            projection: current[:projection].merge(projections),
-            statements: { key => [current[:statements], statement] }
-          }
+          projection = current[:projection].merge(projections)
+          statements = if statement.is_a?(Hash) && statement.keys.first === key
+                         { key => [current[:statements], *statement[key]] }
+                       else
+                         { key => [current[:statements], statement] }
+                       end
+
+          { projection: projection, statements: statements }
         end
 
         PARSE_FILTER_STATEMENT = lambda do |model|
