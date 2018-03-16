@@ -6,7 +6,7 @@ module Atlas
       module Mixin
         module FindInBatchesEnum
           def find_in_batches_enum(statements)
-            query = apply_statements(statements)
+            query = apply_statements(statements)[:query]
 
             Enumerator.new do |yielder|
               query

@@ -38,14 +38,25 @@ module Atlas
       end
 
       def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: false)
-        [
-          [:apply_pagination, pagination],
-          [:apply_order,      sorting],
+        result = [
           [:apply_filter,     filtering],
-          [:apply_group,      grouping]
+          [:apply_group,      grouping],
+          [:apply_order,      sorting]
         ].reduce(model) do |mod, (meth, param)|
           method(meth).call(mod, param)
         end
+
+        paginated_result = apply_pagination(result, pagination)
+
+        return { query: paginated_result, count: result.count } unless grouping
+
+        count_query = model.collection.aggregate(result.pipeline)
+
+        query = model.collection.aggregate(paginated_result.pipeline).each.map do |row|
+          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
+        end
+
+        { query: query, count: count_query.count }
       end
 
       def apply_pagination(model, offset: nil, limit: nil)
@@ -64,18 +75,13 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        return model unless grouping
-
-        collection = model.collection
-        grouped = model.group(GroupParser.group_params(model, grouping))
-
-        collection.aggregate(grouped.pipeline).each.map do |row|
-          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
-        end
+        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
       end
 
       def model_to_entity(element)
-        element.is_a?(Hash) ? element : entity.new(**element.attributes.symbolize_keys)
+        return element if element.is_a?(Hash)
+        entity_params = element.attributes.symbolize_keys
+        entity ? entity.new(**entity_params) : entity_params
       end
     end
   end

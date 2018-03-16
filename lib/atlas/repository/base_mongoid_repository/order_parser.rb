@@ -11,7 +11,7 @@ module Atlas
         end
 
         def compose_order_options(current, order_option)
-          { **current, order_option[:field] => order_option[:direction] }
+          current.merge(order_option[:field] => order_option[:direction])
         end
       end
     end
