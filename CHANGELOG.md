@@ -2,6 +2,10 @@
 
 ## CHANGELOG
 
+## 0.13.0
+- Added Mecanismo de agrupamento
+- Fixed Várias coisas p/ migração
+
 ## 0.12.1
 - Fixed BaseS3Repository
 
