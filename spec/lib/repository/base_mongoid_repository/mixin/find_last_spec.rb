@@ -15,7 +15,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindLast, type: 
 
     let(:statements) { { sorting: 'sort' } }
     let(:entity) { double(:entity) }
-    let(:results) { [] }
+    let(:results) { { query: 'foo', count: 10 } }
 
     before do
       allow(instance).to receive(:wrap).and_yield
@@ -29,14 +29,14 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindLast, type: 
     end
 
     context 'when result returns no results' do
-      let(:results) { [] }
+      let(:results) { { query: [], count: 0} }
       it { is_expected.to be_falsey }
     end
 
     context 'when result returns more than one result' do
       let(:model_one) { double(:model) }
       let(:model_two) { double(:model) }
-      let(:results) { [model_one, model_two] }
+      let(:results) { { query: [model_one, model_two], count: 2 } }
 
       context 'when has sorting on statements' do
         it 'transforms model to entity' do
@@ -59,7 +59,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindLast, type: 
 
     context 'when result returns exactly one result' do
       let(:model) { double(:model) }
-      let(:results) { [model] }
+      let(:results) { { query: [model], count: 1 } }
       it { is_expected.to be(entity) }
 
       it 'transforms model to entity' do

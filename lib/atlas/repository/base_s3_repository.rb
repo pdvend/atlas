@@ -58,7 +58,7 @@ module Atlas
       end
 
       def file_handle(uuid)
-        path = Dir::Tempfile.new("/#{SecureRandom.uuid}-", nil)
+        path = Tempfile.new("/#{SecureRandom.uuid}-", nil)
         object(uuid).get(response_target: path)
         data = File.open(path, File::RDONLY | File::BINARY)
         Atlas::Repository::RepositoryResponse.new(data: data, success: true)

@@ -15,7 +15,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindOne, type: :
 
     let(:statements) { double(:statements) }
     let(:entity) { double(:entity) }
-    let(:results) { [] }
+    let(:results) { { query: 'foo', count: 1} }
 
     before do
       allow(instance).to receive(:wrap).and_yield
@@ -29,18 +29,18 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::FindOne, type: :
     end
 
     context 'when result returns no results' do
-      let(:results) { [] }
+    let(:results) { { query: [], count: 0} }
       it { is_expected.to be_falsey }
     end
 
     context 'when result returns more than one result' do
-      let(:results) { [double(:model), double(:model)] }
+      let(:results) { { query: [double(:model), double(:model)], count: 2 }}
       it { is_expected.to be_falsey }
     end
 
     context 'when result returns exactly one result' do
       let(:model) { double(:model) }
-      let(:results) { [model] }
+      let(:results) { { query: [model], count: 1 } }
       it { is_expected.to be(entity) }
 
       it 'transforms model to entity' do
