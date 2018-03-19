@@ -67,7 +67,7 @@ module Atlas
       end
 
       def apply_order(model, sorting)
-        sorting ? model.order(OrderParser.order_params(model, sorting)) : model
+        sorting.present? ? model.order(OrderParser.order_params(model, sorting)) : model
       end
 
       def apply_filter(model, filtering)
