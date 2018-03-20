@@ -21,7 +21,7 @@ module Atlas
               .map { |field| generate_grouping_statement(field) }
               .select { |statement| valid_grouping_statement?(statement, entity) }
 
-          { group_fields: group_field, transformations: transformations }
+          { group_fields: group_fields, transformations: transformations }
         end
 
         def self.generate_grouping_statement(field)
