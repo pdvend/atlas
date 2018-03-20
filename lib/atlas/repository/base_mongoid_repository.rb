@@ -75,7 +75,11 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
+        return model unless grouping
+
+        GroupParser.group_params(model, grouping).reduce(model) do |cur, group|
+          cur.group(group)
+        end
       end
 
       def model_to_entity(element)
