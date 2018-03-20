@@ -52,9 +52,8 @@ module Atlas
 
         count_query = model.collection.aggregate(result.pipeline)
 
-        debugger
         query = model.collection.aggregate(paginated_result.pipeline).each.map do |row|
-          row.to_h.merge(row[:_id]).except('_id')
+          row.to_h.except('_id')
         end
 
         { query: query, count: count_query.count }
