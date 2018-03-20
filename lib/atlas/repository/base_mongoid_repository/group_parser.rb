@@ -18,8 +18,8 @@ module Atlas
 
         def group_params(_model, group_fields:, transformations:)
           group_fields.map.with_index do |group_field, index|
-            next_groups = group_fields[(index + 1)..-1].map { |field| [field, { "$last" => "$#{field}"}] }.to_h
-            initial_group = { _id: "$#{group_field}" }.merge(next_groups)
+            next_groups = group_fields[(index + 1)..-1].map { |field| [field.to_sym, { "$last" => "$#{field}"}] }.to_h
+            initial_group = { _id: "$#{group_field}", **next_groups }
             transformations.reduce(initial_group, &method(:compose_group_options))
           end
         end
