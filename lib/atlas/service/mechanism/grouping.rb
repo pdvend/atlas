@@ -4,20 +4,24 @@ module Atlas
   module Service
     module Mechanism
       module Grouping
+        GROUP_FIELDS_DIVIDER = '!'
         DIVIDER_FLAG = ','
         TRANSFORMATION_SEPARATOR = ':'
         VALID_GROUPING_OPERATIONS = %i[sum count last max min first avg].freeze
 
         def self.group_params(params, entity)
-          group_field, *raw_transformations = params.try(:split, DIVIDER_FLAG)
+          group_fields_str, *raw_transformations = params.try(:split, DIVIDER_FLAG)
 
-          return false if !group_field.present? || (entity.present? && !entity.can_group_by?(group_field))
+          return false unless group_fields_str.present?
+
+          group_fields = group_fields_str.split(GROUP_FIELDS_DIVIDER)
+          return if entity.present? && !entity.can_group_by?(group_fields)
 
           transformations = raw_transformations.lazy
               .map { |field| generate_grouping_statement(field) }
               .select { |statement| valid_grouping_statement?(statement, entity) }
 
-          { group_field: group_field, transformations: transformations }
+          { group_fields: group_field, transformations: transformations }
         end
 
         def self.generate_grouping_statement(field)

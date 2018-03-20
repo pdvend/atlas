@@ -53,7 +53,11 @@ module Atlas
         count_query = model.collection.aggregate(result.pipeline)
 
         query = model.collection.aggregate(paginated_result.pipeline).each.map do |row|
-          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
+          ids = grouping[:group_fields].map_with_index do |group_field, idx|
+            [group_field.gsub('.', '_'), row[:_id][idx]]
+          end.to_h
+
+          row.to_h.merge(ids).except('_id')
         end
 
         { query: query, count: count_query.count }

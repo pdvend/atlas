@@ -16,8 +16,9 @@ module Atlas
 
         module_function
 
-        def group_params(_model, group_field:, transformations:)
-          transformations.reduce({ _id: "$#{group_field}" }, &method(:compose_group_options))
+        def group_params(_model, group_fields:, transformations:)
+          group_id = { _id: group_fields.map { |group_field| "$#{group_field}" } }
+          transformations.reduce(group_id, &method(:compose_group_options))
         end
 
         def compose_group_options(current, field:, operation:)
