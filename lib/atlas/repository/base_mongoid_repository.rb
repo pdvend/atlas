@@ -53,7 +53,7 @@ module Atlas
         count_query = model.collection.aggregate(result.pipeline)
 
         query = model.collection.aggregate(paginated_result.pipeline).each.map do |row|
-          row.to_h.merge(grouping[:group_field] => row[:_id]).except('_id')
+          row.to_h.except('_id')
         end
 
         { query: query, count: count_query.count }
@@ -75,7 +75,11 @@ module Atlas
       end
 
       def apply_group(model, grouping)
-        grouping ? model.group(GroupParser.group_params(model, grouping)) : model
+        return model unless grouping
+
+        GroupParser.group_params(model, grouping).reduce(model) do |cur, group|
+          cur.group(group)
+        end
       end
 
       def model_to_entity(element)
