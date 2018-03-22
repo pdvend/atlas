@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.14.0
+- Added Agrupamento por múltiplos campos
+
 ## 0.13.0
 - Added Mecanismo de agrupamento
 - Fixed Várias coisas p/ migração
