@@ -6,6 +6,10 @@ module Atlas
       EMPTY_STRING = ''
       private_constant :EMPTY_STRING
 
+      def initialize(notifier:)
+        @notifier = notifier
+      end
+
       def put(uuid, content)
         return failure unless valid_object_identifier?(uuid) && content.is_a?(String)
 
@@ -32,11 +36,6 @@ module Atlas
         raise 'Implement the method #bucket_name in order to use BaseMongoidRepository.'
       end
       # :nocov:
-
-      # :nocov:
-      def notifier
-        raise 'Implement the method #notifier in order to use BaseS3Repository.'
-      end
 
       def base_folder
         EMPTY_STRING
@@ -89,7 +88,7 @@ module Atlas
       end
 
       def failure
-        notifier.send_error(message)
+        @notifier.send_error(message)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
       end
     end
