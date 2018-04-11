@@ -1,6 +1,8 @@
 # Atlas
 
 ## CHANGELOG
+## 0.14.1
+- Added notificações de erros nos repositorios
 
 ## 0.14.0
 - Added Agrupamento por múltiplos campos

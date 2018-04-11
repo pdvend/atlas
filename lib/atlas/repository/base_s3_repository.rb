@@ -33,6 +33,11 @@ module Atlas
       end
       # :nocov:
 
+      # :nocov:
+      def notifier
+        raise 'Implement the method #notifier in order to use BaseS3Repository.'
+      end
+
       def base_folder
         EMPTY_STRING
       end
@@ -41,8 +46,8 @@ module Atlas
 
       def wrap
         yield
-      rescue Aws::S3::Errors::ServiceError
-        failure
+      rescue Aws::S3::Errors::ServiceError => message
+        failure(message)
       end
 
       def valid_object_identifier?(uuid)
@@ -84,6 +89,7 @@ module Atlas
       end
 
       def failure
+        notifier.send_error(message)
         Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
       end
     end
