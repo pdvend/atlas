@@ -48,7 +48,7 @@ module Atlas
       def wrap
         yield
       rescue Aws::S3::Errors::ServiceError => message
-        failure(message)
+        failure(message: message)
       end
 
       def valid_object_identifier?(uuid)
@@ -90,7 +90,7 @@ module Atlas
       end
 
       def failure(message: nil)
-        notifier.send_error(message) if message
+        notifier.send_error(message) if message.present?
         Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
       end
     end
