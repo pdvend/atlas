@@ -5,8 +5,14 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
     allow_any_instance_of(described_class).to receive(:bucket_name).and_return('foobar')
   end
 
+  let(:notifier) { double }
+
+  before do
+    allow(notifier).to receive(:send_error).with(anything).and_return(nil)
+  end
+
   describe '#put' do
-    subject { described_class.new.put(uuid, content) }
+    subject { described_class.new(notifier: notifier).put(uuid, content) }
 
     let(:uuid) { SecureRandom.uuid }
     let(:content) { SecureRandom.base64(20) }
@@ -61,7 +67,7 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
   end
 
   describe '#handle' do
-    subject { described_class.new.handle(uuid) }
+    subject { described_class.new(notifier: notifier).handle(uuid) }
 
     let(:uuid) { SecureRandom.uuid }
 
@@ -110,7 +116,7 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
   end
 
   describe '#content' do
-    subject { described_class.new.content(uuid) }
+    subject { described_class.new(notifier: notifier).content(uuid) }
 
     let(:uuid) { SecureRandom.uuid }
 

@@ -14,9 +14,10 @@ module Atlas
       include Mixin::Update
       include Mixin::Destroy
 
-      def initialize(model:, entity:)
+      def initialize(model:, entity:, notifier:)
         @model = model
         @entity = entity
+        @notifier = notifier
       end
 
       protected
@@ -24,6 +25,8 @@ module Atlas
       attr_reader :model, :entity
 
       private
+
+      attr_accessor :model, :entity, :notifier
 
       def wrap
         yield
@@ -34,6 +37,7 @@ module Atlas
       end
 
       def error(message)
+        notifier.send_error(message)
         Atlas::Repository::RepositoryResponse.new(data: { base: message }, success: false)
       end
 

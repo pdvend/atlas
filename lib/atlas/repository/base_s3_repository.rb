@@ -6,6 +6,10 @@ module Atlas
       EMPTY_STRING = ''
       private_constant :EMPTY_STRING
 
+      def initialize(notifier:)
+        @notifier = notifier
+      end
+
       def put(uuid, content)
         return failure unless valid_object_identifier?(uuid) && content.is_a?(String)
 
@@ -39,10 +43,12 @@ module Atlas
 
       private
 
+      attr_accessor :notifier
+
       def wrap
         yield
-      rescue Aws::S3::Errors::ServiceError
-        failure
+      rescue Aws::S3::Errors::ServiceError => message
+        failure(message: message)
       end
 
       def valid_object_identifier?(uuid)
@@ -83,7 +89,8 @@ module Atlas
         end.path
       end
 
-      def failure
+      def failure(message: nil)
+        notifier.send_error(message) if message.present?
         Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
       end
     end

@@ -8,9 +8,10 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository, type: :repository do
 
   let(:model) { double('model', fields: { field: field }) }
   let(:entity) { double('entity') }
+  let(:notifier) { double }
 
   describe '#transform' do
-    subject { described_class.new(model: model, entity: entity).transform(statements) }
+    subject { described_class.new(model: model, entity: entity, notifier: notifier).transform(statements) }
 
     let(:statements) do
       {
