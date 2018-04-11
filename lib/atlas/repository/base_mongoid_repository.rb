@@ -26,6 +26,8 @@ module Atlas
 
       private
 
+      attr_accessor :model, :entity, :notifier
+
       def wrap
         yield
       rescue Mongo::Error::OperationFailure => op_failure_err
@@ -35,7 +37,7 @@ module Atlas
       end
 
       def error(message)
-        @notifier.send_error(message)
+        notifier.send_error(message)
         Atlas::Repository::RepositoryResponse.new(data: { base: message }, success: false)
       end
 

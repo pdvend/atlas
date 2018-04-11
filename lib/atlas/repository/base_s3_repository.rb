@@ -43,6 +43,8 @@ module Atlas
 
       private
 
+      attr_accessor :notifier
+
       def wrap
         yield
       rescue Aws::S3::Errors::ServiceError => message
@@ -87,8 +89,8 @@ module Atlas
         end.path
       end
 
-      def failure
-        @notifier.send_error(message)
+      def failure(message: nil)
+        notifier.send_error(message) if message
         Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
       end
     end
