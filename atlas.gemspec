@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'webmock'
   spec.add_development_dependency 'timecop'
-  spec.add_dependency 'activesupport', '5.0'
+  spec.add_dependency 'activesupport'
   spec.add_dependency 'aws-sdk', '~> 2'
   spec.add_dependency 'concurrent-ruby'
   spec.add_dependency 'dry-configurable'
