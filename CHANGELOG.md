@@ -1,6 +1,10 @@
 # Atlas
 
 ## CHANGELOG
+
+## 0.14.3
+- Added i18n para mongoid
+
 ## 0.14.1
 - Added notificações de erros nos repositorios
 
