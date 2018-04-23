@@ -15,7 +15,7 @@ module Atlas
 
         wrap do
           upload(content, uuid)
-          Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+          Atlas::Repository::RepositoryResponse.new(data: nil, err_code: Enum::ErrorCodes::NONE)
         end
       end
 
@@ -60,14 +60,14 @@ module Atlas
         object(uuid).get(response_target: path)
         data = File.binread(path)
         File.unlink(path)
-        Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
       end
 
       def file_handle(uuid)
         path = Tempfile.new("/#{SecureRandom.uuid}-", nil)
         object(uuid).get(response_target: path)
         data = File.open(path, File::RDONLY | File::BINARY)
-        Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+        Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
       end
 
       def upload(content, dest)
@@ -91,7 +91,7 @@ module Atlas
 
       def failure(message: nil)
         notifier.send_error(message) if message.present?
-        Atlas::Repository::RepositoryResponse.new(data: nil, success: false)
+        Atlas::Repository::RepositoryResponse.new(data: nil, err_code: Enum::ErrorCodes::REPOSITORY_INTERNAL)
       end
     end
   end

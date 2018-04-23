@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.14.4
+- Added err_code para repositorios
+
 ## 0.14.3
 - Added i18n para mongoid
 

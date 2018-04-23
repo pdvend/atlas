@@ -12,7 +12,7 @@ RSpec.describe Atlas::Service::Mechanism::ServiceResponseFormatter do
     let(:data) { { total: 2, response: [1, 2] } }
     let(:repository) { Atlas::Spec::Mock::Repository }
     let(:repository_method) { :find_paginated }
-    let(:repository_response) { Atlas::Repository::RepositoryResponse.new(data: data, success: true) }
+    let(:repository_response) { Atlas::Repository::RepositoryResponse.new(data: data, err_code: Atlas::Enum::ErrorCodes::NONE) }
     let(:constraints) { [[:and, :name, :eq, 'name']] }
     before { allow(repository).to receive(repository_method).and_return(repository_response) }
 

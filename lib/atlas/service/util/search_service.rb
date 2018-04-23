@@ -12,7 +12,7 @@ module Atlas
           repository_method = repository_method_by_params(params[:query_params])
           formatter = Atlas::Service::Mechanism::ServiceResponseFormatter.new
           response = formatter.format(repository, repository_method, params)
-          response.success ? result_from_success(response) : result_from_failure(response)
+          response.success? ? result_from_success(response) : result_from_failure(response)
         end
 
         def repository_method_by_params(query_params)
