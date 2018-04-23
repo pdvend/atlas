@@ -7,7 +7,7 @@ module Atlas
         def format(repository, repository_method, format_params)
           filter_params = filter_params(format_params)
           results = repository.send(repository_method, filter_params)
-          return results unless results.success
+          return results unless results.success?
           return parse_success_result_transform(results, filter_params) if repository_method == :transform
           parse_success_result_paginated(results, filter_params)
         end
@@ -22,7 +22,7 @@ module Atlas
             result_data[:response]
           )
           data = IceNine.deep_freeze(query_result)
-          Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+          Atlas::Repository::RepositoryResponse.new(data: data, err_code: Atlas::Enum::ErrorCodes::NONE)
         end
 
         def parse_success_result_transform(results, filter_params)
@@ -33,7 +33,7 @@ module Atlas
             transform[:field],
             results.data
           )
-          Atlas::Repository::RepositoryResponse.new(data: result, success: true)
+          Atlas::Repository::RepositoryResponse.new(data: result, err_code: Atlas::Enum::ErrorCodes::NONE)
         end
 
         def pagination_params(params)

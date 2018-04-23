@@ -10,11 +10,11 @@ FactoryBot.define do
     data { Object.new }
 
     trait :success do
-      success true
+      err_code 1000
     end
 
     trait :failure do
-      success false
+      err_code -1001
     end
   end
 

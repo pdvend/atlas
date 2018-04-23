@@ -9,7 +9,7 @@ module Atlas
             return false unless statements[:sorting]
             find_result = wrap { internal_find_last(statements) }
             data = find_result.data
-            return false unless find_result.success && data[:total] > 0
+            return false unless find_result.success? && data[:total] > 0
             model_to_entity(data[:result].last)
           end
 
@@ -18,7 +18,7 @@ module Atlas
           def internal_find_last(statements)
             result = apply_statements(statements)
             data = { result: result[:query], total: result[:count] }
-            Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+            Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
           end
         end
       end

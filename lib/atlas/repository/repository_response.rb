@@ -3,14 +3,16 @@
 module Atlas
   module Repository
     class RepositoryResponse < Atlas::Entity::BaseEntity
-      parameters :data, :success
+      parameters :data, :err_code
 
       schema do
         required(:data)
-        required(:success).filled(:bool?)
+        required(:err_code).filled(:int?)
       end
 
-      alias success? success
+      def success?
+        err_code == Enum::ErrorCodes::NONE
+      end
     end
   end
 end

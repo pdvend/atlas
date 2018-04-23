@@ -5,6 +5,8 @@ module Atlas
     # :reek:TooManyConstants
     module ErrorCodes
       NONE = 1000
+      REPOSITORY_INTERNAL = -1001
+      DOCUMENT_NOT_FOUND = -1002
       INTERNAL = 1001
       VALIDATION = 1002
       PARAMETER_ERROR = 1003

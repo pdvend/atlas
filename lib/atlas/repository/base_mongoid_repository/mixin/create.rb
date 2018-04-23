@@ -11,7 +11,7 @@ module Atlas
             wrap do
               return error('Invalid entity') unless entity.is_a?(Entity::BaseEntity)
               model.create(Create::GET_PARAMS[entity])
-              Atlas::Repository::RepositoryResponse.new(data: nil, success: true)
+              Atlas::Repository::RepositoryResponse.new(data: nil, err_code: Enum::ErrorCodes::NONE)
             end
           end
         end

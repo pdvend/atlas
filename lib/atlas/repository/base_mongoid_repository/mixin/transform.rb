@@ -20,7 +20,7 @@ module Atlas
 
           def internal_transform(collection, operation:, field: nil)
             result = Transform::TRANSFORM_OPERATIONS[operation][collection, field.try(:to_sym)]
-            Atlas::Repository::RepositoryResponse.new(data: result, success: true)
+            Atlas::Repository::RepositoryResponse.new(data: result, err_code: Enum::ErrorCodes::NONE)
           end
         end
       end

@@ -16,7 +16,7 @@ module Atlas
             end
 
             data = { response: entities, total: result[:count] }
-            Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+            Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
           end
         end
       end

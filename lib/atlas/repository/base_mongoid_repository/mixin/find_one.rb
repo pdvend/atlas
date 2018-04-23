@@ -7,7 +7,7 @@ module Atlas
         module FindOne
           def find_one(statements)
             find_result = wrap { internal_find_one(statements) }
-            return false unless find_result.success
+            return false unless find_result.success?
             data = find_result.data
             return false if data[:total] != 1
             model_to_entity(data[:result].first)
@@ -18,7 +18,7 @@ module Atlas
           def internal_find_one(statements)
             result = apply_statements(statements)
             data = { result: result[:query], total: result[:count] }
-            Atlas::Repository::RepositoryResponse.new(data: data, success: true)
+            Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
           end
         end
       end
