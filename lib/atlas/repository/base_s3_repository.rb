@@ -73,7 +73,7 @@ module Atlas
       def upload(content, dest)
         src = make_tmp(content)
         object(dest).upload_file(src)
-        File.unlink(src)
+        File.unlink(src) if File.exist?(src)
       end
 
       def object(remote_path)
