@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.14.5
+- Fixed s3 check
+
 ## 0.14.4
 - Added err_code para repositorios
 
