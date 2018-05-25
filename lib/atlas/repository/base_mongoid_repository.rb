@@ -13,6 +13,7 @@ module Atlas
       include Mixin::Transform
       include Mixin::Update
       include Mixin::Destroy
+      include Error::Wrap
 
       def initialize(model:, entity:, notifier:)
         @model = model
@@ -27,21 +28,6 @@ module Atlas
       private
 
       attr_accessor :model, :entity, :notifier
-
-      def wrap
-        yield
-      rescue Mongo::Error::OperationFailure => op_failure_err
-        error(op_failure_err)
-      rescue Mongoid::Errors::DocumentNotFound => error
-        error(error, code: Enum::ErrorCodes::DOCUMENT_NOT_FOUND)
-      rescue Mongoid::Errors::MongoidError => internal_err
-        error(internal_err)
-      end
-
-      def error(message, code: Enum::ErrorCodes::REPOSITORY_INTERNAL)
-        notifier.send_error(message)
-        Atlas::Repository::RepositoryResponse.new(data: { base: message }, err_code: code)
-      end
 
       def apply_statements(sorting: [], filtering: [], pagination: {}, grouping: false)
         result = [
