@@ -25,6 +25,8 @@ FactoryBot.define do
     transaction_id { SecureRandom.uuid }
     account_id { SecureRandom.uuid }
     authentication_type :system
+    user {{}}
+    company {{}}
   end
 
   factory :service_response, class: Atlas::Service::ServiceResponse do
