@@ -3,7 +3,8 @@
 module Atlas
   module Service
     class RequestContext < Atlas::Entity::BaseEntity
-      parameters :time, :component, :caller, :transaction_id, :account_id, :authentication_type
+      parameters :time, :component, :caller, :transaction_id, :account_id, :authentication_type,
+                 :user, :company
 
       AUTHENTICATION_TYPES = %i[user none system].freeze
       schema do
@@ -13,6 +14,8 @@ module Atlas
         required(:transaction_id) { filled? & str? & format?(Atlas::Enum::Formats::UUID4) }
         required(:account_id) { filled? > (str? &  format?(Atlas::Enum::Formats::UUID4)) }
         required(:authentication_type).filled(type?: Symbol, included_in?: AUTHENTICATION_TYPES)
+        required(:user).filled(:hash?)
+        required(:company).filled(:hash?)
       end
 
       def to_event
