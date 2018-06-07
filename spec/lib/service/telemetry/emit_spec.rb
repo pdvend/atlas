@@ -22,7 +22,7 @@ RSpec.describe Atlas::Service::Telemetry::Emit, type: :service do
 
       it_behaves_like 'a service with valid params'
       it 'calls adapter#log' do
-        expect(adapter).to receive(:log).with(:fake, fake: :data, **context.to_event)
+        expect(adapter).to receive(:log).with(:fake, fake: :data, **context.to_event.to_h)
         subject
       end
     end
