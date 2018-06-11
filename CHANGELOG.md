@@ -3,6 +3,9 @@
 ## CHANGELOG
 
 ## 0.15.0
+  - Added Melhor tratamento de erros e notificações no s3Repository
+
+## 0.15.0
 - Added Melhor tratamento de erros e notificações no BaseMongoidRepository
 
 ## 0.14.5
