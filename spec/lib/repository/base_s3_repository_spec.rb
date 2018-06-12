@@ -91,13 +91,25 @@ RSpec.describe Atlas::Repository::BaseS3Repository, type: :repository do
       end
 
       context 'when download fails' do
-        before do
-          expect(mock_s3_object).to receive(:get).and_raise(Aws::S3::Errors::ServiceError.new('foo', 'bar'))
+        context 'and AWS::S3 raise ServiceError' do
+          before do
+            expect(mock_s3_object).to receive(:get).and_raise(Aws::S3::Errors::ServiceError.new('foo', 'bar'))
+          end
+
+          it { expect { subject }.to_not raise_error }
+          it { is_expected.to_not be_success }
+          it { expect(subject.data).to be_nil }
         end
 
-        it { expect { subject }.to_not raise_error }
-        it { is_expected.to_not be_success }
-        it { expect(subject.data).to be_nil }
+        context 'and AWS::S3 raise NoSuchKey' do
+          before do
+            expect(mock_s3_object).to receive(:get).and_raise(Aws::S3::Errors::NoSuchKey.new('foo', 'bar'))
+          end
+
+          it { expect { subject }.to_not raise_error }
+          it { is_expected.to_not be_success }
+          it { expect(subject.data).to be_nil }
+        end
       end
 
       context 'when download succeeds' do

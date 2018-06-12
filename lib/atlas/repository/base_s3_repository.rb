@@ -49,9 +49,9 @@ module Atlas
 
       def wrap
         yield
-      rescue Aws::S3::Errors::ServiceError => message
-        failure(message: message)
       rescue Aws::S3::Errors::NoSuchKey => message
+        failure(message: message, code: Enum::ErrorCodes::DOCUMENT_NOT_FOUND)
+      rescue Aws::S3::Errors::ServiceError => message
         failure(message: message, code: DEFAULT_ERR_CODE)
       end
 
@@ -93,9 +93,9 @@ module Atlas
         end.path
       end
 
-      def failure(message, code: nil)
-        notifier.send_error(message) if code != DEFAULT_ERR_CODE
-        Atlas::Repository::RepositoryResponse.new(data: { base: message }, err_code: code)
+      def failure(message: nil, code: DEFAULT_ERR_CODE)
+        notifier.send_error(message) if code == DEFAULT_ERR_CODE && message.present?
+        Atlas::Repository::RepositoryResponse.new(data: nil, err_code: code)
       end
     end
   end
