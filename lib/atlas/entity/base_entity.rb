@@ -57,6 +57,7 @@ module Atlas
         @errors = IceNine.deep_freeze({})
         @parameters = parameters
         @valid = true
+        @dirty_attributes = {}
         refresh_validation
       end
 
@@ -68,6 +69,10 @@ module Atlas
       # TO OVERRIDE
       def self.can_group_by?(field)
         true
+      end
+
+      def dirty_attributes
+        @dirty_attributes
       end
 
       def to_hash
@@ -86,8 +91,15 @@ module Atlas
       end
 
       def []=(key, value)
+        organize_dirty_attributes(key, value)
+
         @parameters[key] = value
         refresh_validation
+      end
+
+      def was?(key)
+        return self[key] unless dirty_attributes[key]
+        dirty_attributes[key][:was]
       end
 
       protected
@@ -97,6 +109,19 @@ module Atlas
       end
 
       private
+
+      def organize_dirty_attributes(key, value)
+        if @dirty_attributes.key?(key)
+          if @dirty_attributes[key][:was] == value
+            @dirty_attributes.delete(key)
+          else
+            @dirty_attributes[key][:value] = value
+          end
+        else
+          self_key = self.send(key)
+          @dirty_attributes[key] = { was: self_key, value: value } if self_key != value
+        end
+      end
 
       def refresh_validation
         return unless model_schema
