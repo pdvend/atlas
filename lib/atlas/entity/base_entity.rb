@@ -110,13 +110,17 @@ module Atlas
 
       private
 
+      def already_have_attribute(key, value)
+        if @dirty_attributes[key][:was] == value
+          @dirty_attributes.delete(key)
+        else
+          @dirty_attributes[key][:value] = value
+        end
+      end
+
       def organize_dirty_attributes(key, value)
         if @dirty_attributes.key?(key)
-          if @dirty_attributes[key][:was] == value
-            @dirty_attributes.delete(key)
-          else
-            @dirty_attributes[key][:value] = value
-          end
+          already_have_attribute(key, value)
         else
           self_key = self.send(key)
           @dirty_attributes[key] = { was: self_key, value: value } if self_key != value
