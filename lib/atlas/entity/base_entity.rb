@@ -49,7 +49,7 @@ module Atlas
       end
       private_class_method :define_accessor_methods
 
-      attr_reader :errors, :valid
+      attr_reader :errors, :valid, :dirty_attributes
       alias identifier hash
       alias valid? valid
 
@@ -57,6 +57,7 @@ module Atlas
         @errors = IceNine.deep_freeze({})
         @parameters = parameters
         @valid = true
+        @dirty_attributes = {}
         refresh_validation
       end
 
@@ -86,8 +87,15 @@ module Atlas
       end
 
       def []=(key, value)
+        organize_dirty_attributes(key, value)
+
         @parameters[key] = value
         refresh_validation
+      end
+
+      def was?(key)
+        return self[key] unless dirty_attributes[key]
+        dirty_attributes[key][:was]
       end
 
       protected
@@ -97,6 +105,23 @@ module Atlas
       end
 
       private
+
+      def reorganize_dirty_attributes_key(key, value)
+        if @dirty_attributes[key][:was] == value
+          @dirty_attributes.delete(key)
+        else
+          @dirty_attributes[key][:value] = value
+        end
+      end
+
+      def organize_dirty_attributes(key, value)
+        if @dirty_attributes.key?(key)
+          reorganize_dirty_attributes_key(key, value)
+        else
+          self_key = self[key]
+          @dirty_attributes[key] = { was: self_key, value: value } if self_key != value
+        end
+      end
 
       def refresh_validation
         return unless model_schema
