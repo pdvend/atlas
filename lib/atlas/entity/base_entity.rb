@@ -49,7 +49,7 @@ module Atlas
       end
       private_class_method :define_accessor_methods
 
-      attr_reader :errors, :valid
+      attr_reader :errors, :valid, :dirty_attributes
       alias identifier hash
       alias valid? valid
 
@@ -69,10 +69,6 @@ module Atlas
       # TO OVERRIDE
       def self.can_group_by?(field)
         true
-      end
-
-      def dirty_attributes
-        @dirty_attributes
       end
 
       def to_hash
@@ -110,7 +106,7 @@ module Atlas
 
       private
 
-      def already_have_attribute(key, value)
+      def reorganize_dirty_attributes_key(key, value)
         if @dirty_attributes[key][:was] == value
           @dirty_attributes.delete(key)
         else
@@ -120,9 +116,9 @@ module Atlas
 
       def organize_dirty_attributes(key, value)
         if @dirty_attributes.key?(key)
-          already_have_attribute(key, value)
+          reorganize_dirty_attributes_key(key, value)
         else
-          self_key = self.send(key)
+          self_key = self[key]
           @dirty_attributes[key] = { was: self_key, value: value } if self_key != value
         end
       end
