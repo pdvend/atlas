@@ -11,7 +11,6 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
         transaction_id: transaction_id,
         account_id: account_id,
         authentication_type: authentication_type,
-        company: company,
         user: user
       }
     end
@@ -21,7 +20,6 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
     let(:transaction_id) { SecureRandom.uuid }
     let(:account_id) { SecureRandom.uuid }
     let(:authentication_type) { :user }
-    let(:company) { { uuid: 'foo' } }
     let(:user) { { uuid: 'bar' } }
 
     context 'with valid params' do
@@ -100,7 +98,6 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
         transaction_id
         account_id
         authentication_type
-        company
         user
       ])
     end

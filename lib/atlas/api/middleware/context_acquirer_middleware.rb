@@ -17,7 +17,6 @@ module Atlas
             request_context.account_id = env[:account_id]
             request_context.authentication_type = env[:authentication_type]
             request_context.user = env[:user]
-            request_context.company = env[:company]
           end
 
           @app.call(env)

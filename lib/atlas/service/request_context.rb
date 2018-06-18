@@ -4,7 +4,7 @@ module Atlas
   module Service
     class RequestContext < Atlas::Entity::BaseEntity
       parameters :time, :component, :caller, :transaction_id, :account_id, :authentication_type,
-                 :user, :company
+                 :user
 
       AUTHENTICATION_TYPES = %i[user none system].freeze
       schema do
@@ -15,14 +15,9 @@ module Atlas
         required(:account_id) { filled? > (str? &  format?(Atlas::Enum::Formats::UUID4)) }
         required(:authentication_type).filled(type?: Symbol, included_in?: AUTHENTICATION_TYPES)
         required(:user).maybe(:hash?)
-        required(:company).maybe(:hash?)
 
         rule(user_presence: %i[authentication_type, user]) do |authentication_type, user|
           authentication_type.eql?(:user) > user.filled?
-        end
-
-        rule(company_presence: %i[authentication_type, company]) do |authentication_type, company|
-          authentication_type.eql?(:user) > company.filled?
         end
       end
 
