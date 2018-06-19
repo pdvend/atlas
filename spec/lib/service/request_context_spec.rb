@@ -10,7 +10,8 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
         caller: _caller,
         transaction_id: transaction_id,
         account_id: account_id,
-        authentication_type: authentication_type
+        authentication_type: authentication_type,
+        user: user
       }
     end
     let(:time) { DateTime.now.utc.to_datetime }
@@ -19,6 +20,7 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
     let(:transaction_id) { SecureRandom.uuid }
     let(:account_id) { SecureRandom.uuid }
     let(:authentication_type) { :user }
+    let(:user) { { uuid: 'bar' } }
 
     context 'with valid params' do
       it { expect { subject }.to_not raise_error }
@@ -96,6 +98,7 @@ RSpec.describe Atlas::Service::RequestContext, type: :entity do
         transaction_id
         account_id
         authentication_type
+        user
       ])
     end
   end

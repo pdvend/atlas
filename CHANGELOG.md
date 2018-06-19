@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.16.0
+- Added Melhoras na entidade de request_context
+
 ## 0.15.0
   - Added Melhor tratamento de erros e notificações no s3Repository
 

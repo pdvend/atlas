@@ -18,6 +18,7 @@ SimpleCov.start do
   filters.clear
 
   add_filter { |src| src.filename !~ /^#{SimpleCov.root}\/lib/ }
+  add_filter 'lib/atlas/spec/'
 end
 
 # Set env to test
