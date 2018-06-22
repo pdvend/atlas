@@ -3,9 +3,6 @@
 module Atlas
   module Repository
     class FileStorageRepository
-      EMPTY_STRING = ''
-      private_constant :EMPTY_STRING
-
       DEFAULT_ERR_CODE = Enum::ErrorCodes::REPOSITORY_INTERNAL
 
       def initialize(notifier:, base_path:)
@@ -32,27 +29,15 @@ module Atlas
         wrap { file_handle(uuid) }
       end
 
-      protected
-
-      # :nocov:
-      def bucket_name
-        raise 'Implement the method #bucket_name in order to use BaseMongoidRepository.'
-      end
-      # :nocov:
-
-      def base_folder
-        EMPTY_STRING
-      end
-
-      private
-
       attr_accessor :notifier, :base_path
+
+      def public_url(uuid, _expires_in)
+        "#{base_path}/#{uuid}"
+      end
 
       def wrap
         yield
-      rescue Aws::S3::Errors::NoSuchKey => message
-        failure(message: message, code: Enum::ErrorCodes::DOCUMENT_NOT_FOUND)
-      rescue Aws::S3::Errors::ServiceError => message
+      rescue StandardError
         failure(message: message, code: DEFAULT_ERR_CODE)
       end
 
