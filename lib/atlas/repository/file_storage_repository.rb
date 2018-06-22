@@ -31,8 +31,8 @@ module Atlas
 
       attr_accessor :notifier, :base_path
 
-      def public_url(uuid, _expires_in)
-        "#{base_path}/#{uuid}"
+      def public_url(uuid, expires_in)
+        "#{base_path}/#{uuid}?expires_in=#{expires_in}"
       end
 
       def wrap
