@@ -21,6 +21,10 @@ module Atlas
         end
       end
 
+      def public_url(uuid, expires_in)
+        object(uuid).presigned_url(:get, expires_in: expires_in)
+      end
+
       def content(uuid)
         return failure unless valid_object_identifier?(uuid)
         wrap { file_content(uuid) }

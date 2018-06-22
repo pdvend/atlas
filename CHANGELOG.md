@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.16.1
+- Added FileStorageRepository
+
 ## 0.16.0
 - Added Melhoras na entidade de request_context
 
