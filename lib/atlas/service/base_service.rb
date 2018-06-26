@@ -29,6 +29,11 @@ module Atlas
         base.class_eval do
           @base_service_hooks = []
 
+          if defined?(NewRelic) && method_defined?(:execute)
+            include ::NewRelic::Agent::MethodTracer
+            add_method_tracer :execute, "#{self.name}#execute"
+          end
+
           def self.hook(klass, *args, &block)
             block ||= ->(*) {}
             @base_service_hooks << Hook.new(klass.new, args, block)

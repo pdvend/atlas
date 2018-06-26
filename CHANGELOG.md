@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.16.2
+- Added New Relic Tracer to services
+
 ## 0.16.1
 - Added FileStorageRepository
 
