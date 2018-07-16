@@ -29,9 +29,7 @@ module Atlas
         base.class_eval do
           @base_service_hooks = []
 
-          if defined?(NewRelic)
-            include ::NewRelic::Agent::MethodTracer
-          end
+          include ::NewRelic::Agent::MethodTracer if defined?(NewRelic)
 
           def self.hook(klass, *args, &block)
             block ||= ->(*) {}
@@ -41,15 +39,21 @@ module Atlas
         end
       end
 
-      def execute(context, params)
-        hook_response = self.class.trace_execution_scoped(["services/#{self.class.name}/execute/hooks"]) do
-          execute_hooks(context, params)
+      if defined?(NewRelic)
+        def execute(context, params)
+          hook_response = self.class.trace_execution_scoped(["services/#{self.class.name}/execute/hooks"]) do
+            execute_hooks(context, params)
+          end
+
+          return hook_response if hook_response
+
+          self.class.trace_execution_scoped(["services/#{self.class.name}/execute/body"]) do
+            super(context, params)
+          end
         end
-
-        return hook_response if hook_response
-
-        self.class.trace_execution_scoped(["services/#{self.class.name}/execute/body"]) do
-          super(context, params)
+      else
+        def execute(context, params)
+          execute_hooks(context, params) || super(context, params)
         end
       end
 
