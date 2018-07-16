@@ -31,7 +31,6 @@ module Atlas
 
           if defined?(NewRelic) && method_defined?(:execute)
             include ::NewRelic::Agent::MethodTracer
-            add_method_tracer :execute, "#{self.name}#execute"
           end
 
           def self.hook(klass, *args, &block)
@@ -43,7 +42,15 @@ module Atlas
       end
 
       def execute(context, params)
-        execute_hooks(context, params) || super(context, params)
+        hook_response = self.class.trace_execution_scoped(["#{self.name}/execute/hooks"]) do
+          execute_hooks(context, params)
+        end
+
+        return hook_response if hook_response
+
+        self.class.trace_execution_scoped(["#{self.name}/execute/body"]) do
+          super(context, params)
+        end
       end
 
       private
