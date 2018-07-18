@@ -7,6 +7,7 @@ module Atlas
         module Transform
           TRANSFORM_OPERATIONS = {
             sum: ->(collection, field) { collection.sum(field) },
+            avg: ->(collection, field) { collection.avg(field) },
             count: ->(collection, _field) { collection.count }
           }.freeze
 

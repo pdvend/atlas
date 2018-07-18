@@ -9,7 +9,7 @@ module Atlas
         extend Atlas::Service::Util::ResponseHelpers
         TransformResult = Struct.new(:operation, :field, :result)
 
-        PARAMETERIZED_OPERATIONS = %i[sum].freeze
+        PARAMETERIZED_OPERATIONS = %i[sum avg].freeze
         NON_PARAMETERIZED_OPERATIONS = %i[count].freeze
         PARAMETERIZED_MATCHER = /(?<operation>#{PARAMETERIZED_OPERATIONS.join('|')}):(?<field>.*)/
         NON_PARAMETERIZED_MATCHER = /(?<operation>#{NON_PARAMETERIZED_OPERATIONS.join('|')})/
