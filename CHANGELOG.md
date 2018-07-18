@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.17.0
+- Added Average transformation
+
 ## 0.16.2
 - Added New Relic Tracer to services
 
