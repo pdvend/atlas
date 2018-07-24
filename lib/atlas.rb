@@ -20,14 +20,14 @@ require 'delayed_job'
 require 'delayed_job_mongoid'
 
 module Atlas
+  require_relative 'atlas/util'
+  require_relative 'atlas/service'
+  require_relative 'atlas/enum'
   require_relative 'atlas/api'
   require_relative 'atlas/entity'
-  require_relative 'atlas/enum'
   require_relative 'atlas/hook'
   require_relative 'atlas/job'
   require_relative 'atlas/repository'
-  require_relative 'atlas/service'
-  require_relative 'atlas/util'
   require_relative 'atlas/version'
   require_relative 'atlas/view'
 
