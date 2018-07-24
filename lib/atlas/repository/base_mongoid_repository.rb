@@ -63,7 +63,6 @@ module Atlas
         criteria = criteria.limit(limit) if limit
         criteria
       end
-      end
 
       def apply_order(model, sorting)
         sorting.present? ? model.order(OrderParser.order_params(model, sorting)) : model
