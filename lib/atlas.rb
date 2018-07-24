@@ -2,7 +2,6 @@
 
 require 'forwardable'
 
-require 'active_support/dependencies'
 require 'active_support/core_ext/object/try'
 require 'active_support/time_with_zone'
 require 'aws-sdk'
@@ -21,8 +20,16 @@ require 'delayed_job'
 require 'delayed_job_mongoid'
 
 module Atlas
-  ActiveSupport::Dependencies.autoload_paths ||= []
-  ActiveSupport::Dependencies.autoload_paths.push(File.dirname(__FILE__))
+  require_relative 'api'
+  require_relative 'entity'
+  require_relative 'enum'
+  require_relative 'hook'
+  require_relative 'job'
+  require_relative 'repository'
+  require_relative 'service'
+  require_relative 'util'
+  require_relative 'version'
+  require_relative 'view'
 
   I18n.load_path ||= []
   I18n.load_path += Dir[File.join(File.dirname(__FILE__), '../locale/*.yml')]
