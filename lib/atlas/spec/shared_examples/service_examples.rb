@@ -16,7 +16,7 @@ module Atlas
         shared_examples_for('a service with successful response') do
           it_behaves_like 'a service'
           it { is_expected.to be_success }
-          it { expect(subject.code).to eq(Atlas::Enum::ErrorCodes::NONE) }
+          it { expect(subject.err_code).to eq(Atlas::Enum::ErrorCodes::NONE) }
         end
 
         shared_examples_for('a service with failure response') do
