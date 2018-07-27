@@ -11,7 +11,7 @@ RSpec.describe Atlas::Repository::RedisRepository, type: :repository do
     context 'when get is nil' do
       let(:get_value) { nil }
 
-      it { is_expected.to eq('OK') }
+      it { is_expected.to eq('value')}
     end
 
     context 'when get has a value' do
