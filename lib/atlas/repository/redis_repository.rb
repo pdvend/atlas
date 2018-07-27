@@ -12,7 +12,9 @@ module Atlas
       def cache(key, expiration:, &block)
         value = redis_instance.get(key)
         return value unless value.nil?
-        redis_instance.set(key, block.call, ex: expiration, nx: true)
+        block.call.tap do |block|
+          redis_instance.set(key, block, ex: expiration, nx: true)
+        end
       end
     end
   end
