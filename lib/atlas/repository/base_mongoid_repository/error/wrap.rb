@@ -18,7 +18,7 @@ module Atlas
           rescue Mongo::Error::OperationFailure => op_failure_err
             error(op_failure_err, code: error_code_from_opfail(op_failure_err))
           rescue Mongoid::Errors::DocumentNotFound => error
-            error(error, false, code: Enum::ErrorCodes::DOCUMENT_NOT_FOUND)
+            error(error, code: Enum::ErrorCodes::DOCUMENT_NOT_FOUND)
           rescue Mongoid::Errors::MongoidError => internal_err
             error(internal_err)
           end

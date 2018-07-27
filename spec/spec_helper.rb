@@ -4,6 +4,7 @@ require 'factory_bot'
 require 'coveralls'
 require 'webmock/rspec'
 require 'timecop'
+
 Coveralls.wear!
 
 # Simplecov setup
@@ -26,6 +27,7 @@ ENV['APPLICATION_ENV'] ||= 'test'
 
 # Loads gem
 require 'atlas'
+require 'atlas/spec'
 
 # Spec helpers
 Dir['spec/support/helpers/**/*.rb'].each do |file|

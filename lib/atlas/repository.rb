@@ -5,4 +5,5 @@ module Repository
   require_relative 'repository/base_s3_repository'
   require_relative 'repository/file_storage_repository'
   require_relative 'repository/repository_response'
+  require_relative 'repository/redis_repository'
 end
