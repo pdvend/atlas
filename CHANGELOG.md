@@ -2,6 +2,12 @@
 
 ## CHANGELOG
 
+## 0.17.2
+- Fixed Redis set value
+
+## 0.17.1
+- Added Redis
+
 ## 0.17.0
 - Added Average transformation
 

@@ -46,4 +46,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'wkhtmltopdf-binpath'
   spec.add_dependency 'delayed_job'
   spec.add_dependency 'delayed_job_mongoid'
+  spec.add_dependency 'redis'
 end
