@@ -6,8 +6,16 @@ module Atlas
       class StreamRenderer < JsonRenderer
         def body
           data = body_data
+
           Enumerator.new do |yielder|
-            data.each { |element| yielder << serializer_instance_to(element).to_json }
+            stream = Atlas::Util::GzipYieldStream.new(yielder)
+
+            data.lazy
+                .map(&method(:serializer_instance_to))
+                .map(&:to_json)
+                .each(&stream.method(:write))
+
+            stream.close
           end
         end
       end
