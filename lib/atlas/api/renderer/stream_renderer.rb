@@ -4,6 +4,10 @@ module Atlas
   module API
     module Renderer
       class StreamRenderer < JsonRenderer
+        def headers
+          super.merge('Content-Encoding' => 'gzip')
+        end
+
         def body
           data = body_data
 
