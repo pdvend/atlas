@@ -9,6 +9,7 @@ module Atlas
 
       def write(data)
         return if data.empty?
+        puts "YIELD STREAM: #{data}"
         @yielder << data
       end
 

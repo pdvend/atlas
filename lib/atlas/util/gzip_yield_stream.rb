@@ -9,6 +9,7 @@ module Atlas
 
       def write(data)
         return if data.empty?
+        puts "GZIP YIELD STREAM: #{data}"
         @gzip.write(data)
         @gzip.flush
       end
