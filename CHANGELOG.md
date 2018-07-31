@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.17.3
+- Fixed Stream Renderer
+
 ## 0.17.2
 - Fixed Redis set value
 
