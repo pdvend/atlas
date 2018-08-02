@@ -91,10 +91,9 @@ module Atlas
       end
 
       def make_tmp(content)
-        Tempfile.new.tap do |tempfile|
-          tempfile.write(content)
-          tempfile.close
-        end.path
+        path = "./tmp/#{SecureRandom.uuid}"
+        File.binwrite(path, content)
+        path
       end
 
       def failure(message: nil, code: DEFAULT_ERR_CODE)
