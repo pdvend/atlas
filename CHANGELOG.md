@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.17.4
+- Fixed Path of tmp files
+
 ## 0.17.3
 - Fixed Stream Renderer
 
