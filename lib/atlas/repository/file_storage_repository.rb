@@ -38,7 +38,7 @@ module Atlas
       def wrap
         yield
       rescue StandardError
-        failure(message: message, code: DEFAULT_ERR_CODE)
+        failure(message: message, err_code: DEFAULT_ERR_CODE)
       end
 
       def valid_object_identifier?(uuid)
