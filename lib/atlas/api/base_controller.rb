@@ -32,11 +32,11 @@ module Atlas
 
       DEFAULT_RENDERER = FORMAT_TO_RENDERER[:json]
 
-      def render(service_response, fmt: :json)
+      def render(service_response, fmt: stream_requested? ? :stream : :json)
         renderer = FORMAT_TO_RENDERER.fetch(fmt, DEFAULT_RENDERER).new(service_response)
         self.body = renderer.body
         self.status = ERROR_CODE_TO_HTTP_STATUS[service_response.code] || 400
-        headers.merge!(renderer.headers)
+        headers.merge!(renderer.headers || {})
       end
 
       def render_not_found
@@ -45,6 +45,10 @@ module Atlas
         service_response = failure_response(response_params)
         self.body = service_response
         self.status = ERROR_CODE_TO_HTTP_STATUS[service_response.code] || 400
+      end
+
+      def stream_requested?
+        params[:stream].try(:match, /(true|1)/i)
       end
     end
   end
