@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.0
+- Added Gzip support
+
 ## 0.17.4
 - Fixed Path of tmp files
 
