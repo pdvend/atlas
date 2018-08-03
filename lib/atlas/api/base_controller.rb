@@ -36,7 +36,7 @@ module Atlas
         renderer = FORMAT_TO_RENDERER.fetch(fmt, DEFAULT_RENDERER).new(service_response)
         self.body = renderer.body
         self.status = ERROR_CODE_TO_HTTP_STATUS[service_response.code] || 400
-        headers.merge!(renderer.headers)
+        headers.merge!(renderer.headers || {})
       end
 
       def render_not_found
