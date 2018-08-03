@@ -19,18 +19,21 @@ module Atlas
 
           Enumerator.new do |yielder|
             stream = Atlas::Util::GzipYieldStream.new(yielder)
-            stream.write("[\n")
+            stream.write('[')
+
+            element = lazy_data.next
+            serializer = serializer_class_to(element)
 
             loop do
+              stream.write(serializer.new(element).to_json)
+              element = nil
               element = lazy_data.next
-              puts "ELEMENT: #{element}"
-              stream.write(serializer_instance_to(element).to_json)
-              stream.write(",\n")
+              stream.write(',')
             end
 
           rescue StopIteration
             stream.write(serializer_instance_to(element).to_json) if element
-            stream.write("\n]")
+            stream.write(']')
             stream.close
           end
         end
