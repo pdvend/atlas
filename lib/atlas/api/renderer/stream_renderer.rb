@@ -23,6 +23,7 @@ module Atlas
 
             loop do
               element = lazy_data.next
+              puts "ELEMENT: #{element}"
               stream.write(serializer_instance_to(data).to_json)
             end
 
