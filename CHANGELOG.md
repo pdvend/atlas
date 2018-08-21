@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.2
+- Fixed path of s3_repository
+
 ## 0.18.1
 - Fixed file_storage error message
 
