@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.1
+- Fixed file_storage error message
+
 ## 0.18.0
 - Added Gzip support
 
