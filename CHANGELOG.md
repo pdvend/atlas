@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.3
+- Fixed base_path
+
 ## 0.18.2
 - Fixed path of s3_repository
 
