@@ -38,7 +38,7 @@ module Atlas
       def wrap
         yield
       rescue StandardError => error
-        failure(message: error.message, err_code: DEFAULT_ERR_CODE)
+        failure(message: error, err_code: DEFAULT_ERR_CODE)
       end
 
       def valid_object_identifier?(uuid)
@@ -59,7 +59,7 @@ module Atlas
         File.binwrite("#{base_path}/#{dest}", content)
       end
 
-      def failure(message: nil, code: DEFAULT_ERR_CODE)
+      def failure(message: nil, err_code: DEFAULT_ERR_CODE)
         notifier.send_error(message) if code == DEFAULT_ERR_CODE && message.present?
         Atlas::Repository::RepositoryResponse.new(data: nil, err_code: code)
       end
