@@ -91,7 +91,7 @@ module Atlas
       end
 
       def make_tmp(content)
-        path = "./tmp/#{SecureRandom.uuid}"
+        path = "tmp/#{SecureRandom.uuid}"
         File.binwrite(path, content)
         path
       end
