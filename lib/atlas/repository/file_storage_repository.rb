@@ -60,8 +60,8 @@ module Atlas
       end
 
       def failure(message: nil, err_code: DEFAULT_ERR_CODE)
-        notifier.send_error(message) if code == DEFAULT_ERR_CODE && message.present?
-        Atlas::Repository::RepositoryResponse.new(data: nil, err_code: code)
+        notifier.send_error(message) if err_code == DEFAULT_ERR_CODE && message.present?
+        Atlas::Repository::RepositoryResponse.new(data: nil, err_code: err_code)
       end
     end
   end
