@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.4
+- Fixed ] end of stream
+
 ## 0.18.3
 - Fixed base_path
 
