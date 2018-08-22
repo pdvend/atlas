@@ -30,6 +30,7 @@ module Atlas
               element = lazy_data.next
               stream.write(',')
             end
+            stream.write(']')
 
           rescue StopIteration
             stream.write(serializer_instance_to(element).to_json) if element
