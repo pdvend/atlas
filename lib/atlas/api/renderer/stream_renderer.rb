@@ -25,7 +25,7 @@ module Atlas
             serializer = serializer_class_to(element)
 
             loop do
-              stream.write(serializer.new(element).to_json)
+              stream.write(serializer.new(element.attributes).to_json)
               element = nil
               element = lazy_data.next
               stream.write(',')
