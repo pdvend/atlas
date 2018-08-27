@@ -22,7 +22,7 @@ module Atlas
             stream.write('[')
 
             element = lazy_data.next
-            serializer = serializer_class_to(element)
+            serializer = Atlas::API::Serializer::DummySerializer
 
             loop do
               stream.write(serializer.new(element.attributes).to_json)
