@@ -3,6 +3,7 @@
 module Mixin
   require_relative 'mixin/create'
   require_relative 'mixin/destroy'
+  require_relative 'mixin/find_enum'
   require_relative 'mixin/find_in_batches_enum'
   require_relative 'mixin/find_last'
   require_relative 'mixin/find_one'
