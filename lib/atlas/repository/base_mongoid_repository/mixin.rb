@@ -10,4 +10,5 @@ module Mixin
   require_relative 'mixin/find_paginated'
   require_relative 'mixin/transform'
   require_relative 'mixin/update'
+  require_relative 'mixin/update_all'
 end

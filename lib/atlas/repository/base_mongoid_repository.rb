@@ -19,6 +19,7 @@ module Atlas
       include Mixin::FindInBatchesEnum
       include Mixin::Transform
       include Mixin::Update
+      include Mixin::UpdateAll
       include Mixin::Destroy
       include Error::Wrap
 
