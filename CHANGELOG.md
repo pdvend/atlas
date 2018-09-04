@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.5
+- Added update_all from repo
+
 ## 0.18.4
 - Fixed ] end of stream
 
