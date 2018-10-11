@@ -11,7 +11,7 @@ RSpec.describe Atlas::Repository::BaseMongoidRepository::Mixin::UpdateAll, type:
 
       let(:instance) { incluing_class.new }
 
-      subject { instance.update(params) }
+      subject { instance.update_all(params) }
 
       let(:params) { {} }
       let(:entity) { double(:entity) }
