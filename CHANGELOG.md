@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.6
+- Added busca por null
+
 ## 0.18.5
 - Added update_all from repo
 
