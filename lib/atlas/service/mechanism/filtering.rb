@@ -26,6 +26,7 @@ module Atlas
         private_class_method :normalize_filter
 
         def self.normalize_value(entity, field, value)
+          value = nil if value == '!null!'
           return value unless entity
           subparameters = entity.instance_subparameters
           return value unless subparameters.keys.include?(field)
