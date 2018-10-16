@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.7
+  - Added priority to jobs
+
 ## 0.18.6
 - Added busca por null
 
