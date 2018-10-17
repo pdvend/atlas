@@ -9,6 +9,15 @@ module Atlas
         @redis_instance = redis_instance
       end
 
+      def get(key)
+        redis_instance.get(key)
+      end
+
+      def set(key, value, expiration:)
+         response = redis_instance.set(key, value, ex: expiration)
+        response == 'OK' ? value : response
+      end
+
       def cache(key, expiration:, &block)
         value = redis_instance.get(key)
         return value unless value.nil?
