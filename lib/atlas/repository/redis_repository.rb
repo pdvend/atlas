@@ -14,7 +14,7 @@ module Atlas
       end
 
       def set(key, value, expiration:)
-         response = redis_instance.set(key, value, ex: expiration)
+        response = redis_instance.set(key, value, ex: expiration)
         response == 'OK' ? value : response
       end
 
