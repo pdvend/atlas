@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.9
+  - Added get \ set to redis
+
 ## 0.18.8
   - Fixed noop priority
 
