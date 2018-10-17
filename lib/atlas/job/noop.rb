@@ -5,7 +5,7 @@ module Atlas
     class Noop
       include Concurrent::Async if defined?(Concurrent)
 
-      def enqueue(_job, payload: {}, delay: 0)
+      def enqueue(_job, payload: {}, delay: 0, priority: 5)
       end
 
       def process

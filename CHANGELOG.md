@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.8
+  - Fixed noop priority
+
 ## 0.18.7
   - Added priority to jobs
 
