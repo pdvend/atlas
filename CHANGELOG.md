@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.10
+  - Added close to redis repository
+
 ## 0.18.9
   - Added get \ set to redis
 
