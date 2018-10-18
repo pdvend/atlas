@@ -25,6 +25,10 @@ module Atlas
           redis_instance.set(key, block, ex: expiration, nx: true)
         end
       end
+
+      def close
+        redis_instance.close
+      end
     end
   end
 end
