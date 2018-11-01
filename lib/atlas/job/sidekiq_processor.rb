@@ -9,7 +9,7 @@ module Atlas
       JobKeeper = Class.new(StandardError)
 
       def perform(job, payload: {}, delay: 0, priority: 5)
-        job_instance = job.new
+        job_instance = job.constantize.new
         results = [
           Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
           Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
