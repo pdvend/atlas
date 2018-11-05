@@ -8,8 +8,9 @@ module Atlas
 
       JobKeeper = Class.new(StandardError)
 
-      def perform(job, payload: {}, delay: 0, priority: 5)
+      def perform(job, *params)
         job_instance = job.constantize.new
+        payload = params[:payload]
         results = [
           Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
           Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
@@ -20,7 +21,8 @@ module Atlas
         return if results.include?(result)
         # Else, we should force the exception to not take the job from the queue
         notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
-        notifier.send_error(error, Atlas::Service::SystemContext, [], "`#{job_instance.class.name}: #{payload.to_json}`")
+        message = "`#{job_instance.class.name}: #{payload.to_json}`"
+        notifier.send_error(error, Atlas::Service::SystemContext, [], message)
         raise JobKeeper
       end
     end
