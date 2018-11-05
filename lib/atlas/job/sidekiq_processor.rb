@@ -22,6 +22,8 @@ module Atlas
         notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
         message = "Error in sidekiq processor: `#{job_instance.class.name}: #{payload.to_json}`"
         notifier.send_message(text: message)
+        rescue StandarError => e
+          notifier.send_error(error, Atlas::Service::SystemContext, [], message)
       end
     end
   end
