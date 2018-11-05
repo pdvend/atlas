@@ -18,13 +18,10 @@ module Atlas
         ]
 
         result = job_instance.perform(payload)
-        # When job succeeds or fails and don't need retry, our job is done
         return if results.include?(result)
-        # Else, we should force the exception to not take the job from the queue
         notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
-        message = "`#{job_instance.class.name}: #{payload.to_json}`"
-        notifier.send_error(error, Atlas::Service::SystemContext, [], message)
-        raise JobKeeper
+        message = "Error in sidekiq processor: `#{job_instance.class.name}: #{payload.to_json}`"
+        notifier.send_message(text: message)
       end
     end
   end
