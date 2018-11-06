@@ -6,12 +6,14 @@ module Atlas
       include Atlas::Service::Util::ResponseHelpers
       include ::Sidekiq::Worker
 
-      JobKeeper = Class.new(StandardError)
+      def initialize
+        @notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
+      end
 
       def perform(params)
         job = params['job']
         job_instance = job.constantize.new
-        payload = params['payload']
+        payload = params['payload'].deep_symbolize_keys
         results = [
           Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
           Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
@@ -19,11 +21,10 @@ module Atlas
 
         result = job_instance.perform(payload)
         return if results.include?(result)
-        notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
         message = "Error in sidekiq processor: `#{job_instance.class.name}: #{payload.to_json}`"
-        notifier.send_message(text: message)
-        rescue StandarError => e
-          notifier.send_error(error, Atlas::Service::SystemContext, [], message)
+        @notifier.send_message(text: message)
+        rescue StandardError => error
+          @notifier.send_error(error, Atlas::Service::SystemContext, [], message)
       end
     end
   end
