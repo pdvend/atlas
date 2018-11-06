@@ -11,6 +11,10 @@ module Atlas
       def process
         loop {}
       end
+
+      def perform_async(params)
+        true
+      end
     end
   end
 end
