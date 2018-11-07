@@ -13,7 +13,7 @@ module Atlas
       def perform(params)
         job = params['job']
         job_instance = job.constantize.new
-        payload = params['payload'].deep_symbolize_keys
+        payload = params['payload'].try(:deep_symbolize_keys)
         results = [
           Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
           Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
@@ -21,10 +21,11 @@ module Atlas
 
         result = job_instance.perform(payload)
         return if results.include?(result)
+
         message = "Error in sidekiq processor: `#{job_instance.class.name}: #{payload.to_json}`"
         @notifier.send_message(text: message)
-        rescue StandardError => error
-          @notifier.send_error(error, Atlas::Service::SystemContext, [], message)
+      rescue StandardError => error
+        @notifier.send_error(error, Atlas::Service::SystemContext, [], message)
       end
     end
   end
