@@ -25,7 +25,7 @@ module Atlas
         message = "Error in sidekiq processor: `#{job_instance.class.name}: #{payload.to_json}`"
         @notifier.send_message(text: message)
       rescue StandardError => error
-        @notifier.send_error(error, Atlas::Service::SystemContext, [], message)
+        @notifier.send_error(error, Atlas::Service::SystemContext, [], "#{message} \n #{error}")
       end
     end
   end
