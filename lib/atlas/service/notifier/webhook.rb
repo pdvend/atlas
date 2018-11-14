@@ -13,14 +13,14 @@ module Atlas
 
         FORMAT_TAGS = ->(*tags) { tags.map { |tag| "[` #{tag} `]" }.join }
 
-        def initialize(webhook_url)
-          @webhook_url = webhook_url
+        def initialize(webhook_urls)
+          @webhook_urls = webhook_urls
         end
 
         def send_message(params)
-          return if @webhook_url.blank?
+          return if @webhook_urls.blank?
           params[:text] = "[`#{ENV['SERVER_ENV']}`] #{params[:text]}"
-          HTTParty.post(@webhook_url, body: params.to_json)
+          @webhook_urls.each { |url| HTTParty.post(url, body: params.to_json) }
         end
 
         # :reek:LongParameterList

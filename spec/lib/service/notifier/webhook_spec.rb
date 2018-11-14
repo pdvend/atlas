@@ -2,10 +2,10 @@
 
 RSpec.describe Atlas::Service::Notifier::Webhook, type: :service do
   before do
-    stub_request(:post, webhook_hook_url)
+    stub_request(:post, webhook_hook_url.first)
   end
 
-  let(:webhook_hook_url) { 'http://someurl.com.br' }
+  let(:webhook_hook_url) { ['http://someurl.com.br'] }
 
   before { allow(ENV).to receive(:[]).with('SERVER_ENV').and_return(server) }
   let(:server) { 'SERVER' }
@@ -18,7 +18,7 @@ RSpec.describe Atlas::Service::Notifier::Webhook, type: :service do
 
     it 'calls webhook' do
       subject
-      expect(a_request(:post, webhook_hook_url).with(body: body.to_json)).to have_been_made
+      expect(a_request(:post, webhook_hook_url.first).with(body: body.to_json)).to have_been_made
     end
 
     context 'when extra params' do
@@ -29,7 +29,7 @@ RSpec.describe Atlas::Service::Notifier::Webhook, type: :service do
 
       it 'calls webhook' do
         subject
-        expect(a_request(:post, webhook_hook_url).with(body: body.to_json)).to have_been_made
+        expect(a_request(:post, webhook_hook_url.first).with(body: body.to_json)).to have_been_made
       end
     end
   end
@@ -56,7 +56,7 @@ RSpec.describe Atlas::Service::Notifier::Webhook, type: :service do
 
     it 'calls webhook' do
       subject
-      expect(a_request(:post, webhook_hook_url).with(body: message.to_json)).to have_been_made
+      expect(a_request(:post, webhook_hook_url.first).with(body: message.to_json)).to have_been_made
     end
   end
 end
