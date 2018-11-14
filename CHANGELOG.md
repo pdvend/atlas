@@ -2,7 +2,7 @@
 
 ## CHANGELOG
 
-## 0.18.11
+## 0.19.0
   - Added Chance notifier to generic class
 
 ## 0.18.10
