@@ -20,7 +20,7 @@ module Atlas
         def send_message(params)
           return if @webhook_urls.blank?
           params[:text] = "[`#{ENV['SERVER_ENV']}`] #{params[:text]}"
-          @webhook_urls.each { |url| HTTParty.post(url, body: params.to_json) }
+          @webhook_urls.each { |url| HTTParty.post(url, body: params.to_json) if url.present? }
         end
 
         # :reek:LongParameterList
