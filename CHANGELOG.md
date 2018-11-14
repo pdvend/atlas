@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.18.11
+  - Added Chance notifier to generic class
+
 ## 0.18.10
   - Added close to redis repository
 

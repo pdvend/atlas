@@ -3,7 +3,7 @@
 module Atlas
   module Service
     module Notifier
-      class Slack
+      class Webhook
         ERROR_FORMAT = [
           '%s *Ocorreu um erro!*',
           'Contexto: `%s`',

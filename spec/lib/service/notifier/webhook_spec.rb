@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
+RSpec.describe Atlas::Service::Notifier::Webhook, type: :service do
   before do
-    stub_request(:post, slack_hook_url)
+    stub_request(:post, webhook_hook_url)
   end
 
-  let(:slack_hook_url) { 'http://someurl.com.br' }
+  let(:webhook_hook_url) { 'http://someurl.com.br' }
 
   before { allow(ENV).to receive(:[]).with('SERVER_ENV').and_return(server) }
   let(:server) { 'SERVER' }
 
   describe '#send_message' do
-    subject { described_class.new(slack_hook_url).send_message(params) }
+    subject { described_class.new(webhook_hook_url).send_message(params) }
     let(:params) { { text: message } }
     let(:message) { 'Hello darkness my old friend.' }
     let(:body) { { text: "[`#{server}`] #{message}" } }
 
-    it 'calls slack' do
+    it 'calls webhook' do
       subject
-      expect(a_request(:post, slack_hook_url).with(body: body.to_json)).to have_been_made
+      expect(a_request(:post, webhook_hook_url).with(body: body.to_json)).to have_been_made
     end
 
     context 'when extra params' do
@@ -27,15 +27,15 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
       let(:channel) { '#channel' }
       let(:body) { { text: "[`#{server}`] #{message}", username: username, channel: channel } }
 
-      it 'calls slack' do
+      it 'calls webhook' do
         subject
-        expect(a_request(:post, slack_hook_url).with(body: body.to_json)).to have_been_made
+        expect(a_request(:post, webhook_hook_url).with(body: body.to_json)).to have_been_made
       end
     end
   end
 
   describe '#send_error' do
-    subject { described_class.new(slack_hook_url).send_error(error, context, tags, additional_info) }
+    subject { described_class.new(webhook_hook_url).send_error(error, context, tags, additional_info) }
 
     let(:error) { double(:error, message: 'fake message', backtrace: ['foo'] * 25) }
     let(:context) { build(:request_context) }
@@ -54,9 +54,9 @@ RSpec.describe Atlas::Service::Notifier::Slack, type: :service do
       Timecop.freeze(Time.utc(2017, 10, 10, 7, 20, 3))
     end
 
-    it 'calls slack' do
+    it 'calls webhook' do
       subject
-      expect(a_request(:post, slack_hook_url).with(body: message.to_json)).to have_been_made
+      expect(a_request(:post, webhook_hook_url).with(body: message.to_json)).to have_been_made
     end
   end
 end
