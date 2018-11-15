@@ -7,7 +7,7 @@ module Atlas
       include ::Sidekiq::Worker
 
       def initialize
-        @notifier = Atlas::Service::Notifier::Slack.new(ENV['SLACK_WEBHOOK_URL'])
+        @notifier = Atlas::Service::Notifier::Webhook.new([ENV['SLACK_WEBHOOK_URL'], ENV['LOGENTRIES_WEBHOOK_URL']])
       end
 
       def perform(params)
