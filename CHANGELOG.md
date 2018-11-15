@@ -2,8 +2,11 @@
 
 ## CHANGELOG
 
-## 0.19.0
+## 0.20.0
   - Added support to sidekiq
+
+## 0.19.0
+  - Added Chance notifier to generic class
 
 ## 0.18.10
   - Added close to redis repository
