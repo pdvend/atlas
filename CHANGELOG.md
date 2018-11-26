@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.20.0
+  - Added support to sidekiq
+
 ## 0.19.0
   - Added Chance notifier to generic class
 

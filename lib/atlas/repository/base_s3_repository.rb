@@ -64,7 +64,7 @@ module Atlas
       end
 
       def file_content(uuid)
-        path = Tempfile.new("/#{SecureRandom.uuid}-", nil)
+        path = Tempfile.new("/#{SecureRandom.uuid}-", nil).set_encoding('ASCII-8BIT')
         object(uuid).get(response_target: path)
         data = File.binread(path)
         File.unlink(path)

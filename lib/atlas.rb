@@ -18,6 +18,7 @@ require 'wkhtmltopdf_binary'
 require 'httparty'
 require 'delayed_job'
 require 'delayed_job_mongoid'
+require 'sidekiq'
 require 'redis'
 
 module Atlas
