@@ -4,7 +4,7 @@ module Atlas
   module Service
     module Mechanism
       class Filtering
-        OPERATORS = %i[eq lt gt lte gte not like].freeze
+        OPERATORS = %i[eq lt gt lte gte not like in nin].freeze
         CONJUNCTIONS = %i[and or].freeze
         DEFAULT_CONJUNCTION = :and
         FILTERS_SEPARATOR = ','
