@@ -11,7 +11,7 @@ module Atlas
         FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_\.-]+):(#{OPERATORS.join('|')}):(.*)/
 
         def self.filter_params(params, entity)
-          return [] unless params.is_a?(String)
+          return [] unless params.is_a?(String) || params.is_a?(Array)
           filter_strings = params.split(FILTERS_SEPARATOR)
           filter_strings.map { |filter_string| generate_filter(entity, filter_string) }.compact
         end
