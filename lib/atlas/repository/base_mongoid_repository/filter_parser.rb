@@ -9,8 +9,8 @@ module Atlas
           like: ->(value) { Regexp.new(Regexp.escape("#{value}").sub('%', '.*'), 'i') },
           not: ->(value) { { '$ne'.to_sym => value } },
           include: ->(value) { value },
-          in: ->(value) { [value] },
-          nin: ->(value) { [value]}
+          in: ->(value) { { '$in'.to_sym => value } },
+          nin: ->(value) { { '$nin'.to_sym => value } }
         }.freeze
 
         DEFAULT_STATEMENT_PARSER = ->(operator, value) { { "$#{operator}".to_sym => value } }
