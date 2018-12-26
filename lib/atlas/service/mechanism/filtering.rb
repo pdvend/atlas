@@ -11,7 +11,7 @@ module Atlas
         FILTER_PARTS_SEPARATOR = /(?:(#{CONJUNCTIONS.join('|')}):)?([a-zA-Z0-9_\.-]+):(#{OPERATORS.join('|')}):(.*)/
 
         def self.filter_params(params, entity)
-          return [] unless params.is_a?(String) || params.is_a?(Array)
+          return [] unless params.is_a?(String)
           filter_strings = params.split(FILTERS_SEPARATOR)
           filter_strings.map { |filter_string| generate_filter(entity, filter_string) }.compact
         end
@@ -27,7 +27,7 @@ module Atlas
 
         def self.value_by_operator(operator, value)
           array_operators = ['in', 'nin']
-          array_operators.include?(operator) ? value.delete('[]').split(',') : value
+          array_operators.include?(operator) ? value.delete('[]').split('|') : value
         end
 
         def self.normalize_value(entity, field, value)
