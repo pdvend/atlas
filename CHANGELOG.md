@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.20.1
+  - Added in and nin filters
+
 ## 0.20.0
   - Added support to sidekiq
 
