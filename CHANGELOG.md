@@ -2,6 +2,9 @@
 
 ## CHANGELOG
 
+## 0.20.2
+  - Added encode utf 8 to notifications
+
 ## 0.20.1
   - Added in and nin filters
 
