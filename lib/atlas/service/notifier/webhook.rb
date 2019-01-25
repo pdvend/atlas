@@ -33,6 +33,7 @@ module Atlas
             error.backtrace[0, 15].join("\n").gsub('```', "'``")
           )
 
+          debugger
           message << "\nInformações adicionais: #{additional_info}" unless additional_info.blank?
 
           send_message(text: message)
