@@ -33,8 +33,8 @@ module Atlas
             error.backtrace[0, 15].join("\n").gsub('```', "'``")
           )
 
-          debugger
-          message << "\nInformações adicionais: #{additional_info}" unless additional_info.blank?
+          encoded_info = additional_info.dup
+          message << "\nInformações adicionais: #{encoded_info.force_encoding('UTF-8')}" unless additional_info.blank?
 
           send_message(text: message)
         end
