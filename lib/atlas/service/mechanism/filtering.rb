@@ -4,7 +4,7 @@ module Atlas
   module Service
     module Mechanism
       class Filtering
-        OPERATORS = %i[eq lt gt lte gte not like in nin].freeze
+        OPERATORS = %i[eq lt gt lte gte not like in nin arr_eq].freeze
         CONJUNCTIONS = %i[and or].freeze
         DEFAULT_CONJUNCTION = :and
         FILTERS_SEPARATOR = ','
@@ -21,12 +21,18 @@ module Atlas
           field = raw_field.try(:to_sym)
           conjunction ||= DEFAULT_CONJUNCTION
           value = normalize_value(entity, field, value)
-          [conjunction.to_sym, field, operator.try(:to_sym), value_by_operator(operator, value)]
+          [conjunction.to_sym, field, operator_for(operator), value_by_operator(operator, value)]
         end
         private_class_method :normalize_filter
 
+        def self.operator_for(operator)
+          return :eq if operator == 'arr_eq'
+          operator.to_sym
+        end
+        private_class_method :operator_for
+
         def self.value_by_operator(operator, value)
-          array_operators = ['in', 'nin']
+          array_operators = ['in', 'nin', 'arr_eq']
           array_operators.include?(operator) ? value.delete('[]').split('|') : value
         end
 
