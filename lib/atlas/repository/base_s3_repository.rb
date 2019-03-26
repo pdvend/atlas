@@ -12,17 +12,19 @@ module Atlas
         @notifier = notifier
       end
 
-      def put(uuid, content)
+      def put(uuid, content, acl_public_read = false)
         return failure unless valid_object_identifier?(uuid) && content.is_a?(String)
 
         wrap do
-          upload(content, uuid)
+          upload(content, uuid, acl_public_read)
           Atlas::Repository::RepositoryResponse.new(data: nil, err_code: Enum::ErrorCodes::NONE)
         end
       end
 
-      def public_url(uuid, expires_in)
-        object(uuid).presigned_url(:get, expires_in: expires_in)
+      def public_url(uuid, expires_in = nil)
+        return object(uuid).presigned_url(:get, expires_in: expires_in) if expires_in
+
+        object(uuid).public_url
       end
 
       def content(uuid)
@@ -78,9 +80,9 @@ module Atlas
         Atlas::Repository::RepositoryResponse.new(data: data, err_code: Enum::ErrorCodes::NONE)
       end
 
-      def upload(content, dest)
+      def upload(content, dest, acl_public_read)
         src = make_tmp(content)
-        object(dest).upload_file(src)
+        acl_public_read ? object(dest).upload_file(src, acl: 'public-read') : object(dest).upload_file(src)
         File.unlink(src) if File.exist?(src)
       end
 
