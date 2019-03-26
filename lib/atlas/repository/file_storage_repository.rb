@@ -10,7 +10,7 @@ module Atlas
         @base_path = base_path
       end
 
-      def put(uuid, content)
+      def put(uuid, content, _acl_public_read = false)
         return failure unless valid_object_identifier?(uuid) && content.is_a?(String)
 
         wrap do
