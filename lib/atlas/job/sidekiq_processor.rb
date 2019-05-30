@@ -14,6 +14,11 @@ module Atlas
         job = params['job']
         job_instance = job.constantize.new
         payload = params['payload'].try(:deep_symbolize_keys)
+
+        if params['queue']
+          sidekiq_options queue: params['queue']
+        end
+
         results = [
           Atlas::Enum::JobsResponseCodes::PROCESS_MESSAGE,
           Atlas::Enum::JobsResponseCodes::FAILED_NO_RETRY
