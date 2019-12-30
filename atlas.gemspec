@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'json-serializer'
   spec.add_dependency 'rack'
   spec.add_dependency 'hanami-controller'
-  spec.add_dependency 'mongoid', '~> 6.1.0'
+  spec.add_dependency 'mongoid', '>= 6.1.0', '< 8'
   spec.add_dependency 'pdfkit'
   spec.add_dependency 'httparty'
   spec.add_dependency 'wkhtmltopdf-binpath'
